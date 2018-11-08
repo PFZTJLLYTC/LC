@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LC</title>
+    <style>
+        div{
+            background-color: aqua;
+            height: 50px; line-height: 50px;
+            color: #fff; font-size: 20px; text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div onclick="openScanner()">
+    hello world!
+</div>
+</body>
+<script>
+    function  openScanner() {
+        alert('open scannner in!')
+        var scannner = api.require('scanner');
+        scannner.open();
+    }
+</script>
+</html>
