@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-    <title>底部导航</title>
+    <title>首页</title>
     <link rel="stylesheet" type="text/css" href="./css/api.css"/>
     <link rel="stylesheet" type="text/css" href="./css/style.css"/>
     <style>
@@ -49,9 +49,7 @@
         </ul>
     </div>
 </div>
-</body>
-</html>
-<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="./script/api.js"></script>
 <script type="text/javascript">
     apiready = function () {
         $api.fixStatusBar( $api.dom('header') );
@@ -60,8 +58,12 @@
             color: '#6ab494'
         });
         funIniGroup();
+        api.openWin({
+          name:'login',
+          url:'./html/login.html',
+          slidBackEnabled:false
+        });
     }
-
     function funIniGroup(){
         var eHeaderLis = $api.domAll('header li'),
             frames = [];
@@ -111,3 +113,5 @@
         });
     }
 </script>
+</body>
+</html>
