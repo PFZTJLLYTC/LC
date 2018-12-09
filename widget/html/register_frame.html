@@ -68,8 +68,13 @@
       var usernameValue=$api.val(username);
       var passwordValue=$api.val(password);
 
-      var user=api.require("user");
-      user.register({
+      var appId="A6096149079402";
+      var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
+
+      var client=new Resource(appId,appKey);
+      var user=client.Factory("user");
+      
+      user.save({
           "username": usernameValue,
           "password": passwordValue
       }, function(ret, err) {
