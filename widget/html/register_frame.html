@@ -60,20 +60,137 @@
     <script type="text/javascript" src="../script/SHA1.js"></script>
     <script type="text/javascript">
     apiready = function() {
-
+        fnInitUIInput();
     };
+
+    var UIInput;
+    var usernameUIInputId;
+    var passwordUIInputId;
+    var usernameValue;
+    var passwordValue;
+
+    function fnInitUIInput(){
+        var username=$api.byId("username");
+        var usernameRect=$api.offset(username);
+        UIInput=api.require('UIInput');
+        UIInput.open({
+             rect: {
+                x: usernameRect.l,
+                y: usernameRect.t,
+                w: usernameRect.w,
+                h: usernameRect.h
+            },
+            styles: {
+                bgColor: '#fff',
+                size: 16,
+                color: '#000',
+                placeholder: {
+                    color: '#ccc'
+                }
+            },
+            autoFocus: false,
+            maxRows: 1,
+            placeholder: '用户名',
+            keyboardType: 'default',
+            fixedOn: api.frameName
+        }, function(ret, err){
+            if( ret ){
+                 usernameUIInputId = ret.id;
+                 if(ret&&ret.eventType=="show"){   //模块成功打开
+                   setTimeout(function(){
+                     UIInput.popupKeyboard({
+                       id:usernameUIInputId
+                     });
+                   },200);                         //200ms后，弹出用户名输入框的键盘
+                 }else if(ret.eventType=="change"){//输入框内容改变
+                   UIIput.value({                  //获取输入框内容
+                     id:usernameUIInputId
+                   },function(ret,err){
+                     if(ret){
+                       if(ret.status){
+                         usernameValue=ret.msg;
+                       }
+                     }
+                   });
+                 }
+               }
+            });
+        var password = $api.byId('password');
+        var passwordRect = $api.offset(password);
+        UIInput.open({
+            rect: {
+              x: passwordRect.l,
+              y: passwordRect.t,
+              w: passwordRect.w,
+              h: passwordRect.h
+          },
+          styles: {
+              bgColor: '#fff',
+              size: 16,
+              color: '#000',
+              placeholder: {
+                  color: '#ccc'
+              }
+          },
+          autoFocus: false,
+          maxRows: 1,
+          placeholder: '密码',
+          keyboardType: 'default',
+          inputType: 'password',
+          fixedOn: api.frameName
+      }, function(ret, err) {
+          if (ret) {
+              passwordUIInputId = ret.id;
+              if (ret.eventType == "change") {
+                  UIInput.value({
+                      id: passwordUIInputId
+                  }, function(ret, err) {
+                      if (ret) {
+                          if (ret.status) {
+                              passwordValue = ret.msg;
+                          }
+                      }
+                  });
+              }
+          }
+      });
+    }
     function fnRegister(){
-      var username=$api.byId("username");
-      var password=$api.byId("password");
-      var usernameValue=$api.val(username);
-      var passwordValue=$api.val(password);
+      if (!usernameValue) {
+          if (api.systemType == 'android') {
+              setTimeout(function() {
+                  UIInput.popupKeyboard({
+                      id: usernameUIInputId
+                  });
+              }, 200);
+          } else {
+              UIInput.popupKeyboard({
+                  id: usernameUIInputId
+              });
+          }
+          return;
+      }
+      if (!passwordValue) {
+          if (api.systemType == 'android') {
+              setTimeout(function() {
+                  UIInput.popupKeyboard({
+                      id: passwordUIInputId
+                  });
+              }, 200);
+          } else {
+              UIInput.popupKeyboard({
+                  id: passwordUIInputId
+              });
+          }
+          return;
+      }
 
       var appId="A6096149079402";
       var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
 
       var client=new Resource(appId,appKey);
       var user=client.Factory("user");
-      
+
       user.save({
           "username": usernameValue,
           "password": passwordValue
