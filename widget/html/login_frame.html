@@ -243,7 +243,14 @@
           }
       });
     }
-
+    // 被注册页面调用，用于从注册页面传递用户名
+    function fnSetUsername(username_) {
+        usernameValue = username_;
+        UIInput.value({
+            id: usernameUIInputId,
+            msg: username_
+        }, function(ret, err) {});
+    }
     </script>
 </body>
 </html>
