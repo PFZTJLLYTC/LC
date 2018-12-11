@@ -74,10 +74,10 @@
 
 <body>
     <div class="row">
-        <input id="username" class="input" type="text" placeholder="用户名">
+        <input id="username" class="input" type="text">
     </div>
     <div class="row">
-        <input id="password" class="input" type="password" placeholder="密码">
+        <input id="password" class="input" type="password">
     </div>
     <div class="btn" tapmode="highlight" onclick="fnLogin();">登录</div>
     <div class="btn-third-party">使用微信登录</div>
@@ -118,6 +118,7 @@
               maxRows: 1,
               placeholder: '用户名',
               keyboardType: 'default',
+              fixed:false,
               fixedOn: api.frameName
           }, function(ret, err) {
               if (ret) {
@@ -164,6 +165,7 @@
               placeholder: '密码',
               keyboardType: 'default',
               inputType: 'password',
+              fixed:false,
               fixedOn: api.frameName
           }, function(ret, err) {
               if (ret) {
