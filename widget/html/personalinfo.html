@@ -11,7 +11,7 @@
         <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
             <span class="aui-iconfont aui-icon-left"></span>
         </a>
-        <div class="aui-title">登录</div>
+        <div class="aui-title">我的</div>
     </header>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -23,8 +23,8 @@
         var headerPos = $api.offset(header);
         var body_h = $api.offset($api.dom('body')).h;
         api.openFrame({
-            name: '用户注册界面（）待修改_frm',
-            url: '用户注册界面（）待修改_frm.html',
+            name: 'personalinfo_frame',
+            url: './personalinfo_frame.html',
             bounces: true,
             rect: {
                 x: 0,
