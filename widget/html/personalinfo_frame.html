@@ -1,125 +1,337 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>我的信息</title>
     <link rel="stylesheet" type="text/css" href="../css/aui.css" />
-    <style type="text/css">
-        .text-white {
-            color: #ffffff !important;
-        }
-        .aui-grid [class*=aui-col-] {
-            padding: 0.75rem 0;
-        }
+    <style>
+    header {
+        height: 150px;
+        padding-top: 8px;
+        background-color: #00e39f;
+    }
+
+    header .icon-panel {
+        width: 100%;
+        height: 86px;
+        text-align: center;
+    }
+
+    header .icon-panel .icon {
+        display: inline-block;
+        box-sizing: border-box;
+        width: 86px;
+        height: 86px;
+        border: 3px solid rgba(#4aa63b, 0.86);
+        border-radius: 86px;
+        background-image: url(../image/default_square.png);
+        background-size: 100% 100%;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    header .username {
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        color: #fff;
+        text-align: center;
+    }
+
+    header .account-info {
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+        color: #fff;
+        text-align: center;
+    }
+
+    .separator {
+        margin: auto 10px;
+    }
+
+    .option {
+        position: relative;
+        box-sizing: border-box;
+        width: 100%;
+        height: 61px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .option .icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 40px;
+        height: 60px;
+        background-repeat: no-repeat;
+        background-position: 12px center;
+        background-size: auto 20px;
+    }
+
+    .option .icon-myorder {
+        background-image: url(../image/myOrderIcon.png);
+    }
+
+    .option .icon-set {
+        background-image: url(../image/set.png);
+    }
+/*问题与客服*/
+    .option .icon-qusAndAns {
+        background-image: url(../image/qusAndAns.png);
+        background-position: 8px center;
+    }
+/*1.0暂时应该没有此项功能*/
+    .option .icon-aboutUs {
+        background-image: url(../image/aboutUs.png);
+    }
+
+
+    .option .title {
+        position: relative;
+        box-sizing: border-box;
+        width: 100%;
+        height: 60px;
+        padding-left: 40px;
+        font-size: 14px;
+        color: #444;
+        text-align: left;
+        line-height: 60px;
+    }
+
+    .option .arrow-panel {
+        position: absolute;
+        top: 0;
+        right: 12px;
+        width: auto;
+        height: 60px;
+        background-image: url(../image/arrow_right.png);
+        background-repeat: no-repeat;
+        background-size: 16px 24px;
+        background-position: right center;
+    }
+
+    .option .arrow-panel .text {
+        box-sizing: border-box;
+        padding-right: 20px;
+        width: auto;
+        height: 60px;
+        line-height: 60px;
+        font-size: 13px;
+        color: #888;
+        text-align: left;
+    }
+/*不透明程度*/
+    .highlight {
+        opacity: 0.7;
+    }
     </style>
 </head>
+
 <body>
-    <!-- 顶部 -->
-    <section class="aui-content" id="user-info">
-        <div class="aui-list aui-media-list aui-list-noborder aui-bg-info">
-            <div class="aui-list-item aui-list-item-middle">
-                <div class="aui-media-list-item-inner ">
-                    <div class="aui-list-item-media" style="width:3rem;">
-                        <img src="../image/demo1.png" class="aui-img-round" >
-                    </div>
-                    <div class="aui-list-item-inner aui-list-item-arrow">
-                        <div class="aui-list-item-text text-white aui-font-size-18">38dd4ef6d</div>
-                        <div class="aui-list-item-text text-white">
-                           <div><i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>152****0989</div>
-                        </div>
-                    </div>
-                </div>
+    <header>
+        <div class="icon-panel" tapmode onclick="fnSetAvatar()">
+            <div id="icon" class="icon"></div>
+        </div>
+        <div id="username" class="username">LCer</div>
+        <div class="account-info">本月乘车次数：0 <span class="separator">|</span>余额：￥0</div>
+    </header>
+    <section>
+        <div class="option" tapmode onclick="fnOpenMyOrderWin();">
+            <div class="icon icon-myorder"></div>
+            <div class="title">我的订单</div>
+            <div class="arrow-panel">
+                <div class="text">查看所有订单详情</div>
+            </div>
+        </div>
+        <div class="option" tapmode onclick="fnOpenSetWin();">
+            <div class="icon icon-set"></div>
+            <div class="title">个性化</div>
+            <div class="arrow-panel">
+                <div class="text">修改设置</div>
+            </div>
+        </div>
+        <div class="option" tapmode onclick="fnOpenqusAndAnsWin();">
+            <div class="icon icon-qusAndAns"></div>
+            <div class="title">我的客服</div>
+            <div class="arrow-panel">
+                <div class="text">问题与帮助</div>
+            </div>
+        </div>
+        <div class="option" tapmode onclick="fnOpenaboutUsWin();">
+            <div class="icon icon-aboutUs"></div>
+            <div class="title">关于我们</div>
+            <div class="arrow-panel">
+                <div class="text">了解更多信息</div>
             </div>
         </div>
     </section>
-    <section class="aui-content aui-grid aui-margin-b-15">
-        <div class="aui-row">
-            <div class="aui-col-xs-4 aui-border-r">
-                <big class="aui-text-warning">0.00<small> 元</small></big>
-                <div class="aui-gird-lable aui-font-size-12">余额</div>
-            </div>
-            <div class="aui-col-xs-4 aui-border-r">
-                <big class="aui-text-danger">0.00<small> 个</small></big>
-                <div class="aui-gird-lable aui-font-size-12">优惠</div>
-            </div>
-            <div class="aui-col-xs-4">
-                <big class="aui-text-success">0.00<small> 分</small></big>
-                <div class="aui-gird-lable aui-font-size-12">积分</div>
-            </div>
-        </div>
-    </section>
-    <section class="aui-content">
-        <ul class="aui-list aui-list-in aui-margin-b-15">
-            <li class="aui-list-item">
-                <div class="aui-list-item-label-icon">
-                    <i class="aui-iconfont aui-icon-location aui-text-info"></i>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">收货地址</div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-label-icon">
-                    <i class="aui-iconfont aui-icon-like aui-text-danger"></i>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">我的收藏</div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-label-icon">
-                    <i class="aui-iconfont aui-icon-image aui-text-info"></i>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">美食相册</div>
-                </div>
-            </li>
-        </ul>
-        <ul class="aui-list aui-list-in">
-            <li class="aui-list-item">
-                <div class="aui-list-item-label-icon">
-                    <i class="aui-iconfont aui-icon-cart aui-text-info"></i>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">积分商城</div>
-                    <div class="aui-list-item-right">0元好物在这里</div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-label-icon">
-                    <i class="aui-iconfont aui-icon-cert aui-text-warning"></i>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">会员卡</div>
-                    <div class="aui-list-item-right">未开通</div>
-                </div>
-            </li>
-        </ul>
-    </section>
-    <footer class="aui-bar aui-bar-tab">
-        <div class="aui-bar-tab-item">
-            <i class="aui-iconfont aui-icon-paper"></i>
-            <div class="aui-bar-tab-label">外卖</div>
-        </div>
-        <div class="aui-bar-tab-item">
-            <i class="aui-iconfont aui-icon-menu"></i>
-            <div class="aui-bar-tab-label">订单</div>
-        </div>
-        <div class="aui-bar-tab-item">
-            <i class="aui-iconfont aui-icon-location"></i>
-            <div class="aui-bar-tab-label">发现</div>
-        </div>
-        <div class="aui-bar-tab-item aui-active">
-            <i class="aui-iconfont aui-icon-my"></i>
-            <div class="aui-bar-tab-label">我的</div>
-        </div>
-    </footer>
 </body>
-<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
-    apiready = function () {
+/*初始化得到用户信息*/
+apiready = function() {
+    getUserInfo();
+};
+
+// 获取个人信息
+function getUserInfo() {
+    var userInfo = $api.getStorage('userInfo');
+    api.ajax({
+        url: 'https://d.apicloud.com/mcm/api/user/' + userInfo.userId,
+        method: 'get',
+        headers: {
+            "X-APICloud-AppId": api.appId,
+            //有applekey后添加"X-APICloud-AppKey": 'ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825',
+            "Authorization": userInfo.id
+        }
+    }, function(ret, err) {
+        if (ret) {
+            fnUpdateLocalAvatar(ret);
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+
+// 更新头像显示
+function fnUpdateLocalAvatar(data_) {
+    if (!data_.avatar) {
+        return;
     }
+
+    // 缓存头像
+    var icon = $api.byId('icon');
+    api.imageCache({
+        url: data_.avatar.url
+    }, function(ret, err) {
+        if (ret) {
+            icon.style.backgroundImage = 'url(' + ret.url + ')';
+        } else {
+            api.toast({
+                msg: '获取头像失败',
+                duration: 2000,
+                location: 'bottom'
+            });
+        }
+    });
+}
+
+// 选择头像
+function fnSetAvatar() {
+    api.actionSheet({
+        title: '选择',
+        cancelTitle: '取消',
+        buttons: ['拍照', '相册']
+    }, function(ret, err) {
+        if (ret) {
+            var sourceTypes = [
+                'camera',
+                'album'
+            ];
+            if (ret.buttonIndex == (sourceTypes.length + 1)) {
+                return;
+            }
+            api.getPicture({
+                sourceType: sourceTypes[ret.buttonIndex - 1],
+                allowEdit: true,
+                quality: 50, // 指定图片质量
+                targetWidth: 100, // 指定图片宽度
+                targetHeight: 100 // 指定图片宽度
+            }, function(ret, err) {
+                if (ret) {
+                    fnUploadAtavar(ret.data);
+                }
+            });
+        }
+    });
+}
+
+// 上传头像文件
+function fnUploadAtavar(avatarUrl_) {
+    api.ajax({
+        url: 'https://d.apicloud.com/mcm/api/file',
+        method: 'post',
+        headers: {
+            "X-APICloud-AppId": api.appId,
+            //"X-APICloud-AppKey": 'ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825'
+        },
+        data: {
+            values: {
+                filename: 'icon'
+            },
+            files: {
+                file: avatarUrl_
+            }
+        }
+    }, function(ret, err) {
+        if (ret) {
+            fnUpdateUserAtavar(ret);
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+
+// 更新用户头像
+function fnUpdateUserAtavar(avatar_) {
+    var userInfo = $api.getStorage('userInfo');
+    api.ajax({
+        url: 'https://d.apicloud.com/mcm/api/user/' + userInfo.userId,
+        method: 'put',
+        headers: {
+            "X-APICloud-AppId": api.appId,
+            //"X-APICloud-AppKey": 'ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825',
+            "Authorization": userInfo.id
+        },
+        data: {
+            values: {
+                avatar: avatar_
+            }
+        }
+    }, function(ret, err) {
+        if (ret) {
+            fnUpdateLocalAvatar(ret);
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+
+// 打开我的订单Window
+function fnOpenMyOrderWin() {
+    api.openWin({
+        name: 'myorder',
+        url: './myorder.html'
+    });
+}
+
+// 打开我的账户Window
+function fnOpenSetWin() {
+    api.openWin({
+        name: 'set',
+        url: './set.html'
+    });
+}
+
+// 打开我的优惠券Window
+function fnOpenqusAndAnsWin() {
+    api.openWin({
+        name: 'qusAndAns',
+        url: './qusAndAns.html'
+    });
+}
+
+// 打开收货地址Window
+function fnOpenaboutUsWin() {
+    api.openWin({
+        name: 'aboutUs',
+        url: './aboutUs.html'
+    });
+}
 </script>
+
 </html>
