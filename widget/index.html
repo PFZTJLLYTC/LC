@@ -8,7 +8,46 @@
     <link rel="stylesheet" type="text/css" href="./css/api.css"/>
     <link rel="stylesheet" type="text/css" href="./css/style.css"/>
     <style>
-        header{ background-color: #f2f2f2; }
+        header{ display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-flex-flow: row;
+        flex-flow: row;
+        width: 100%;
+        height: 50px;
+        background-color: #00e39f;}
+        header .item {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            width: 100%;
+            height: 50px;
+        }
+/*????*/
+        header .item .button {
+            display: inline-block;
+            width: auto;
+            height: 50px;
+            box-sizing: border-box;
+            line-height: 50px;
+            text-align: left;
+            font-size: 16px;
+            background-size: auto 16px;
+            background-position: 16px center;
+            background-repeat: no-repeat;
+        }
+        header .item-message {
+            text-align: right;
+        }
+        .message {
+            padding-left: 34px;
+            padding-right: 16px;
+            background-image: url(../image/message.png);
+        }
+        .titles{
+          padding-left: 44px;
+        }
         header ul li { height: 50px; line-height: 50px; text-align: center; display: none; color: #323237; position: relative;font-size: 18px;  }
         header ul li.active{ display: block; }
         #footer{  background-color: #f2f2f2; }
@@ -30,12 +69,20 @@
 <body>
 <div id="wrap" class="flex-wrap flex-vertical">
     <header>
-        <ul>
-            <li class="border-b active" >发现</li>
-            <li class="border-b" >出发</li>
-            <li class="border-b" >行程</li>
-            <li class="border-b" >我的</li>
-        </ul>
+      <div class="item"></item>
+      <div calss = "item button titles">
+    <ul>
+        <li class="border-b" active>发现</li>
+        <li class="border-b" >出发</li>
+        <li class="border-b" >行程</li>
+        <li class="border-b" >我的</li>
+    </ul>
+      </div>
+      <div class="item"></item>
+          <div class = item-message>
+        <div class="button message" tapmode onclick="fnOpenMessageWin();"></div>
+          </div>
+
     </header>
     <div id="main" class="flex-con">
 
@@ -88,6 +135,13 @@
             frames: frames
         }, function (ret, err) {
 
+        });
+    }
+    // 打开消息Window
+    function fnOpenMessageWin () {
+        api.openWin({
+            name: 'message',
+            url: './message.html'
         });
     }
 

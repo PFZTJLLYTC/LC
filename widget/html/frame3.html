@@ -1,105 +1,337 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>我的信息</title>
-    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
     <style>
-    html,
-    body {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-flex-flow: column;
-        flex-flow: column;
-        height: 100%;
+    header {
+        height: 150px;
+        padding-top: 8px;
+        background-color: #00e39f;
     }
 
-    header {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-orient: horizontal;
-        -webkit-flex-flow: row;
-        flex-flow: row;
+    header .icon-panel {
         width: 100%;
-        height: 50px;
-        background-color: #00e39f
+        height: 86px;
+        text-align: center;
     }
-    header .item {
-        -webkit-box-flex: 1;
-        -webkit-flex: 1;
-        flex: 1;
-        width: 100%;
-        height: 50px;
-    }
-    header .item .button {
+
+    header .icon-panel .icon {
         display: inline-block;
-        width: auto;
-        height: 50px;
         box-sizing: border-box;
-        line-height: 50px;
-        text-align: left;
-        font-size: 16px;
-        background-size: auto 16px;
-        background-position: 16px center;
+        width: 86px;
+        height: 86px;
+        border: 3px solid rgba(#4aa63b, 0.86);
+        border-radius: 86px;
+        background-image: url(../image/default_square.png);
+        background-size: 100% 100%;
+        background-position: center center;
         background-repeat: no-repeat;
     }
-    header .item-message {
-        text-align: right;
+
+    header .username {
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        color: #fff;
+        text-align: center;
     }
 
-    .scan {
-        padding-left: 34px;
-        background-image: url(../image/scan.png);
+    header .account-info {
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+        color: #fff;
+        text-align: center;
     }
-    .message {
-        padding-left: 34px;
-        padding-right: 16px;
-        text-align: right;
-        background-image: url(../image/message.png);
+
+    .separator {
+        margin: auto 10px;
+    }
+
+    .option {
+        position: relative;
+        box-sizing: border-box;
+        width: 100%;
+        height: 61px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .option .icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 40px;
+        height: 60px;
+        background-repeat: no-repeat;
+        background-position: 12px center;
+        background-size: auto 20px;
+    }
+
+    .option .icon-myorder {
+        background-image: url(../image/myOrderIcon.png);
+    }
+
+    .option .icon-set {
+        background-image: url(../image/set.png);
+    }
+/*问题与客服*/
+    .option .icon-qusAndAns {
+        background-image: url(../image/qusAndAns.png);
+        background-position: 8px center;
+    }
+/*1.0暂时应该没有此项功能*/
+    .option .icon-aboutUs {
+        background-image: url(../image/aboutUs.png);
+    }
+
+
+    .option .title {
+        position: relative;
+        box-sizing: border-box;
+        width: 100%;
+        height: 60px;
+        padding-left: 40px;
+        font-size: 14px;
+        color: #444;
+        text-align: left;
+        line-height: 60px;
+    }
+
+    .option .arrow-panel {
+        position: absolute;
+        top: 0;
+        right: 12px;
+        width: auto;
+        height: 60px;
+        background-image: url(../image/arrow_right.png);
+        background-repeat: no-repeat;
+        background-size: 16px 24px;
+        background-position: right center;
+    }
+
+    .option .arrow-panel .text {
+        box-sizing: border-box;
+        padding-right: 20px;
+        width: auto;
+        height: 60px;
+        line-height: 60px;
+        font-size: 13px;
+        color: #888;
+        text-align: left;
+    }
+/*不透明程度*/
+    .highlight {
+        opacity: 0.7;
     }
     </style>
 </head>
-<body>
-  <header id="header">
-       <div class="item">
-         <div class="button scan" tapmode onclick="api.openSanner();"></div>
-         </div>
-         <div class="item"></item>
-           <div class = item-message>
-         <div class="button message" tapmode onclick="fnOpenMessageWin();"></div>
-           </div>
 
-  </header>
+<body>
+    <header>
+        <div class="icon-panel" tapmode onclick="fnSetAvatar()">
+            <div id="icon" class="icon"></div>
+        </div>
+        <div id="username" class="username">LCer</div>
+        <div class="account-info">本月乘车次数：0 <span class="separator">|</span>余额：￥0</div>
+    </header>
+    <section>
+        <div class="option" tapmode onclick="fnOpenMyOrderWin();">
+            <div class="icon icon-myorder"></div>
+            <div class="title">我的订单</div>
+            <div class="arrow-panel">
+                <div class="text">查看所有订单详情</div>
+            </div>
+        </div>
+        <div class="option" tapmode onclick="fnOpenSetWin();">
+            <div class="icon icon-set"></div>
+            <div class="title">个性化</div>
+            <div class="arrow-panel">
+                <div class="text">修改设置</div>
+            </div>
+        </div>
+        <div class="option" tapmode onclick="fnOpenqusAndAnsWin();">
+            <div class="icon icon-qusAndAns"></div>
+            <div class="title">我的客服</div>
+            <div class="arrow-panel">
+                <div class="text">问题与帮助</div>
+            </div>
+        </div>
+        <div class="option" tapmode onclick="fnOpenaboutUsWin();">
+            <div class="icon icon-aboutUs"></div>
+            <div class="title">关于我们</div>
+            <div class="arrow-panel">
+                <div class="text">了解更多信息</div>
+            </div>
+        </div>
+    </section>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
+/*初始化得到用户信息*/
 apiready = function() {
-    var header = $api.byId('header');
-    var headerH = $api.fixStatusBar(header);
-    api.openFrame({
-        name: 'personalcenter_frame',
-        url: './personalcenter_frame.html',
-        rect: {
-            marginTop: headerH,
-            //marginBottom: footerH,
-            w: 'auto'
-        },
-        bounces: false
-    });
+    getUserInfo();
 };
 
-// 打开消息Window
-function fnOpenMessageWin () {
+// 获取个人信息
+function getUserInfo() {
+    var userInfo = $api.getStorage('userInfo');
+    api.ajax({
+        url: 'https://d.apicloud.com/mcm/api/user/' + userInfo.userId,
+        method: 'get',
+        headers: {
+            "X-APICloud-AppId": api.appId,
+            //有applekey后添加"X-APICloud-AppKey": 'ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825',
+            "Authorization": userInfo.id
+        }
+    }, function(ret, err) {
+        if (ret) {
+            fnUpdateLocalAvatar(ret);
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+
+// 更新头像显示
+function fnUpdateLocalAvatar(data_) {
+    if (!data_.avatar) {
+        return;
+    }
+
+    // 缓存头像
+    var icon = $api.byId('icon');
+    api.imageCache({
+        url: data_.avatar.url
+    }, function(ret, err) {
+        if (ret) {
+            icon.style.backgroundImage = 'url(' + ret.url + ')';
+        } else {
+            api.toast({
+                msg: '获取头像失败',
+                duration: 2000,
+                location: 'bottom'
+            });
+        }
+    });
+}
+
+// 选择头像
+function fnSetAvatar() {
+    api.actionSheet({
+        title: '选择',
+        cancelTitle: '取消',
+        buttons: ['拍照', '相册']
+    }, function(ret, err) {
+        if (ret) {
+            var sourceTypes = [
+                'camera',
+                'album'
+            ];
+            if (ret.buttonIndex == (sourceTypes.length + 1)) {
+                return;
+            }
+            api.getPicture({
+                sourceType: sourceTypes[ret.buttonIndex - 1],
+                allowEdit: true,
+                quality: 50, // 指定图片质量
+                targetWidth: 100, // 指定图片宽度
+                targetHeight: 100 // 指定图片宽度
+            }, function(ret, err) {
+                if (ret) {
+                    fnUploadAtavar(ret.data);
+                }
+            });
+        }
+    });
+}
+
+// 上传头像文件
+function fnUploadAtavar(avatarUrl_) {
+    api.ajax({
+        url: 'https://d.apicloud.com/mcm/api/file',
+        method: 'post',
+        headers: {
+            "X-APICloud-AppId": api.appId,
+            //"X-APICloud-AppKey": 'ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825'
+        },
+        data: {
+            values: {
+                filename: 'icon'
+            },
+            files: {
+                file: avatarUrl_
+            }
+        }
+    }, function(ret, err) {
+        if (ret) {
+            fnUpdateUserAtavar(ret);
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+
+// 更新用户头像
+function fnUpdateUserAtavar(avatar_) {
+    var userInfo = $api.getStorage('userInfo');
+    api.ajax({
+        url: 'https://d.apicloud.com/mcm/api/user/' + userInfo.userId,
+        method: 'put',
+        headers: {
+            "X-APICloud-AppId": api.appId,
+            //"X-APICloud-AppKey": 'ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825',
+            "Authorization": userInfo.id
+        },
+        data: {
+            values: {
+                avatar: avatar_
+            }
+        }
+    }, function(ret, err) {
+        if (ret) {
+            fnUpdateLocalAvatar(ret);
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+
+// 打开我的订单Window
+function fnOpenMyOrderWin() {
     api.openWin({
-        name: 'message',
-        url: './message.html'
+        name: 'myorder',
+        url: './myorder.html'
+    });
+}
+
+// 打开我的账户Window
+function fnOpenSetWin() {
+    api.openWin({
+        name: 'set',
+        url: './set.html'
+    });
+}
+
+// 打开我的优惠券Window
+function fnOpenqusAndAnsWin() {
+    api.openWin({
+        name: 'qusAndAns',
+        url: './qusAndAns.html'
+    });
+}
+
+// 打开收货地址Window
+function fnOpenaboutUsWin() {
+    api.openWin({
+        name: 'aboutUs',
+        url: './aboutUs.html'
     });
 }
 </script>
+
 </html>
