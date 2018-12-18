@@ -184,8 +184,8 @@ function getUserInfo() {
         url: 'https://d.apicloud.com/mcm/api/user/' + userInfo.userId,
         method: 'get',
         headers: {
-            "X-APICloud-AppId": api.appId,
-            //有applekey后添加"X-APICloud-AppKey": 'ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825',
+            "X-APICloud-AppId":"A6096149079402" ,
+            "X-APICloud-AppKey": "32CFC654-7074-7E4E-38A5-48B190D16721",
             "Authorization": userInfo.id
         }
     }, function(ret, err) {
@@ -256,8 +256,8 @@ function fnUploadAtavar(avatarUrl_) {
         url: 'https://d.apicloud.com/mcm/api/file',
         method: 'post',
         headers: {
-            "X-APICloud-AppId": api.appId,
-            //"X-APICloud-AppKey": 'ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825'
+            "X-APICloud-AppId": "A6096149079402",
+            "X-APICloud-AppKey": "32CFC654-7074-7E4E-38A5-48B190D16721"
         },
         data: {
             values: {
@@ -283,8 +283,8 @@ function fnUpdateUserAtavar(avatar_) {
         url: 'https://d.apicloud.com/mcm/api/user/' + userInfo.userId,
         method: 'put',
         headers: {
-            "X-APICloud-AppId": api.appId,
-            //"X-APICloud-AppKey": 'ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825',
+            "X-APICloud-AppId": "A6096149079402",
+            "X-APICloud-AppKey": "32CFC654-7074-7E4E-38A5-48B190D16721",
             "Authorization": userInfo.id
         },
         data: {
