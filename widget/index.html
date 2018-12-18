@@ -41,12 +41,16 @@
             text-align: right;
         }
         .message {
-            padding-left: 34px;
-            padding-right: 16px;
-            background-image: url(../image/message.png);
+            padding-left: 48px;
+            padding-right: 2px;
+            text-align: right;
+            background-image: url(./image/message.png);
         }
         .titles{
-          padding-left: 44px;
+          padding-left: 34px;
+        }
+        .tianchong{
+          padding-left: 34px;
         }
         header ul li { height: 50px; line-height: 50px; text-align: center; display: none; color: #323237; position: relative;font-size: 18px;  }
         header ul li.active{ display: block; }
@@ -68,21 +72,19 @@
 </head>
 <body>
 <div id="wrap" class="flex-wrap flex-vertical">
-    <header>
-      <div class="item"></item>
-      <div calss = "item button titles">
+    <header id="header">
+      <div class="item"></div>
+        <div class="item ">
     <ul>
-        <li class="border-b" active>发现</li>
+        <li class="border-b active" >发现</li>
         <li class="border-b" >出发</li>
         <li class="border-b" >行程</li>
         <li class="border-b" >我的</li>
     </ul>
-      </div>
-      <div class="item"></item>
-          <div class = item-message>
-        <div class="button message" tapmode onclick="fnOpenMessageWin();"></div>
-          </div>
-
+    </div>
+    <div class = "item item-message">
+    <div class="button message" tapmode onclick="fnOpenMessageWin();"></div>
+    </div>
     </header>
     <div id="main" class="flex-con">
 
