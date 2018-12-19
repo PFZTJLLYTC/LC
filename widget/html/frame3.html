@@ -136,7 +136,7 @@
         <div class="icon-panel" tapmode onclick="fnSetAvatar()">
             <div id="icon" class="icon"></div>
         </div>
-        <div id="username" class="username">LCer</div>
+        <div id="username" class="username"></div>
         <div class="account-info">本月乘车次数：0 <span class="separator">|</span>余额：￥0</div>
     </header>
     <section>
@@ -171,11 +171,17 @@
     </section>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/SHA1.js"></script>
 <script type="text/javascript">
 /*初始化得到用户信息*/
 apiready = function() {
     getUserInfo();
 };
+
+var appId="A6096149079402";
+var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
+var now=Date.now();
+var appCode=SHA1(appId+"UZ"+appKey+"UZ"+now)+"."+now;
 
 // 获取个人信息
 function getUserInfo() {
@@ -184,12 +190,14 @@ function getUserInfo() {
         url: 'https://d.apicloud.com/mcm/api/user/' + userInfo.userId,
         method: 'get',
         headers: {
-            "X-APICloud-AppId":"A6096149079402" ,
-            "X-APICloud-AppKey": "32CFC654-7074-7E4E-38A5-48B190D16721",
+            "X-APICloud-AppId":appId,
+            "X-APICloud-AppKey":appCode,
             "Authorization": userInfo.id
         }
     }, function(ret, err) {
         if (ret) {
+            var username=$api.byId("username");
+            $api.text(username,ret.username);
             fnUpdateLocalAvatar(ret);
         } else {
             alert(JSON.stringify(err));
@@ -256,8 +264,8 @@ function fnUploadAtavar(avatarUrl_) {
         url: 'https://d.apicloud.com/mcm/api/file',
         method: 'post',
         headers: {
-            "X-APICloud-AppId": "A6096149079402",
-            "X-APICloud-AppKey": "32CFC654-7074-7E4E-38A5-48B190D16721"
+            "X-APICloud-AppId": appId,
+            "X-APICloud-AppKey": appCode
         },
         data: {
             values: {
@@ -283,8 +291,8 @@ function fnUpdateUserAtavar(avatar_) {
         url: 'https://d.apicloud.com/mcm/api/user/' + userInfo.userId,
         method: 'put',
         headers: {
-            "X-APICloud-AppId": "A6096149079402",
-            "X-APICloud-AppKey": "32CFC654-7074-7E4E-38A5-48B190D16721",
+            "X-APICloud-AppId": appId,
+            "X-APICloud-AppKey": appCode,
             "Authorization": userInfo.id
         },
         data: {
