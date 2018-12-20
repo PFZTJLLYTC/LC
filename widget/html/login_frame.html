@@ -227,14 +227,10 @@
           if (ret) {
               // 保存用户信息
               $api.setStorage('userInfo', ret);
-
-              api.alert({
-                  title: '提示',
-                  msg: '登录成功',
-              }, function(ret, err) {
-                  if (ret) {
-                      api.closeWin();
-                  }
+              api.openWin({
+                    name: 'main',
+                    url: './main.html',
+                    slidBackEnabled:false
               });
           } else {
               api.toast({
