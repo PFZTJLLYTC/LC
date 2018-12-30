@@ -8,10 +8,117 @@
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/style.css"/>
     <style>
-        .empty{ text-align: center; padding: 120px 0; }
+    body{
+      background:rgb(209, 214, 206);
+    }
+    .order{
+      text-align: center;
+      margin: 10px;
+      padding:10px;
+      border: solid 1px black;
+      border-radius: 10px;
+      background: white;
+    }
+    .carinfo{
+      display: flex;   /*采用流式布局*/
+    }
+    .carinfo .carname{
+      text-align: left;
+      flex-grow: 1;
+    }
+    .carinfo .carnum{
+      text-align: left;
+      flex-grow: 1;
+    }
+    .carinfo .check{
+      text-align: right;
+      flex-grow:6;
+      color:grey;
+    }
+    .from-to{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      margin: 20px 10px;
+    }
+    .from-to .middle{
+      flex-grow:1;
+      margin: auto; /*垂直居中插如图片*/
+    }
+    .from-to .from{
+      flex-grow:1;
+    }
+    .from-to .addr{
+      font-size:14px;
+      color:grey;
+    }
+    .from-to .time{
+      font-size:25px;
+    }
+    .from-to .date{
+      font-size:10px;
+      color:grey;
+    }
+    .from-to .to{
+      flex-grow: 1;
+    }
+    .driver{
+      display:flex;
+    }
+    .driver .drivername{
+      text-align: left;
+      flex-grow: 1;
+    }
+    .driver .drivertel{
+      text-align: right;
+      flex-grow: 1;
+    }
     </style>
 </head>
 <body>
-    <div class="empty">行程</div>
+    <div class="order">
+      <div class="carinfo">
+        <div class="carname">
+          法拉利
+        </div>
+        <div class="carnum">
+          沪A66666
+        </div>
+        <div class="check">
+          查看订单 >
+        </div>
+      </div>
+      <div class="from-to">
+        <div class="from">
+          <div class="addr fromaddr" id="fromaddr">
+            上海
+          </div>
+          <div class="time fromtime" id="fromtime">
+            21:00
+          </div>
+          <div class="date fromdate" id="fromdate">
+            2018-12-30
+          </div>
+        </div>
+        <div class="middle">
+           -----
+        </div>
+        <div class="to">
+          <div class="addr toaddr" id="toaddr">
+            北京
+          </div>
+          <div class="time totime" id="totime">
+            23:30
+          </div>
+          <div class="date todate" id="todate">
+            2018-12-30
+          </div>
+        </div>
+      </div>
+      <div class="driver">
+        <div class="drivername">司机:上海老司机</div>
+        <div class="drivertel">联系电话:18966667777</div>
+      </div>
+    </div>
 </body>
 </html>
