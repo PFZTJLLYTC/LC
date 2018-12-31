@@ -8,111 +8,139 @@
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/style.css"/>
     <style>
-    body{
-      background:rgb(209, 214, 206);
+    html,body{
+      background:rgba(186, 186, 186,0.3);
     }
     .order{
       text-align: center;
-      margin: 10px;
+      height: 300px;
+      margin: 20px 10px;
       padding:10px;
       border: solid 1px black;
       border-radius: 10px;
       background: white;
+      display: -webkit-box;/*采用流式布局，兼容性写法*/
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-flex-flow: column;
+      flex-flow: column;
     }
     .carinfo{
-      display: flex;   /*采用流式布局*/
+      display: -webkit-box;/*采用流式布局，兼容性写法*/
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-flex-flow: row;
+      flex-flow: row;
+
+      -webkit-box-flex: 1;/*垂方向直*/
+      -webkit-flex: 1;
+      flex: 1;
     }
     .carinfo .carname{
       text-align: left;
-      flex-grow: 1;
-    }
-    .carinfo .carnum{
-      text-align: left;
-      flex-grow: 1;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      margin: auto;
     }
     .carinfo .check{
       text-align: right;
-      flex-grow:6;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      margin: auto;
       color:grey;
     }
     .from-to{
+      display: -webkit-box;/*采用流式布局，兼容性写法*/
+      display: -webkit-flex;
       display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      margin: 20px 10px;
+      -webkit-box-orient: horizontal;
+      -webkit-flex-flow: row;
+      flex-flow: row;
+
+      -webkit-box-flex: 4;/*垂方向直*/
+      -webkit-flex: 4;
+      flex: 4;
     }
     .from-to .middle{
-      flex-grow:1;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
       margin: auto; /*垂直居中插如图片*/
     }
     .from-to .from{
-      flex-grow:1;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      margin: auto;
     }
     .from-to .addr{
-      font-size:14px;
+      font-size:20px;
       color:grey;
     }
     .from-to .time{
-      font-size:25px;
+      font-size:45px;
     }
     .from-to .date{
-      font-size:10px;
+      font-size:14px;
       color:grey;
     }
     .from-to .to{
-      flex-grow: 1;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      margin: auto;
     }
     .driver{
-      display:flex;
+      display: -webkit-box;/*采用流式布局，兼容性写法*/
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-flex-flow: row;
+      flex-flow: row;
+
+      -webkit-box-flex: 1;/*垂方向直*/
+      -webkit-flex: 1;
+      flex: 1;
     }
     .driver .drivername{
       text-align: left;
-      flex-grow: 1;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      margin: auto;
     }
     .driver .drivertel{
       text-align: right;
-      flex-grow: 1;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      margin: auto;
     }
     </style>
 </head>
 <body>
     <div class="order">
       <div class="carinfo">
-        <div class="carname">
-          法拉利
-        </div>
-        <div class="carnum">
-          沪A66666
-        </div>
-        <div class="check">
-          查看订单 >
-        </div>
+        <div class="carname">法拉利 沪A66666</div>
+        <div class="check">查看订单 ></div>
       </div>
       <div class="from-to">
         <div class="from">
-          <div class="addr fromaddr" id="fromaddr">
-            上海
-          </div>
-          <div class="time fromtime" id="fromtime">
-            21:00
-          </div>
-          <div class="date fromdate" id="fromdate">
-            2018-12-30
-          </div>
+          <div class="addr fromaddr" id="fromaddr">上海</div>
+          <div class="time fromtime" id="fromtime">21:00</div>
+          <div class="date fromdate" id="fromdate">2018-12-30</div>
         </div>
         <div class="middle">
            -----
         </div>
         <div class="to">
-          <div class="addr toaddr" id="toaddr">
-            北京
-          </div>
-          <div class="time totime" id="totime">
-            23:30
-          </div>
-          <div class="date todate" id="todate">
-            2018-12-30
-          </div>
+          <div class="addr toaddr" id="toaddr">北京</div>
+          <div class="time totime" id="totime">23:30</div>
+          <div class="date todate" id="todate">2018-12-30</div>
         </div>
       </div>
       <div class="driver">
