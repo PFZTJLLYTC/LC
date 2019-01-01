@@ -38,18 +38,30 @@
       -webkit-flex: 1;
       flex: 1;
     }
-    .carinfo .carname{
-      text-align: left;
+    .carinfo .logo{
       -webkit-box-flex: 1;
       -webkit-flex: 1;
       flex: 1;
       margin: auto;
+      height: 20px;
+      width: 20px;
+      background-image: url("../image/LC_round.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 20px 20px;
+    }
+    .carinfo .carname{
+      text-align:left;
+      -webkit-box-flex: 4;
+      -webkit-flex: 4;
+      flex: 4;
+      margin: auto;
     }
     .carinfo .check{
       text-align: right;
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      flex: 1;
+      -webkit-box-flex: 4;
+      -webkit-flex: 4;
+      flex: 4;
       margin: auto;
       color:grey;
     }
@@ -69,7 +81,15 @@
       -webkit-box-flex: 1;
       -webkit-flex: 1;
       flex: 1;
-      margin: auto; /*垂直居中插如图片*/
+      margin: auto;
+
+      position: relative;
+      height: 91px;
+      width: 100%;
+      background-image: url("../image/travel.png");
+      background-repeat: no-repeat;
+      background-size: 40px 40px;
+      background-position: center;
     }
     .from-to .from{
       -webkit-box-flex: 1;
@@ -125,6 +145,7 @@
 <body>
     <div class="order">
       <div class="carinfo">
+        <div class="logo"></div>
         <div class="carname">法拉利 沪A66666</div>
         <div class="check">查看订单 ></div>
       </div>
@@ -134,9 +155,7 @@
           <div class="time fromtime" id="fromtime">21:00</div>
           <div class="date fromdate" id="fromdate">2018-12-30</div>
         </div>
-        <div class="middle">
-           -----
-        </div>
+        <div class="middle"></div>
         <div class="to">
           <div class="addr toaddr" id="toaddr">北京</div>
           <div class="time totime" id="totime">23:30</div>
