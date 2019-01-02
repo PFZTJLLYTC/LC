@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>问题与帮助</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    header {
+        width: 100%;
+        height: 50px;
+        background-color: #00e39f;
+    }
+
+    header .back {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px;
+        height: 50px;
+        z-index: 2;
+    }
+
+    header .back img {
+        margin-top: 16px;
+        margin-left: 12px;
+        width: 11px;
+        height: 18px;
+    }
+
+    header .title {
+        position: relative;
+        width: 100%;
+        height: 50px;
+        text-align: center;
+        color: #fff;
+        font-size: 20px;
+        line-height: 50px;
+    }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="back" tapmode onclick="api.closeWin();">
+            <img src="../image/back.png">
+        </div>
+        <div class="title">
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+apiready = function() {
+    var header = $api.byId('header');
+    var headerH = $api.fixStatusBar(header);
+    api.openFrame({
+        name: 'customerservice_frame',
+        url: './customerservice_frame.html',
+        rect: {
+            marginTop: headerH,
+            w: 'auto',
+            h: 'auto'
+        },
+        bounces: false
+    });
+};
+</script>
+
+</html>
