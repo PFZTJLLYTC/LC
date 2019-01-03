@@ -8,41 +8,38 @@
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/style.css"/>
     <style>
-    html,body{
-      background:rgba(186, 186, 186,0.3);
-    }
-    .order{
-      text-align: center;
-      height: 300px;
-      margin: 20px 10px;
-      padding:10px;
-      border: solid 1px black;
-      border-radius: 10px;
-      background: white;
-      display: -webkit-box;/*采用流式布局，兼容性写法*/
+    .wrap-col{
+      display: -webkit-box;
       display: -webkit-flex;
       display: flex;
       -webkit-box-orient: vertical;
       -webkit-flex-flow: column;
       flex-flow: column;
     }
-    .carinfo{
-      display: -webkit-box;/*采用流式布局，兼容性写法*/
+    .wrap-row{
+      display: -webkit-box;
       display: -webkit-flex;
       display: flex;
       -webkit-box-orient: horizontal;
       -webkit-flex-flow: row;
       flex-flow: row;
-
-      -webkit-box-flex: 1;/*垂方向直*/
-      -webkit-flex: 1;
-      flex: 1;
     }
-    .carinfo .logo{
+    .item{
       -webkit-box-flex: 1;
       -webkit-flex: 1;
       flex: 1;
-      margin: auto;
+      margin:auto 0px;
+    }
+    .order{
+      text-align: center;
+      height: 300px;
+      margin: 20px 10px;
+      padding:10px;
+      border:1px solid #9bdf70;
+      background:#f0fbeb;
+      border-radius: 10px;
+    }
+    .carinfo .logo{
       height: 20px;
       width: 20px;
       background-image: url("../image/LC_round.png");
@@ -55,34 +52,20 @@
       -webkit-box-flex: 4;
       -webkit-flex: 4;
       flex: 4;
-      margin: auto;
     }
     .carinfo .check{
       text-align: right;
       -webkit-box-flex: 4;
       -webkit-flex: 4;
       flex: 4;
-      margin: auto;
       color:grey;
     }
     .from-to{
-      display: -webkit-box;/*采用流式布局，兼容性写法*/
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-orient: horizontal;
-      -webkit-flex-flow: row;
-      flex-flow: row;
-
-      -webkit-box-flex: 4;/*垂方向直*/
+      -webkit-box-flex: 4;
       -webkit-flex: 4;
       flex: 4;
     }
     .from-to .middle{
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      flex: 1;
-      margin: auto;
-
       position: relative;
       height: 91px;
       width: 100%;
@@ -90,12 +73,6 @@
       background-repeat: no-repeat;
       background-size: 40px 40px;
       background-position: center;
-    }
-    .from-to .from{
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      flex: 1;
-      margin: auto;
     }
     .from-to .addr{
       font-size:20px;
@@ -108,63 +85,37 @@
       font-size:14px;
       color:grey;
     }
-    .from-to .to{
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      flex: 1;
-      margin: auto;
-    }
-    .driver{
-      display: -webkit-box;/*采用流式布局，兼容性写法*/
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-orient: horizontal;
-      -webkit-flex-flow: row;
-      flex-flow: row;
-
-      -webkit-box-flex: 1;/*垂方向直*/
-      -webkit-flex: 1;
-      flex: 1;
-    }
     .driver .drivername{
       text-align: left;
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      flex: 1;
-      margin: auto;
     }
     .driver .drivertel{
       text-align: right;
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      flex: 1;
-      margin: auto;
     }
     </style>
 </head>
 <body>
-    <div class="order">
-      <div class="carinfo">
-        <div class="logo"></div>
-        <div class="carname">法拉利 沪A66666</div>
-        <div class="check">查看订单 ></div>
+    <div class="order wrap-col">
+      <div class="carinfo wrap-row item">
+        <div class="logo item"></div>
+        <div class="carname item">法拉利 沪A66666</div>
+        <div class="check item">查看订单 ></div>
       </div>
-      <div class="from-to">
-        <div class="from">
+      <div class="from-to wrap-row item">
+        <div class="from item">
           <div class="addr fromaddr" id="fromaddr">上海</div>
           <div class="time fromtime" id="fromtime">21:00</div>
           <div class="date fromdate" id="fromdate">2018-12-30</div>
         </div>
-        <div class="middle"></div>
-        <div class="to">
+        <div class="middle item"></div>
+        <div class="to item">
           <div class="addr toaddr" id="toaddr">北京</div>
           <div class="time totime" id="totime">23:30</div>
           <div class="date todate" id="todate">2018-12-30</div>
         </div>
       </div>
-      <div class="driver">
-        <div class="drivername">司机:上海老司机</div>
-        <div class="drivertel">联系电话:18966667777</div>
+      <div class="driver wrap-row item">
+        <div class="drivername item">司机:上海老司机</div>
+        <div class="drivertel item">联系电话:18966667777</div>
       </div>
     </div>
 </body>
