@@ -81,18 +81,18 @@
         vertical-align: -20%;
         margin: 0 10px;
     }
-    .btn-third-party{
+    #btn-third-party ul{
       height: 50px;
       width: auto;
       margin: auto;
     }
-    .btn-third-party .qq{
+    #btn-third-party ul li:nth-child(1){
       background-image: url("../image/qq.png");
     }
-    .btn-third-party .wx{
+    #btn-third-party ul li:nth-child(2){
       background-image: url("../image/wx.png");
     }
-    .btn-third-party .sina-weibo{
+    #btn-third-party ul li:nth-child(3){
       background-image: url("../image/sina-weibo.png");
     }
     .highlight {
@@ -114,10 +114,12 @@
         <span class="txt">第三方登陆</span>
         <span class="line"></span>
     </div>
-    <div class="btn-third-party wrap-row">
-      <div class="qq item"></div>
-      <div class="wx item"></div>
-      <div class="sina-weibo item"></div>
+    <div id="btn-third-party">
+      <ul class="wrap-row">
+        <li class="item"></li>
+        <li class="item"></li>
+        <li class="item"></li>
+      </ul>
     </div>
     <script type="text/javascript" src="../script/api.js"></script>
     <script type="text/javascript" src="../script/APICloud-rest.js"></script>
