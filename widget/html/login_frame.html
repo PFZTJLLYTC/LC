@@ -31,6 +31,20 @@
         line-height: 20px;
     }
 
+    .icon{
+      width: 20px;
+      height:20px;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: left;
+    }
+    .icon-user{
+      background-image: url("../image/username.png");
+    }
+    .icon-pswd{
+      background-image: url("../image/password.png");
+    }
+
     .btn {
         width: 200px;
         height: 50px;
@@ -102,12 +116,14 @@
 </head>
 
 <body>
-    <div class="row">
-        <input id="username" class="input" type="text">
-    </div>
-    <div class="row">
-        <input id="password" class="input" type="password">
-    </div>
+  <div class="row wrap-row">
+      <div class="icon icon-user"></div>
+      <input id="username" class="input" type="text">
+  </div>
+  <div class="row wrap-row">
+      <div class="icon icon-pswd"></div>
+      <input id="password" class="input" type="password">
+  </div>
     <div class="btn" tapmode="highlight" onclick="fnLogin();">登录</div>
     <div class="third-party">
         <span class="line"></span>

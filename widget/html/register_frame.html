@@ -17,7 +17,14 @@
         padding-top: 40px;
         border-bottom: 1px solid #888;
     }
-
+    .wrap-row{
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-flex-flow: row;
+      flex-flow: row;
+    }
     .input {
         width: 100%;
         height: 20px;
@@ -26,7 +33,19 @@
         outline: none;
         font-size: 16px;
     }
-
+    .icon{
+      width: 20px;
+      height:20px;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: left;
+    }
+    .icon-user{
+      background-image: url("../image/username.png");
+    }
+    .icon-pswd{
+      background-image: url("../image/password.png");
+    }
     .btn {
         width: 200px;
         height: 50px;
@@ -49,10 +68,12 @@
 </head>
 
 <body>
-    <div class="row">
+    <div class="row wrap-row">
+        <div class="icon icon-user"></div>
         <input id="username" class="input" type="text">
     </div>
-    <div class="row">
+    <div class="row wrap-row">
+        <div class="icon icon-pswd"></div>
         <input id="password" class="input" type="password">
     </div>
     <div class="btn" tapmode="highlight" onclick="fnRegister();">注册</div>
