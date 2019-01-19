@@ -40,6 +40,9 @@
     .icon-tel{
       background-image: url("../image/telphone.png");
     }
+    .icon-time{
+      background-image: url("../image/time.png");
+    }
     .icon-people{
       background-image: url("../image/people.png");
     }
@@ -70,6 +73,9 @@
         height: 20px;
         font-size: 14px;
         line-height: 20px;
+    }
+    .option .input-time{
+      pointer-events: none;
     }
     .option .title {
         -webkit-box-flex:2;
@@ -108,30 +114,56 @@
 </head>
 <body>
   <div class="wrap-col">
-    <div class="wrap-row option item">
+    <div class="wrap-row option item" tapmode onclick="fnClose()">
       <div class="source item">上海</div>
       <div class="to item"></div>
       <div class="destination item">北京</div>
     </div>
-    <div class="time option item">16:00-18:00</div>
-    <div class="option wrap-row item">
+    <div class="option wrap-row item" tapmode onclick="fnTimeSelect()">
+      <div class="item icon icon-time"></div>
+      <span class="title item"for="time">预约时间</span>
+      <input id="time" class="input item input-time" type="text" placeholder="预计出发时间">
+    </div>
+    <div class="option wrap-row item"  tapmode onclick="fnClose()">
       <div class="item icon icon-tel"></div>
       <label class="title item" for="tel">联系电话</label>
       <input id="tel" class="input item" type="text" placeholder="11位手机号码">
     </div>
-    <div class="option wrap-row item">
+    <div class="option wrap-row item"  tapmode onclick="fnClose()">
       <div class="item icon icon-people"></div>
       <label class="title item" for="people">乘客人数</label>
       <input id="people" class="input item" type="text" placeholder="1-4人">
     </div>
-    <div class="option wrap-row item">
+    <div class="option wrap-row item"  tapmode onclick="fnClose()">
       <div class="item icon icon-addr"></div>
-      <label class="title item" for="address">具体地址</label>
+      <label class="title item" for="address">详细地址</label>
       <input id="address" class="input item" type="text" placeholder="选填">
     </div>
   </div>
   <div class="btn" tapmode="highlight" onclick="fnSubmit">提交订单</div>
   <script>
+   var  periodSelector;
+   apiready = function() {
+
+   }
+   function fnTimeSelect(){
+     periodSelector = api.require('periodSelector');
+     periodSelector.open({
+         x:0,
+         y:api.frameHeight/2-12,
+         w:api.frameWidth,
+         h:340,
+         titleColor:"#000000",
+         fixedOn: api.frameName
+     }, function(ret, err) {
+         if (ret) {
+         } else {
+         }
+     });
+   }
+    function fnClose(){
+      periodSelector.hide();
+    }
     function fnSubmit(){
 
     }
