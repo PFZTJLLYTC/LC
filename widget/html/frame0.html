@@ -7,11 +7,251 @@
     <title>发现</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/style.css"/>
-    <style>
-        .empty{ text-align: center; padding: 120px 0; }
+  <style>
+    html,body{min-height: 100%;}
+    body{
+        background-color: #eee;
+    }
+.swipe {
+      overflow: hidden;
+      visibility: hidden;
+      position: relative;
+    }
+    .swipe-wrap {
+      overflow: hidden;
+      position: relative;
+    }
+    .swipe-wrap > div {
+      float:left;
+      width:100%;
+      position: relative;
+    }
+    .swipe-wrap > div img{
+        width: 100%; display: block;
+    }
+    #slide{
+        border-bottom: 1px solid #dedede; background-color: #fff;
+    }
+    #slide label{
+        display: block; color: #4b4b4b; width: 100%;
+        padding: 10px; font-size: 14px;
+        white-space: nowrap; overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #slide .pointer{
+        position: absolute; bottom: 0; left: 0; width: 25%;
+        height: 2px; background-color: #99ff99;
+        -webkit-transition: all .2s;
+        transition:all .2s;
+    }
+    section{
+        margin-top: 8px; border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        background-color: #fff;
+    }
+    .content{
+        padding: 0 10px 15px;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+    }
+    .content li{
+        padding-right: 10px;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+    }
+    .content li:last-child{
+        padding-right: 0;
+    }
+    .content li img{
+        width: 100%;
+    }
+    .content li label{
+        font-size: 14px; height: 3em; overflow: hidden;
+        margin-top: 4px; color: #626262; line-height: 1.5;
+    }
+    section header{
+        padding-top: 15px; overflow: hidden; padding-bottom: 10px;
+    }
+    section header span{
+        float: left; font-size: 16px; border-left: 4px solid #66ffcc;
+        margin-left: 10px; padding-left: 10px;
+    }
+    section header em{
+        float: right; font-size: 14px; color: #00ff66; margin-right: 10px;
+    }
     </style>
 </head>
 <body>
-    <div class="empty">发现</div>
-</body>
+  <div id='slide' class='swipe'>
+      <div class='swipe-wrap'>
+          <div>
+              <img src="../image/slide/slide1.jpg" />
+              <label>经典：人吃人的武侠世界</label>
+          </div>
+          <div>
+              <img src="../image/slide/slide2.jpg" />
+              <label>路与歌</label>
+          </div>
+          <div>
+              <img src="../image/slide/slide3.jpg" />
+              <label>途与书</label>
+          </div>
+          <div>
+              <img src="../image/slide/slide4.jpg" />
+              <label>waiting</label>
+          </div>
+      </div>
+      <em class="pointer"></em>
+  </div>
+  <section>
+  <header>
+      <span>实时热点</span><em>更多&gt;</em>
+  </header>
+  <ul class="content">
+      <li>
+          <div>
+              <img src="../image/canadadianman.jpg" />
+          </div>
+          <label>xx吸毒</label>
+      </li>
+      <li>
+          <div>
+              <img src="../image/canadadianman.jpg" />
+          </div>
+          <label>xx离婚</label>
+      </li>
+      <li>
+          <div>
+              <img src="../image/canadadianman.jpg" />
+          </div>
+          <label>加拿大电鳗</label>
+      </li>
+  </ul>
+  </section>
+  <section>
+  <header>
+      <span>路途歌单推荐</span><em>更多&gt;</em>
+  </header>
+  <ul class="content">
+      <li>
+          <div>
+              <img src="../image/music1.jpg" />
+          </div>
+          <label>在得失之间游刃有余</label>
+      </li>
+      <li>
+          <div>
+              <img src="../image/music2.jpg" />
+          </div>
+          <label>平凡的世界</label>
+      </li>
+      <li>
+          <div>
+              <img src="../image/music3.jpg" />
+          </div>
+          <label>红与白</label>
+      </li>
+  </ul>
+  </section>
+  <section>
+  <header>
+      <span>风云小说</span><em>更多&gt;</em>
+  </header>
+  <ul class="content">
+      <li>
+          <div>
+              <img src="../image/pic/book1.jpg" />
+          </div>
+          <label>连城诀</label>
+      </li>
+      <li>
+          <div>
+              <img src="../image/pic/book2.jpg" />
+          </div>
+          <label>云海玉弓缘</label>
+      </li>
+      <li>
+          <div>
+              <img src="../image/pic/book3.jpg" />
+          </div>
+          <label>人道至尊</label>
+      </li>
+  </ul>
+  </section>
+  <section>
+  <header>
+      <span>连城动态</span><em>更多&gt;</em>
+  </header>
+  <ul class="content">
+      <li>
+          <div>
+              <img src="../image/linesinfo.jpg" />
+          </div>
+          <label>线路信息</label>
+      </li>
+      <li>
+          <div>
+              <img src="../image/hezuo.jpg" />
+          </div>
+          <label>合作</label>
+      </li>
+      <li>
+          <div>
+              <img src="../image/pic/contact.jpg" />
+          </div>
+          <label>更多联系方式</label>
+      </li>
+  </ul>
+  </section>
+  <section>
+  <header>
+      <span>其他</span><em>更多&gt;</em>
+  </header>
+  <ul class="content">
+      <li>
+          <div>
+              <img src="../image/lol.jpg" />
+          </div>
+          <label>LOL新动态</label>
+      </li>
+      <li>
+          <div>
+              <img src="../image/houseprice.jpg" />
+          </div>
+          <label>房价预测</label>
+      </li>
+      <li>
+          <div>
+              <img src="../image/ticket.jpg" />
+          </div>
+          <label>如何制胜春运</label>
+      </li>
+  </ul>
+  </section>
+  </body>
+  <script type="text/javascript" src="../script/api-lite.js"></script>
+  <script type="text/javascript" src="../script/zepto.js"></script>
+  <script type="text/javascript" src="../script/swipe.js"></script>
+  <script type="text/javascript">
+  window.mySwipe = new Swipe(document.getElementById('slide'), {
+      auto: 5000,
+      continuous: true,
+      disableScroll: true,
+      stopPropagation: true,
+      callback: function(index, elem) {
+          var $pointer = $('#slide .pointer');
+          var left = 12.5*index;
+          $pointer.css('left', left+'%');
+      },
+      transitionEnd: function(index, elem) {
+
+      }
+  });
+
+  apiready = function(){
+
+  };
+  </script>
 </html>
