@@ -98,7 +98,7 @@
       <div class="carinfo wrap-row item">
         <div class="logo item"></div>
         <div class="carname item">法拉利 沪A66666</div>
-        <div class="check item">查看订单 ></div>
+        <div class="check item" tapmode onclick="fnOpenMyOrderWin()">查看订单 ></div>
       </div>
       <div class="from-to wrap-row item">
         <div class="from item">
@@ -118,5 +118,13 @@
         <div class="drivertel item">联系电话:18966667777</div>
       </div>
     </div>
+    <script>
+    function fnOpenMyOrderWin() {
+        api.openWin({
+            name: 'myorder',
+            url: './myorder.html'
+        });
+    }
+    </script>
 </body>
 </html>

@@ -11,8 +11,8 @@
     header {
         width: 100%;
         height: 50px;
-        background-color: -webkit-linear-gradient(to right , #7A88FF, #7AFFAF);
-        background: linear-gradient(to right , #7A88FF, #7AFFAF);
+        background-image: -webkit-linear-gradient(to right , #7A88FF, #7AFFAF);
+        background-image: linear-gradient(to right , #7A88FF, #7AFFAF);
     }
 
     header .back {
@@ -35,6 +35,37 @@
         color: #fff;
         font-size: 20px;
     }
+
+    nav {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-flex-flow: row;
+        flex-flow: row;
+        position: relative;
+        width: 100%;
+        height: 40px;
+        background-color: rgba(44, 222, 185, 0.76);
+    }
+
+    nav .menu {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        font-size: 13px;
+        color: #000000;
+        text-align: center;
+    }
+
+    nav .menu.selected {
+        font-size: 14px;
+        color: #fff;
+        font-weight: bolder;
+    }
     </style>
   </head>
 
@@ -43,25 +74,58 @@
         <div class="back" tapmode onclick="api.closeWin();"></div>
         <h1>订单详情</h1>
     </header>
-  </body>
-  <script type="text/javascript" src="../script/api.js"></script>
-  <script type="text/javascript">
-  apiready = function() {
-    var header = $api.byId('header');
-    $api.fixStatusBar(header);
-    var headerH = $api.offset(header).h;
-    api.openFrame({
-        name: 'myorder.html',
-        url: './myorder_frame.html',
-        rect: {
-            x: 0,
-            y: headerH,
-            w: 'auto',
-            h: 'auto'
-        },
-        bounces: true
-    });
-  };
-  </script>
+    <nav id="nav">
+        <div class="menu selected" tapmode onclick="fnSetNavMenuSelected(0)">待处理</div>
+        <div class="menu" tapmode onclick="fnSetNavMenuSelected(1)">进行中</div>
+        <div class="menu" tapmode onclick="fnSetNavMenuSelected(2)">已完成</div>
+        <div class="menu" tapmode onclick="fnSetNavMenuSelected(3)">全部订单</div>
+    </nav>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript">
+    apiready = function() {
+        var frames = [];
+        for (var i = 0; i < 5; i++) {
+            frames.push({
+                name: 'myorder_frame_' + i,
+                url: './myorder_frame.html',
+                pageParam: {
+                    wareTypeIndex: i
+                }
+            });
+        }
 
+        var header = $api.byId("header");
+        var nav = $api.byId("nav");
+        var headerH = $api.offset(header).h;
+        var navH = $api.offset(nav).h;
+
+        api.openFrameGroup({
+            name: 'myorderFrameGroup',
+            scrollEnabled: true, // 支持手势滑动切换
+            rect: {
+                marginTop: headerH + navH, // 采用margin布局
+                w: 'auto', // 自动填充所在Window的宽度
+                h: 'auto' // 自动填充所在Window的高度
+            },
+            index: 0, // 默认显示第一个Frame
+            frames: frames,
+            preload: frames.length // 预加载所有Frame
+        }, function(ret, err) {
+            // Frame切换完成的响应函数，更新分类菜单的选中状态
+            fnSetNavMenuSelected(ret.index);
+        });
+      }
+
+    function fnSetNavMenuSelected(index_) {
+        var menus = $api.domAll($api.byId("nav"), ".menu");
+        for (var i = 0; i < menus.length; i++) {
+            if (index_ == i) {
+                $api.addCls(menus[i], 'selected');
+            } else {
+                $api.removeCls(menus[i], 'selected');
+            }
+        }
+    }
+    </script>
+  </body>
   </html>
