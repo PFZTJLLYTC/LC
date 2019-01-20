@@ -107,23 +107,23 @@
   </div>
   <section>
   <header>
-      <span>实时热点</span><em tapmode onclick="fnOpenNewsWin();">更多&gt;</em>
+      <span>实时热点</span><em tapmode onclick="fnOpenMoreNewsWin();">更多&gt;</em>
   </header>
-  <ul class="content">
+  <ul class="content" >
       <li>
-          <div>
+          <div tapmode onclick="fnOpenNewsWin(0);">
               <img src="../image/canadadianman.jpg" />
           </div>
           <label>xx吸毒</label>
       </li>
       <li>
-          <div>
+          <div tapmode onclick="fnOpenNewsWin(1);">
               <img src="../image/canadadianman.jpg" />
           </div>
           <label>xx离婚</label>
       </li>
       <li>
-          <div>
+          <div tapmode onclick="fnOpenNewsWin(2);">
               <img src="../image/canadadianman.jpg" />
           </div>
           <label>加拿大电鳗</label>
@@ -132,23 +132,23 @@
   </section>
   <section>
   <header>
-      <span>路途歌单推荐</span><em tapmode onclick="fnOpenMusicRecommendWin();">更多&gt;</em>
+      <span>路途歌单推荐</span><em tapmode onclick="fnOpenMoreMusicRecommendWin();">更多&gt;</em>
   </header>
   <ul class="content">
       <li>
-          <div>
+          <div tapmode onclick="fnOpenMusicRecommendWin(0);">
               <img src="../image/music1.jpg" />
           </div>
           <label>在得失之间游刃有余</label>
       </li>
       <li>
-          <div>
+          <div tapmode onclick="fnOpenMusicRecommendWin(1);">
               <img src="../image/music2.jpg" />
           </div>
           <label>平凡的世界</label>
       </li>
       <li>
-          <div>
+          <div tapmode onclick="fnOpenMusicRecommendWin(2);">
               <img src="../image/music3.jpg" />
           </div>
           <label>红与白</label>
@@ -157,23 +157,23 @@
   </section>
   <section>
   <header>
-      <span>风云小说</span><em tapmode onclick="fnOpenBooksRecommendWin();">更多&gt;</em>
+      <span>风云小说</span><em tapmode onclick="fnOpenMoreBooksRecommendWin();">更多&gt;</em>
   </header>
   <ul class="content">
       <li>
-          <div tapmode onclick="fnOpenJY();">
+          <div tapmode onclick="fnOpenBooksRecommendWin(0);">
               <img src="../image/book1.jpg" />
           </div>
           <label>金庸书鉴</label>
       </li>
       <li>
-          <div>
+          <div tapmode onclick="fnOpenBooksRecommendWin(1);">
               <img src="../image/book2.jpg" />
           </div>
           <label>梁羽生书鉴</label>
       </li>
       <li>
-          <div>
+          <div tapmode onclick="fnOpenBooksRecommendWin(2);">
               <img src="../image/book3.jpg" />
           </div>
           <label>精选网文推荐</label>
@@ -182,23 +182,23 @@
   </section>
   <section>
   <header>
-      <span>连城动态</span><em tapmode onclick="fnOpenLcNewsWin();">更多&gt;</em>
+      <span>连城动态</span><em tapmode onclick="fnMoreOpenLcNewsWin();">更多&gt;</em>
   </header>
   <ul class="content">
       <li>
-          <div>
+          <div tapmode onclick="fnOpenLcNewsWin(0);">
               <img src="../image/linesinfo.jpg" />
           </div>
           <label>线路信息</label>
       </li>
       <li>
-          <div>
+          <div tapmode onclick="fnOpenLcNewsWin(1);">
               <img src="../image/hezuo.jpg" />
           </div>
           <label>合作</label>
       </li>
       <li>
-          <div>
+          <div tapmode onclick="fnOpenLcNewsWin(2);">
               <img src="../image/contact.jpg" />
           </div>
           <label>更多联系方式</label>
@@ -207,23 +207,23 @@
   </section>
   <section>
   <header>
-      <span>其他</span><em tapmode onclick="fnOpenOtherNewsWin();">更多&gt;</em>
+      <span>其他</span><em tapmode onclick="fnOpenMoreOtherNewsWin();">更多&gt;</em>
   </header>
   <ul class="content">
       <li>
-          <div>
+          <div tapmode onclick="fnOpenOtherNewsWin(0);">
               <img src="../image/lol.jpg" />
           </div>
           <label>LOL新动态</label>
       </li>
       <li>
-          <div>
+          <div tapmode onclick="fnOpenOtherNewsWin(1);">
               <img src="../image/houseprice.jpg" />
           </div>
           <label>房价预测</label>
       </li>
       <li>
-          <div>
+          <div tapmode onclick="fnOpenOtherNewsWin(2);">
               <img src="../image/ticket.jpg" />
           </div>
           <label>如何制胜春运</label>
@@ -254,10 +254,13 @@
 
   };
   // 打开更多热点Window
-  function fnOpenNewsWin() {
+  function fnOpenNewsWin(num) {
       api.openWin({
           name: 'News',
           url: './News.html'
+          pageParam: {
+            "num": num;
+          }
       });
   }
   // 打开更多音乐推荐Window
@@ -271,6 +274,7 @@
   function fnOpenBooksRecommendWin() {
       api.openWin({
           name: 'BooksRecommend',
+
           url: './LcNews.html'
       });
   }
