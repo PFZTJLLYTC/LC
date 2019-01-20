@@ -86,7 +86,7 @@
 <body>
   <div id='slide' class='swipe'>
       <div class='swipe-wrap'>
-          <div>
+          <div tapmode onclick="fnOpenLCJWin();">
               <img src="../image/slide/slide1.jpg" />
               <label>经典：人吃人的武侠世界</label>
           </div>
@@ -161,7 +161,7 @@
   </header>
   <ul class="content">
       <li>
-          <div>
+          <div tapmode onclick="fnOpenJY();">
               <img src="../image/book1.jpg" />
           </div>
           <label>金庸书鉴</label>
@@ -271,7 +271,7 @@
   function fnOpenBooksRecommendWin() {
       api.openWin({
           name: 'BooksRecommend',
-          url: './BooksRecommend.html'
+          url: './LcNews.html'
       });
   }
   function fnOpenLcNewsWin() {
@@ -284,6 +284,12 @@
       api.openWin({
           name: 'OtherNews',
           url: './OtherNews.html'
+      });
+  }
+  function fnOpenLCJWin() {
+      api.openWin({
+          name: 'LCJ-b',
+          url: 'https://www.bilibili.com/video/av13017548?from=search&seid=10529078456526712984'
       });
   }
 
