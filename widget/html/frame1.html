@@ -114,10 +114,10 @@
 </head>
 <body>
   <div class="wrap-col">
-    <div class="wrap-row option item" tapmode onclick="fnCitySelect()">
-      <div id=source class="source item">出发地</div>
-      <div class="to item"></div>
-      <div id=destination class="destination item">目的地</div>
+    <div class="wrap-row option item">
+      <div id=source class="source item" tapmode onclick="fnCitySelect(1)">出发地</div>
+      <div class="to item" tapmode onclick="fnChange()"></div>
+      <div id=destination class="destination item" tapmode onclick="fnCitySelect(2)">目的地</div>
     </div>
     <div class="option wrap-row item" tapmode onclick="fnTimeSelect()">
       <div class="item icon icon-time"></div>
@@ -149,7 +149,7 @@
      periodSelector=null;
      UIActionSelector=null;
    }
-   function fnCitySelect(){
+   function fnCitySelect(index_){
      if(periodSelector)fnClose();
      UIActionSelector = api.require('UIActionSelector');
      UIActionSelector.open({
@@ -198,11 +198,21 @@
           },
           fixedOn: api.frameName
       }, function(ret, err) {
-          if (ret.eventType==='ok') {
-            var source=$api.byId("source");
-            var destination=$api.byId("destination");
-            source.innerHTML=ret.level1;
-            destination.innerHTML=ret.level2+"-"+ret.level3;
+          if (ret.eventType=='ok') {
+            if(index_==1){
+              var source=$api.byId('source');
+              if(ret.level2=="县"||ret.level2=="市辖区"||ret.level2=="市")
+              source.innerHTML=ret.level1+'-'+ret.level3;
+              else
+              source.innerHTML=ret.level2+'-'+ret.level3;
+            }
+            else if(index_==2){
+              var destination=$api.byId('destination');
+              if(ret.level2=="县"||ret.level2=="市辖区"||ret.level2=="市")
+              destination.innerHTML=ret.level1+'-'+ret.level3;
+              else
+              destination.innerHTML=ret.level2+'-'+ret.level3;
+            }
           } else {
           }
       });
@@ -227,6 +237,14 @@
        });
      }
    }
+    function fnChange(){
+      if(periodSelector)fnClose();
+      var source=$api.byId('source');
+      var destination=$api.byId('destination');
+      var temp=source.innerHTML;
+      source.innerHTML=destination.innerHTML;
+      destination.innerHTML=temp;
+    }
     function fnClose(){
       if(periodSelector)periodSelector.hide();
     }
