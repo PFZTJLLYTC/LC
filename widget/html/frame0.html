@@ -106,10 +106,10 @@
       <em class="pointer"></em>
   </div>
   <section>
-  <header>
-      <span>实时热点</span><em tapmode onclick="fnOpenMoreNewsWin();">更多&gt;</em>
+  <header  tapmode onclick="fnOpenMoreNewsWin();">
+      <span>实时热点(xx电鳗？)</span><em>热搜榜单&gt;</em>
   </header>
-  <ul class="content" >
+  <!--<ul class="content" >
       <li>
           <div tapmode onclick="fnOpenNewsWin(0);">
               <img src="../image/canadadianman.jpg" />
@@ -128,7 +128,7 @@
           </div>
           <label>加拿大电鳗</label>
       </li>
-  </ul>
+  </ul>!-->
   </section>
   <section>
   <header>
@@ -251,18 +251,7 @@
   });
 
   apiready = function(){
-
   };
-  // 打开更多热点Window
-  function fnOpenNewsWin(num) {
-      api.openWin({
-          name: 'News',
-          url: './News.html',
-          pageParam:{
-            pagenum : num
-          }
-      });
-  }
   // 打开更多音乐推荐Window
   function fnOpenMusicRecommendWin(num) {
       api.openWin({
