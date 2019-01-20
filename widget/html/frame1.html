@@ -198,7 +198,7 @@
           },
           fixedOn: api.frameName
       }, function(ret, err) {
-          if (ret) {
+          if (ret.eventType==='ok') {
             var source=$api.byId("source");
             var destination=$api.byId("destination");
             source.innerHTML=ret.level1;
