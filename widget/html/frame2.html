@@ -40,25 +40,36 @@
       border-radius: 10px;
     }
     .carinfo .logo{
-      height: 20px;
-      width: 20px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 80px;
+      width: 60px;
       background-image: url("../image/LC_round.png");
       background-repeat: no-repeat;
-      background-position: center;
-      background-size: 20px 20px;
+      background-position:20px;
+      background-size: auto 20px;
     }
     .carinfo .carname{
+      position: relative;
+      box-sizing: border-box;
+      width: 100%;
+      height:50px;
+      padding-left:25px;
       text-align:left;
-      -webkit-box-flex: 4;
-      -webkit-flex: 4;
-      flex: 4;
+      font-size: 14px;
     }
     .carinfo .check{
-      text-align: right;
-      -webkit-box-flex: 4;
-      -webkit-flex: 4;
-      flex: 4;
+      position: absolute;
+      top: 13px;
+      right: 20px;
+      box-sizing: border-box;
+      width:auto;
+      height: 60px;
+      line-height: 60px;
+      font-size: 14px;
       color:grey;
+      text-align: left;
     }
     .from-to{
       -webkit-box-flex: 4;
@@ -95,10 +106,10 @@
 </head>
 <body>
     <div class="order wrap-col">
-      <div class="carinfo wrap-row item">
-        <div class="logo item"></div>
-        <div class="carname item">法拉利 沪A66666</div>
-        <div class="check item" tapmode onclick="fnOpenMyOrderWin()">查看订单 ></div>
+      <div class="carinfo item">
+        <div class="logo"></div>
+        <span class="carname">法拉利 沪A66666</span>
+        <span class="check" tapmode onclick="fnOpenMyOrderWin()">查看订单&gt;</span>
       </div>
       <div class="from-to wrap-row item">
         <div class="from item">
