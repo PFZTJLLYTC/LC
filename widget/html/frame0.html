@@ -257,9 +257,9 @@
   function fnOpenNewsWin(num) {
       api.openWin({
           name: 'News',
-          url: './News.html'
-          pageParam: {
-            "num": num;
+          url: './News.html',
+          pageParam:{
+            pagenum : num
           }
       });
   }

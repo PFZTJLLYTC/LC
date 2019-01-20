@@ -50,9 +50,13 @@ apiready = function() {
     var header = $api.byId('header');
     $api.fixStatusBar(header);
     var headerH = $api.offset(header).h;
+    var pageParam = api.pageParam;
+    var x = pageParam["pagenum"];
+    if(x == 0)
+    {
     api.openFrame({
-        name: 'News_frame',
-        url: './News_frame.html',
+        name: 'News_frame0',
+        url: './forDiscovery/News_frame0.html',
         rect: {
             x: 0,
             y: headerH,
@@ -61,6 +65,33 @@ apiready = function() {
         },
         bounces: true
     });
+  }
+    else if (x == 1) {
+    api.openFrame({
+        name: 'News_frame1',
+        url: './forDiscovery/News_frame1.html',
+        rect: {
+            x: 0,
+            y: headerH,
+            w: 'auto',
+            h: 'auto'
+        },
+        bounces: true
+    });
+  }
+    else {
+    api.openFrame({
+        name: 'News_frame2',
+        url: './forDiscovery/News_frame2.html',
+        rect: {
+            x: 0,
+            y: headerH,
+            w: 'auto',
+            h: 'auto'
+        },
+        bounces: true
+    });
+  }
 };
 </script>
 
