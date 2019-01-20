@@ -71,7 +71,7 @@
         border: none;
         outline: none;
         height: 20px;
-        font-size: 14px;
+        font-size: 16px;
         line-height: 20px;
     }
     .option .input-time{
@@ -114,10 +114,10 @@
 </head>
 <body>
   <div class="wrap-col">
-    <div class="wrap-row option item" tapmode onclick="fnClose()">
-      <div class="source item">上海</div>
+    <div class="wrap-row option item" tapmode onclick="fnCitySelect()">
+      <div id=source class="source item">出发地</div>
       <div class="to item"></div>
-      <div class="destination item">北京</div>
+      <div id=destination class="destination item">目的地</div>
     </div>
     <div class="option wrap-row item" tapmode onclick="fnTimeSelect()">
       <div class="item icon icon-time"></div>
@@ -127,12 +127,12 @@
     <div class="option wrap-row item"  tapmode onclick="fnClose()">
       <div class="item icon icon-tel"></div>
       <label class="title item" for="tel">联系电话</label>
-      <input id="tel" class="input item" type="text" placeholder="11位手机号码">
+      <input id="tel" class="input item" type="number" placeholder="11位手机号码">
     </div>
     <div class="option wrap-row item"  tapmode onclick="fnClose()">
       <div class="item icon icon-people"></div>
       <label class="title item" for="people">乘客人数</label>
-      <input id="people" class="input item" type="text" placeholder="1-4人">
+      <input id="people" class="input item" type="number" placeholder="1-4人">
     </div>
     <div class="option wrap-row item"  tapmode onclick="fnClose()">
       <div class="item icon icon-addr"></div>
@@ -141,25 +141,91 @@
     </div>
   </div>
   <div class="btn" tapmode="highlight" onclick="fnSubmit">提交订单</div>
+  <script type="text/javascript" src="../script/api.js"></script>
   <script>
    var  periodSelector;
+   var UIActionSelector;
    apiready = function() {
-
+     periodSelector=null;
+     UIActionSelector=null;
+   }
+   function fnCitySelect(){
+     if(periodSelector)fnClose();
+     UIActionSelector = api.require('UIActionSelector');
+     UIActionSelector.open({
+          datas: 'widget://res/city.json',
+          layout: {
+              row: 5,
+              col: 3,
+              height: 30,
+              size: 12,
+              sizeActive: 14,
+              rowSpacing: 5,
+              colSpacing: 10,
+              maskBg: 'rgba(0,0,0,0.2)',
+              bg: '#fff',
+              color: '#888',
+              colorActive: '#f00',
+              colorSelected: '#f00'
+          },
+          animation: true,
+          cancel: {
+              text: '取消',
+              size: 12,
+              w: 90,
+              h: 35,
+              bg: '#fff',
+              bgActive: '#ccc',
+              color: '#888',
+              colorActive: '#fff'
+          },
+          ok: {
+              text: '确定',
+              size: 12,
+              w: 90,
+              h: 35,
+              bg: '#fff',
+              bgActive: '#ccc',
+              color: '#888',
+              colorActive: '#fff'
+          },
+          title: {
+              text: '请选择',
+              size: 12,
+              h: 44,
+              bg: '#eee',
+              color: '#888'
+          },
+          fixedOn: api.frameName
+      }, function(ret, err) {
+          if (ret) {
+            var source=$api.byId("source");
+            var destination=$api.byId("destination");
+            source.innerHTML=ret.level1;
+            destination.innerHTML=ret.level2+"-"+ret.level3;
+          } else {
+          }
+      });
    }
    function fnTimeSelect(){
-     periodSelector = api.require('periodSelector');
-     periodSelector.open({
-         x:0,
-         y:api.frameHeight/2-12,
-         w:api.frameWidth,
-         h:340,
-         titleColor:"#000000",
-         fixedOn: api.frameName
-     }, function(ret, err) {
-         if (ret) {
-         } else {
-         }
-     });
+     if(periodSelector)periodSelector.show();
+     else{
+       periodSelector = api.require('periodSelector');
+       periodSelector.open({
+           x:0,
+           y:api.frameHeight/2-12,
+           w:api.frameWidth,
+           h:340,
+           titleColor:"#000000",
+           fixedOn: api.frameName
+       }, function(ret, err) {
+           if (ret) {
+             var time=$api.byId("time");
+             $api.attr(time, 'value', ret.sHour+":"+ret.sMinute+" -- "+ret.eHour+":"+ret.eMinute);
+           } else {
+           }
+       });
+     }
    }
     function fnClose(){
       periodSelector.hide();
