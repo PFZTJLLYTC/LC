@@ -107,7 +107,7 @@
   </div>
   <section>
   <header>
-      <span>实时热点</span><em>更多&gt;</em>
+      <span>实时热点</span><em tapmode onclick="fnOpenNewsWin();">更多&gt;</em>
   </header>
   <ul class="content">
       <li>
@@ -132,7 +132,7 @@
   </section>
   <section>
   <header>
-      <span>路途歌单推荐</span><em>更多&gt;</em>
+      <span>路途歌单推荐</span><em tapmode onclick="fnOpenMusicRecommendWin();">更多&gt;</em>
   </header>
   <ul class="content">
       <li>
@@ -157,7 +157,7 @@
   </section>
   <section>
   <header>
-      <span>风云小说</span><em>更多&gt;</em>
+      <span>风云小说</span><em tapmode onclick="fnOpenBooksRecommendWin();">更多&gt;</em>
   </header>
   <ul class="content">
       <li>
@@ -182,7 +182,7 @@
   </section>
   <section>
   <header>
-      <span>连城动态</span><em>更多&gt;</em>
+      <span>连城动态</span><em tapmode onclick="fnOpenLcNewsWin();">更多&gt;</em>
   </header>
   <ul class="content">
       <li>
@@ -207,7 +207,7 @@
   </section>
   <section>
   <header>
-      <span>其他</span><em>更多&gt;</em>
+      <span>其他</span><em tapmode onclick="fnOpenOtherNewsWin();">更多&gt;</em>
   </header>
   <ul class="content">
       <li>
@@ -253,5 +253,39 @@
   apiready = function(){
 
   };
+  // 打开更多热点Window
+  function fnOpenNewsWin() {
+      api.openWin({
+          name: 'News',
+          url: './News.html'
+      });
+  }
+  // 打开更多音乐推荐Window
+  function fnOpenMusicRecommendWin() {
+      api.openWin({
+          name: 'MusicRecommend',
+          url: './MusicRecommend.html'
+      });
+  }
+  // 打开更多书籍Window
+  function fnOpenBooksRecommendWin() {
+      api.openWin({
+          name: 'BooksRecommend',
+          url: './BooksRecommend.html'
+      });
+  }
+  function fnOpenLcNewsWin() {
+      api.openWin({
+          name: 'LcNews',
+          url: './LcNews.html'
+      });
+  }
+  function fnOpenOtherNewsWin() {
+      api.openWin({
+          name: 'OtherNews',
+          url: './OtherNews.html'
+      });
+  }
+
   </script>
 </html>
