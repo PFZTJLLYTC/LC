@@ -303,8 +303,14 @@
   }
   function fnOpenMoreBooksRecommendWin(){
     api.openWin({
-        name: 'readbooks',
-        url: 'https://www.wxkdy666.com/BookNew/IndexNew'
+        name: 'readbook',
+        url: './readbook.html'
+    });
+  }
+  function fnOpenMoreMusicRecommendWin(){
+    api.openWin({
+        name: 'moremusic',
+        url: ''
     });
   }
   function fnOpenLCJWin() {
@@ -312,6 +318,14 @@
           name: 'LCJ-b',
           url: 'https://www.bilibili.com/video/av13017548?from=search&seid=10529078456526712984'
       });
+  }
+  function fnOpenMoreNewsWin(){
+    api.openWin({
+        name: '热搜榜单',
+        url: './page1.html',
+
+    });
+
   }
 
   </script>
