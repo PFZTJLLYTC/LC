@@ -59,18 +59,6 @@
       text-align:left;
       font-size: 14px;
     }
-    .carinfo .check{
-      position: absolute;
-      top: 12px;
-      right: 20px;
-      box-sizing: border-box;
-      width:auto;
-      height: 60px;
-      line-height: 60px;
-      font-size: 14px;
-      color:grey;
-      text-align: left;
-    }
     .from-to{
       -webkit-box-flex: 4;
       -webkit-flex: 4;
@@ -109,7 +97,6 @@
       <div class="carinfo item">
         <div class="logo"></div>
         <span class="carname">法拉利 沪A66666</span>
-        <span class="check" tapmode onclick="fnOpenMyOrderWin()">查看订单&gt;</span>
       </div>
       <div class="from-to wrap-row item">
         <div class="from item">
@@ -129,13 +116,5 @@
         <div class="drivertel item">联系电话:18966667777</div>
       </div>
     </div>
-    <script>
-    function fnOpenMyOrderWin() {
-        api.openWin({
-            name: 'myorder',
-            url: './myorder.html'
-        });
-    }
-    </script>
 </body>
 </html>
