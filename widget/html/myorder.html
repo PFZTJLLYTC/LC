@@ -82,6 +82,10 @@
     </nav>
     <script type="text/javascript" src="../script/api.js"></script>
     <script type="text/javascript">
+    var header = $api.byId("header");
+    var nav = $api.byId("nav");
+    var headerH = $api.offset(header).h;
+    var navH = $api.offset(nav).h;
     apiready = function() {
         var frames = [];
         for (var i = 0; i < 4; i++) {
@@ -93,12 +97,6 @@
                 }
             });
         }
-
-        var header = $api.byId("header");
-        var nav = $api.byId("nav");
-        var headerH = $api.offset(header).h;
-        var navH = $api.offset(nav).h;
-
         api.openFrameGroup({
             name: 'myorderFrameGroup',
             scrollEnabled: true, // 支持手势滑动切换
