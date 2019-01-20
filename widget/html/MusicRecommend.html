@@ -50,17 +50,47 @@ apiready = function() {
     var header = $api.byId('header');
     $api.fixStatusBar(header);
     var headerH = $api.offset(header).h;
-    api.openFrame({
-        name: 'MusicRecommend_frame',
-        url: './MusicRecommend_frame.html',
-        rect: {
-            x: 0,
-            y: headerH,
-            w: 'auto',
-            h: 'auto'
-        },
-        bounces: true
-    });
+    var pageParam = api.pageParam;
+    var x = pageParam["pagenum"];
+    if(x == 0){
+      api.openFrame({
+          name: 'MusicRecommend_frame0',
+          url: './forDiscovery/MusicRecommend_frame0.html',
+          rect: {
+              x: 0,
+              y: headerH,
+              w: 'auto',
+              h: 'auto'
+          },
+          bounces: true
+      });
+    }
+    else if (x == 1) {
+      api.openFrame({
+          name: 'MusicRecommend_frame1',
+          url: './forDiscovery/MusicRecommend_frame1.html',
+          rect: {
+              x: 0,
+              y: headerH,
+              w: 'auto',
+              h: 'auto'
+          },
+          bounces: true
+      });
+    }
+    else {
+      api.openFrame({
+          name: 'MusicRecommend_frame2',
+          url: './forDiscovery/MusicRecommend_frame2.html',
+          rect: {
+              x: 0,
+              y: headerH,
+              w: 'auto',
+              h: 'auto'
+          },
+          bounces: true
+      });
+    }
 };
 </script>
 

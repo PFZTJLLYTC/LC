@@ -182,31 +182,6 @@
   </section>
   <section>
   <header>
-      <span>连城动态</span><em tapmode onclick="fnMoreOpenLcNewsWin();">更多&gt;</em>
-  </header>
-  <ul class="content">
-      <li>
-          <div tapmode onclick="fnOpenLcNewsWin(0);">
-              <img src="../image/linesinfo.jpg" />
-          </div>
-          <label>线路信息</label>
-      </li>
-      <li>
-          <div tapmode onclick="fnOpenLcNewsWin(1);">
-              <img src="../image/hezuo.jpg" />
-          </div>
-          <label>合作</label>
-      </li>
-      <li>
-          <div tapmode onclick="fnOpenLcNewsWin(2);">
-              <img src="../image/contact.jpg" />
-          </div>
-          <label>更多联系方式</label>
-      </li>
-  </ul>
-  </section>
-  <section>
-  <header>
       <span>其他</span><em tapmode onclick="fnOpenMoreOtherNewsWin();">更多&gt;</em>
   </header>
   <ul class="content">
@@ -227,6 +202,31 @@
               <img src="../image/ticket.jpg" />
           </div>
           <label>如何制胜春运</label>
+      </li>
+  </ul>
+  </section>
+  <section>
+  <header>
+      <span>连城动态</span><em tapmode onclick=alert("敬请期待")>更多&gt;</em>
+  </header>
+  <ul class="content">
+      <li>
+          <div tapmode onclick="fnOpenLcNewsWin(0);">
+              <img src="../image/linesinfo.jpg" />
+          </div>
+          <label>线路信息</label>
+      </li>
+      <li>
+          <div tapmode onclick="fnOpenLcNewsWin(1);">
+              <img src="../image/hezuo.jpg" />
+          </div>
+          <label>合作</label>
+      </li>
+      <li>
+          <div tapmode onclick="fnOpenLcNewsWin(2);">
+              <img src="../image/contact.jpg" />
+          </div>
+          <label>更多联系方式</label>
       </li>
   </ul>
   </section>
@@ -264,31 +264,48 @@
       });
   }
   // 打开更多音乐推荐Window
-  function fnOpenMusicRecommendWin() {
+  function fnOpenMusicRecommendWin(num) {
       api.openWin({
           name: 'MusicRecommend',
-          url: './MusicRecommend.html'
+          url: './MusicRecommend.html',
+          pageParam:{
+            pagenum : num
+          }
       });
   }
   // 打开更多书籍Window
-  function fnOpenBooksRecommendWin() {
+  function fnOpenBooksRecommendWin(num) {
       api.openWin({
           name: 'BooksRecommend',
-
-          url: './LcNews.html'
+          url: './BooksRecommend.html',
+          pageParam : {
+            pagenum : num
+          }
       });
   }
-  function fnOpenLcNewsWin() {
+  function fnOpenLcNewsWin(num) {
       api.openWin({
           name: 'LcNews',
-          url: './LcNews.html'
+          url: './LcNews.html',
+          pageParam : {
+            pagenum : num
+          }
       });
   }
-  function fnOpenOtherNewsWin() {
+  function fnOpenOtherNewsWin(num) {
       api.openWin({
           name: 'OtherNews',
-          url: './OtherNews.html'
+          url: './OtherNews.html',
+          pageParam : {
+            pagenum : num
+          }
       });
+  }
+  function fnOpenMoreBooksRecommendWin(){
+    api.openWin({
+        name: 'readbooks',
+        url: 'https://www.wxkdy666.com/BookNew/IndexNew'
+    });
   }
   function fnOpenLCJWin() {
       api.openWin({
