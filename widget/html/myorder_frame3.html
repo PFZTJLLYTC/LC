@@ -7,6 +7,7 @@
     <title>全部订单</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <script src="../script/template-web.js"></script>
     <style>
       html,body{
         background-color:rgba(203, 203, 203, 0.17);
@@ -29,13 +30,129 @@
         text-align: center;
         color: grey;
       }
+      .wrap-col{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-flex-flow: column;
+        flex-flow: column;
+      }
+      .wrap-row{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-flex-flow: row;
+        flex-flow: row;
+      }
+      .item{
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+      }
+      .order{
+        text-align: center;
+        height: auto;
+        margin: 20px 10px;
+        padding:10px;
+        border-color: #fff;
+        border-width: 1px;
+        border-style: groove solid;
+        background:#fff;
+        border-radius: 10px;
+      }
+      .carinfo .logo{
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 80px;
+        width: 60px;
+        background-image: url("../image/LC_round.png");
+        background-repeat: no-repeat;
+        background-position:20px;
+        background-size: auto 20px;
+      }
+      .carinfo .carname{
+        position: relative;
+        box-sizing: border-box;
+        width: 100%;
+        height:50px;
+        padding-left:25px;
+        text-align:left;
+        font-size: 14px;
+      }
+      .from-to{
+        margin-bottom: 30px;
+      }
+      .from-to .middle{
+        width: auto;
+        height: 23px;
+        padding-top:13px;
+        background-image: url("../image/single-arrow.png");
+        background-repeat: no-repeat;
+        background-size: 50px 23px;
+        background-position: center;
+      }
+      .from-to .addr{
+        font-size:20px;
+        color:#000;
+      }
+      .passenger .passengernumber{
+        text-align: left;
+        color: grey;
+      }
+      .passenger .date{
+        text-align: right;
+        color: grey;
+      }
     </style>
 </head>
 
 <body>
-   <div class="noneorder">
-     <div class="icon-no"></div>
-     <div class="text">暂无订单</div>
-   </div>
+  <div id="content"></div>
+  <script id="order-template" type="text/html">
+    {{if noneorder}}
+    <div class="noneorder">
+      <div class="icon-no"></div>
+      <div class="text">暂无相关订单</div>
+    </div>
+    {{else if !noneorder}}
+    <div class="order wrap-col">
+      <div class="carinfo item">
+        <div class="logo"></div>
+        <span class="carname">{{carname}}</span>
+      </div>
+      <div class="from-to wrap-row item">
+        <div class="from item">
+          <div class="addr fromaddr" id="fromaddr">{{fromaddr}}</div>
+        </div>
+        <div class="middle item"></div>
+        <div class="to item">
+          <div class="addr toaddr" id="toaddr">{{toaddr}}</div>
+        </div>
+      </div>
+      <div class="passenger wrap-row item">
+        <div class="passengernumber item">乘客数:{{passengernumber}}</div>
+        <div class="date item">{{date}}</div>
+      </div>
+    </div>
+    {{/if}}
+  </script>
+  <script>
+  apiready=function(){
+
+  };
+  var data = {
+    noneorder:false,
+    carname:"宝马 沪A66666",
+    fromaddr:"上海",
+    toaddr:"杭州",
+    passengernumber:"3",
+    date:"2019年1月21日"
+  };
+  var html = template('order-template', data); //data为模板数据
+  document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+  </script>
 </body>
 </html>

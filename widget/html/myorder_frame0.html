@@ -7,9 +7,28 @@
     <title>待处理</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <script src="../script/template-web.js"></script>
     <style>
     html,body{
       background-color:rgba(203, 203, 203, 0.17);
+    }
+    .noneorder{
+      padding-top:100px;
+    }
+    .noneorder .icon-no{
+      width: 100%;
+      height: 200px;
+      background-image: url("../image/noneorder.png");
+      background-repeat: no-repeat;
+      background-size: 150px 150px;
+      background-position: center;
+    }
+    .noneorder .text{
+      height: 50px;
+      line-height: 50px;
+      font-size: 16px;
+      text-align: center;
+      color: grey;
     }
     .wrap-col{
       display: -webkit-box;
@@ -99,32 +118,60 @@
     </style>
 </head>
 <body>
-    <div class="order wrap-col">
-      <div class="info item">
-        <div class="logo"></div>
-        <span class="mark">订单正在处理......</span>
+    <div id="content"></div>
+    <script id="order-template" type="text/html">
+      {{if noneorder}}
+      <div class="noneorder">
+        <div class="icon-no"></div>
+        <div class="text">暂无相关订单</div>
       </div>
-      <div class="from-to wrap-row item">
-        <div class="from item">
-          <div class="addr fromaddr" id="fromaddr">上海</div>
-          <div class="time fromtime" id="fromtime">21:00</div>
-          <div class="date fromdate" id="fromdate">2018-12-30</div>
+      {{else if !noneorder}}
+      <div class="order wrap-col">
+        <div class="info item">
+          <div class="logo"></div>
+          <span class="mark">订单正在处理......</span>
         </div>
-        <div class="middle item"></div>
-        <div class="to item">
-          <div class="addr toaddr" id="toaddr">北京</div>
-          <div class="time totime" id="totime">23:30</div>
-          <div class="date todate" id="todate">2018-12-30</div>
-        </div>
-      </div>
-      <div class="passenger wrap-row item">
-        <div class="passengernumber item">乘客数:
-          <span id="people">3人</span>
-        </div>
-        <div class="passengertel item">联系电话:
-          <span id="telnumber">18966667777</span>
+        <div class="from-to wrap-row item">
+          <div class="from item">
+            <div class="addr fromaddr" id="fromaddr">{{fromaddr}}</div>
+            <div class="time fromtime" id="fromtime">{{fromtime}}</div>
+            <div class="date fromdate" id="fromdate">{{fromdate}}</div>
           </div>
+          <div class="middle item"></div>
+          <div class="to item">
+            <div class="addr toaddr" id="toaddr">{{toaddr}}</div>
+            <div class="time totime" id="totime">{{totime}}</div>
+            <div class="date todate" id="todate">{{todate}}</div>
+          </div>
+        </div>
+        <div class="passenger wrap-row item">
+          <div class="passengernumber item">乘客数:
+            <span id="people">{{people}}人</span>
+          </div>
+          <div class="passengertel item">联系电话:
+            <span id="telnumber">{{telnumber}}</span>
+            </div>
+        </div>
       </div>
-    </div>
+      {{/if}}
+    </script>
+    <script>
+    apiready=function(){
+
+    };
+    var data = {
+      noneorder:false,
+      fromaddr:"上海",
+      fromtime:"21:00",
+      fromdate:"2019-1-23",
+      toaddr:"杭州",
+      totime:"21:45",
+      todate:"2019-1-23",
+      people:"3",
+      telnumber:"18988889999"
+    };
+    var html = template('order-template', data); //data为模板数据
+    document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+    </script>
 </body>
 </html>

@@ -7,9 +7,28 @@
     <title>已完成</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <script src="../script/template-web.js"></script>
     <style>
     html,body{
       background-color:rgba(203, 203, 203, 0.17);
+    }
+    .noneorder{
+      padding-top:100px;
+    }
+    .noneorder .icon-no{
+      width: 100%;
+      height: 200px;
+      background-image: url("../image/noneorder.png");
+      background-repeat: no-repeat;
+      background-size: 150px 150px;
+      background-position: center;
+    }
+    .noneorder .text{
+      height: 50px;
+      line-height: 50px;
+      font-size: 16px;
+      text-align: center;
+      color: grey;
     }
     .wrap-col{
       display: -webkit-box;
@@ -31,11 +50,10 @@
       -webkit-box-flex: 1;
       -webkit-flex: 1;
       flex: 1;
-      margin:auto 0px;
     }
     .order{
       text-align: center;
-      height: 300px;
+      height: auto;
       margin: 20px 10px;
       padding:10px;
       border-color: #fff;
@@ -65,61 +83,75 @@
       font-size: 14px;
     }
     .from-to{
-      -webkit-box-flex: 4;
-      -webkit-flex: 4;
-      flex: 4;
+      margin-bottom: 30px;
     }
     .from-to .middle{
-      position: relative;
-      height: 91px;
-      width: 100%;
-      background-image: url("../image/travel.png");
+      width: auto;
+      height: 23px;
+      padding-top:13px;
+      background-image: url("../image/single-arrow.png");
       background-repeat: no-repeat;
-      background-size: 40px 40px;
+      background-size: 50px 23px;
       background-position: center;
     }
     .from-to .addr{
       font-size:20px;
-      color:grey;
+      color:#000;
     }
-    .from-to .time{
-      font-size:45px;
-    }
-    .from-to .date{
-      font-size:14px;
-      color:grey;
-    }
-    .driver .drivername{
+    .passenger .passengernumber{
       text-align: left;
+      color: grey;
     }
-    .driver .drivertel{
+    .passenger .date{
       text-align: right;
+      color: grey;
     }
-    </style>
-</head>
-<body>
+  </style>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script id="order-template" type="text/html">
+    {{if noneorder}}
+    <div class="noneorder">
+      <div class="icon-no"></div>
+      <div class="text">暂无相关订单</div>
+    </div>
+    {{else if !noneorder}}
     <div class="order wrap-col">
       <div class="carinfo item">
         <div class="logo"></div>
-        <span class="carname">法拉利 沪A66666</span>
+        <span class="carname">{{carname}}</span>
       </div>
       <div class="from-to wrap-row item">
         <div class="from item">
-          <div class="addr fromaddr" id="fromaddr">上海</div>
-          <div class="time fromtime" id="fromtime">21:00</div>
-          <div class="date fromdate" id="fromdate">2018-12-30</div>
+          <div class="addr fromaddr" id="fromaddr">{{fromaddr}}</div>
         </div>
         <div class="middle item"></div>
         <div class="to item">
-          <div class="addr toaddr" id="toaddr">北京</div>
-          <div class="time totime" id="totime">23:30</div>
-          <div class="date todate" id="todate">2018-12-30</div>
+          <div class="addr toaddr" id="toaddr">{{toaddr}}</div>
         </div>
       </div>
-      <div class="driver wrap-row item">
-        <div class="drivername item">司机:上海老司机</div>
-        <div class="drivertel item">联系电话:18966667777</div>
+      <div class="passenger wrap-row item">
+        <div class="passengernumber item">乘客数:{{passengernumber}}</div>
+        <div class="date item">{{date}}</div>
       </div>
     </div>
+    {{/if}}
+    </script>
+    <script>
+    apiready=function(){
+
+    };
+    var data = {
+    noneorder:false,
+    carname:"宝马 沪A66666",
+    fromaddr:"上海",
+    toaddr:"杭州",
+    passengernumber:"3",
+    date:"2019年1月21日"
+    };
+    var html = template('order-template', data); //data为模板数据
+    document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+    </script>
 </body>
 </html>
