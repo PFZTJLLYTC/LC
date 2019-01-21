@@ -7,79 +7,21 @@
     <title>待处理</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/order.css"/>
     <script src="../script/template-web.js"></script>
     <style>
-    html,body{
-      background-color:rgba(203, 203, 203, 0.17);
-    }
-    .noneorder{
-      padding-top:100px;
-    }
-    .noneorder .icon-no{
-      width: 100%;
-      height: 200px;
-      background-image: url("../image/noneorder.png");
-      background-repeat: no-repeat;
-      background-size: 150px 150px;
-      background-position: center;
-    }
-    .noneorder .text{
-      height: 50px;
-      line-height: 50px;
-      font-size: 16px;
-      text-align: center;
-      color: grey;
-    }
-    .wrap-col{
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-flex-flow: column;
-      flex-flow: column;
-    }
-    .wrap-row{
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-orient: horizontal;
-      -webkit-flex-flow: row;
-      flex-flow: row;
-    }
-    .item{
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      flex: 1;
-      margin:auto 0px;
-    }
-    .order{
-      text-align: center;
-      height: auto;
-      margin: 20px 10px;
-      padding:10px;
-      border-color: #fff;
-      border-width: 1px;
-      border-style: groove solid;
-      background:#fff;
-      border-radius: 10px;
-    }
     .info .logo{
-      position: absolute;
-      left: 0;
-      top: 0;
-      height: 80px;
-      width: 60px;
+      height: 30px;
+      width: 30px;
       background-image: url("../image/LC_round.png");
       background-repeat: no-repeat;
-      background-position:20px;
-      background-size: auto 20px;
+      background-position:10px auto;
+      background-size:20px;
     }
     .info .mark{
-      position: relative;
-      box-sizing: border-box;
       width: 100%;
-      height:50px;
-      padding-left:25px;
+      height:30px;
+      line-height: 20px;
       text-align:left;
       font-size: 14px;
     }
@@ -87,7 +29,7 @@
       -webkit-box-flex: 4;
       -webkit-flex: 4;
       flex: 4;
-      margin-bottom:30px;
+      margin:20px 0px;
     }
     .from-to .middle{
       position: relative;
@@ -127,7 +69,7 @@
       </div>
       {{else if !noneorder}}
       <div class="order wrap-col">
-        <div class="info item">
+        <div class="info wrap-row item">
           <div class="logo"></div>
           <span class="mark">订单正在处理......</span>
         </div>
