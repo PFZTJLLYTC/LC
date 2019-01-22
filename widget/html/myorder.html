@@ -100,6 +100,8 @@
         api.openFrameGroup({
             name: 'myorderFrameGroup',
             scrollEnabled: true, // 支持手势滑动切换
+            bounces:true,
+            customRefreshHeader: 'UIPullRefresh',
             rect: {
                 marginTop: headerH + navH, // 采用margin布局
                 w: 'auto', // 自动填充所在Window的宽度
