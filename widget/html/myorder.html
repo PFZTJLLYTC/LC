@@ -78,7 +78,6 @@
         <div class="menu selected" tapmode onclick="fnSetNavMenuSelected(0)">待处理</div>
         <div class="menu" tapmode onclick="fnSetNavMenuSelected(1)">进行中</div>
         <div class="menu" tapmode onclick="fnSetNavMenuSelected(2)">已完成</div>
-        <div class="menu" tapmode onclick="fnSetNavMenuSelected(3)">全部订单</div>
     </nav>
     <script type="text/javascript" src="../script/api.js"></script>
     <script type="text/javascript">
@@ -88,7 +87,7 @@
     var navH = $api.offset(nav).h;
     apiready = function() {
         var frames = [];
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 3; i++) {
             frames.push({
                 name: 'myorder_frame' + i,
                 url: './myorder_frame'+i+'.html',

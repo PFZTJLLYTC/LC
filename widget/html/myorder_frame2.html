@@ -10,98 +10,121 @@
     <link rel="stylesheet" type="text/css" href="../css/order.css"/>
     <script src="../script/template-web.js"></script>
     <style>
-    .carinfo .logo{
-      height: 30px;
-      width: 30px;
-      background-image: url("../image/LC_round.png");
-      background-repeat: no-repeat;
-      background-position:10px auto;
-      background-size:20px;
-    }
-    .carinfo .carname{
-      width: 100%;
-      height:30px;
-      line-height: 20px;
-      text-align:left;
-      font-size: 14px;
-    }
-    .from-to{
-      margin: 20px 0;
-    }
-    .from-to .middle{
-      width: auto;
-      height: 23px;
-      padding-top:13px;
-      background-image: url("../image/single-arrow.png");
-      background-repeat: no-repeat;
-      background-size: 50px 23px;
-      background-position: center;
-    }
-    .from-to .addr{
-      font-size:20px;
-      color:#000;
-    }
-    .passenger .passengernumber{
-      text-align: left;
-      color: grey;
-    }
-    .passenger .date{
-      text-align: right;
-      color: grey;
-    }
-  </style>
-  </head>
-  <body>
-    <div id="content"></div>
-    <script id="order-template" type="text/html">
+      .carinfo .logo{
+        height: 30px;
+        width: 30px;
+        background-image: url("../image/LC_round.png");
+        background-repeat: no-repeat;
+        background-position:10px auto;
+        background-size:20px;
+      }
+      .carinfo .carname{
+        width: 100%;
+        height:30px;
+        line-height: 20px;
+        text-align:left;
+        font-size: 14px;
+      }
+      .from-to{
+        margin: 20px 0;
+      }
+      .from-to .middle{
+        width: auto;
+        height: 23px;
+        padding-top:13px;
+        background-image: url("../image/single-arrow.png");
+        background-repeat: no-repeat;
+        background-size: 50px 23px;
+        background-position: center;
+      }
+      .from-to .addr{
+        font-size:20px;
+        color:#000;
+      }
+      .passenger .passengernumber{
+        text-align: left;
+        color: grey;
+      }
+      .passenger .date{
+        text-align: right;
+        color: grey;
+      }
+    </style>
+</head>
+
+<body>
+  <ul id="content"></ul>
+  <script type="text/javascript" src="../script/api.js"></script>
+  <script id="order-template" type="text/html">
     {{if noneorder}}
     <div class="noneorder">
       <div class="icon-no"></div>
       <div class="text">暂无相关订单</div>
     </div>
     {{else if !noneorder}}
-    <div class="order wrap-col">
-      <div class="carinfo wrap-row item">
-        <div class="logo"></div>
-        <span class="carname">{{carname}}</span>
-      </div>
-      <div class="from-to wrap-row item">
-        <div class="from item">
-          <div class="addr fromaddr" id="fromaddr">{{fromaddr}}</div>
+      {{each list}}
+      <li>
+        <div class="order wrap-col">
+          <div class="carinfo wrap-row item">
+            <div class="logo"></div>
+            <span class="carname">{{$value.carname}}<span>
+          </div>
+          <div class="from-to wrap-row item">
+            <div class="from item">
+              <div class="addr fromaddr" id="fromaddr">{{$value.fromaddr}}</div>
+            </div>
+            <div class="middle item"></div>
+            <div class="to item">
+              <div class="addr toaddr" id="toaddr">{{$value.toaddr}}</div>
+            </div>
+          </div>
+          <div class="passenger wrap-row item">
+            <div class="passengernumber item">乘客数:{{$value.passengernumber}}</div>
+            <div class="date item">{{$value.date}}</div>
+          </div>
         </div>
-        <div class="middle item"></div>
-        <div class="to item">
-          <div class="addr toaddr" id="toaddr">{{toaddr}}</div>
-        </div>
-      </div>
-      <div class="passenger wrap-row item">
-        <div class="passengernumber item">乘客数:{{passengernumber}}</div>
-        <div class="date item">{{date}}</div>
-      </div>
-    </div>
+      </li>
+      {{/each}}
     {{/if}}
-    </script>
-    <script>
-    apiready=function(){
+  </script>
+  <script>
+  apiready=function(){
       api.setCustomRefreshHeaderInfo({
           bgColor : '#f0f0f0',
       }, function() {
           //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+          var data = {
+            noneorder:false,
+            list:[{
+                carname:"奔驰 沪B66666",
+                fromaddr:"北京",
+                toaddr:"上海",
+                passengernumber:"4",
+                date:"2019年1月11日"
+              }]
+          };
+          var html = template('order-template', data); //data为模板数据
           setTimeout(function(){
-      api.refreshHeaderLoadDone()
-    }, 1000);
+            api.refreshHeaderLoadDone();
+            if(data.noneorder==true)
+            $api.byId('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+            else
+            $api.append($api.byId('content'),html);
+          }, 1000);
       });
-    };
-    var data = {
+  };
+  var data = {
     noneorder:false,
-    carname:"宝马 沪A66666",
-    fromaddr:"上海",
-    toaddr:"杭州",
-    passengernumber:"3",
-    date:"2019年1月21日"
-    };
-    var html = template('order-template', data); //data为模板数据
-    document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
-    </script>
+    list:[{
+        carname:"宝马 沪A66666",
+        fromaddr:"上海",
+        toaddr:"杭州",
+        passengernumber:"3",
+        date:"2019年1月21日"
+      }]
+  };
+  var html = template('order-template', data); //data为模板数据
+  $api.append($api.byId('content'),html);
+  </script>
 </body>
 </html>
