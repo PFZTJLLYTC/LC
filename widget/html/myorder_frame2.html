@@ -109,7 +109,7 @@
             if(data.noneorder==true)
             $api.byId('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
             else
-            $api.append($api.byId('content'),html);
+            $api.prepend($api.byId('content'),html);
           }, 1000);
       });
   };
@@ -124,7 +124,7 @@
       }]
   };
   var html = template('order-template', data); //data为模板数据
-  $api.append($api.byId('content'),html);
+  $api.prepend($api.byId('content'),html);
   </script>
 </body>
 </html>
