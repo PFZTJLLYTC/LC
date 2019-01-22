@@ -143,6 +143,7 @@
   <div class="btn" tapmode="highlight" onclick="fnSubmit()">提交订单</div>
   <script type="text/javascript" src="../script/api.js"></script>
   <script type="text/javascript" src="../script/SHA1.js"></script>
+  <script type="text/javascript" src="../script/APICloud-rest.js"></script>
   <script>
 
   var periodSelector;
@@ -153,6 +154,7 @@
   var telValue;
   var peopleValue;
   var addrValue;
+  var dateValue;
   var appId="A6096149079402";
   var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
   var now=Date.now();
@@ -278,31 +280,39 @@
     function fnClose(){
       if(periodSelector)periodSelector.hide();
     }
+    function formatDate(date) {
+        month = '' + (date.getMonth() + 1),
+        day = '' + date.getDate(),
+        year = date.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
     function fnSubmit(){
         var userInfo = $api.getStorage('userInfo');
         telValue=$api.val($api.byId('tel'));
         peopleValue=$api.val($api.byId('people'));
         addrValue=$api.val($api.byId('address'));
+        dateValue=''+formatDate(new Date());
 
-        api.ajax({
-            url: 'https://d.apicloud.com/mcm/api/Order',
-            method: 'post',
-            headers: {
-                "X-APICloud-AppId":appId,
-                "X-APICloud-AppKey":appCode
-            },
-            data: {
-                values: {
-                    userId:userInfo.userId,
-                    source:sourceValue,
-                    destination:destinationValue,
-                    time:timeValue,
-                    status:0,
-                    custel:telValue,
-                    peoplecount:peopleValue,
-                    detailaddr:addrValue
-                }
-            }
+        var client=new Resource(appId,appKey);
+        var Model=client.Factory('user');
+        Model.save(
+          {
+            "_id":userInfo.userId,
+            "_relation":'orders'},
+            {
+                "userId":userInfo.userId,
+                "source":sourceValue,
+                "destination":destinationValue,
+                "time":timeValue,
+                "status":0,
+                "custel":telValue,
+                "peoplecount":peopleValue,
+                "detailaddr":addrValue,
+                "date":dateValue
         },function(ret, err){
             if (ret) {
                 alert("提交成功");

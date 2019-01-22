@@ -94,14 +94,14 @@
       }, function() {
           //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
           var data = {
-            noneorder:false,
-            list:[{
-                carname:"奔驰 沪B66666",
-                fromaddr:"北京",
-                toaddr:"上海",
-                passengernumber:"4",
-                date:"2019年1月11日"
-              }]
+            noneorder:true,
+            // list:[{
+            //     carname:"奔驰 沪B66666",
+            //     fromaddr:"北京",
+            //     toaddr:"上海",
+            //     passengernumber:"4",
+            //     date:"2019年1月11日"
+            //   }]
           };
           var html = template('order-template', data); //data为模板数据
           setTimeout(function(){
@@ -114,20 +114,20 @@
       });
   };
   var data = {
-    noneorder:false,
-    list:[{
-      time:"21:00 -- 23:00",
-      detailaddr:"中南海405"
-      carinfo:"宝马 沪A66666",
-      status: "1",
-      source:"上海",
-      destination:"杭州",
-      peoplecount:"2".
-      drivername:"老司机",
-      custel:   "10086111008",
-      drivertel:"18977778888",
-      date:"2019-1-23"
-      }]
+    noneorder:true,
+    // list:[{
+    //   time:"21:00 -- 23:00",
+    //   detailaddr:"中南海405"
+    //   carinfo:"宝马 沪A66666",
+    //   status: "1",
+    //   source:"上海",
+    //   destination:"杭州",
+    //   peoplecount:"2".
+    //   drivername:"老司机",
+    //   custel:   "10086111008",
+    //   drivertel:"18977778888",
+    //   date:"2019-1-23"
+    //   }]
   };
   var html = template('order-template', data); //data为模板数据
   $api.prepend($api.byId('content'),html);
