@@ -90,13 +90,31 @@
           bgColor : '#f0f0f0',
       }, function() {
           //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+          var data = {
+            noneorder:false,
+            list:[{
+                carname:"宝马 沪A66666",
+                fromaddr:"上海",
+                toaddr:"杭州",
+                passengernumber:"3",
+                date:"2019年1月21日"
+              },{
+                carname:"奔驰 沪B66666",
+                fromaddr:"北京",
+                toaddr:"上海",
+                passengernumber:"4",
+                date:"2019年1月11日"
+              }]
+          };
+          var html = template('order-template', data); //data为模板数据
           setTimeout(function(){
-      api.refreshHeaderLoadDone()
-    }, 1000);
+            api.refreshHeaderLoadDone();
+            document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+          }, 1000);
       });
   };
   var data = {
-    noneorder:false,
+    noneorder:true,
     list:[{
         carname:"宝马 沪A66666",
         fromaddr:"上海",
