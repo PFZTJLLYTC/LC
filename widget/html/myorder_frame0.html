@@ -110,14 +110,17 @@
     };
     var data = {
       noneorder:false,
-      fromaddr:"上海",
-      fromtime:"21:00",
-      fromdate:"2019-1-23",
-      toaddr:"杭州",
-      totime:"21:45",
-      todate:"2019-1-23",
-      people:"3",
-      telnumber:"18988889999"
+      time:"21:00 -- 23:00",
+      detailaddr:"中南海405"
+      carinfo:"宝马 沪A66666",
+      status: "0",
+      source:"上海",
+      destination:"杭州",
+      peoplecount:"2".
+      drivername:"老司机",
+      custel:   "10086111008",
+      drivertel:"18977778888",
+      date:"2019-1-23"
     };
     var html = template('order-template', data); //data为模板数据
     document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
