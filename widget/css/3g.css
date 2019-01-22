@@ -34,8 +34,18 @@ input:-webkit-autofill {
 	background: #f6f0dd;
 	border-top: 2px solid #c00
 }
+#foot1 {
+	text-align: center;
+	padding: 30px;
+	background: #d9d9d9;
+	border-top: 2px solid #c00
+}
 
 #foot a {
+	padding: 0 10px;
+	color: #000
+}
+#foot1 a {
 	padding: 0 10px;
 	color: #000
 }
