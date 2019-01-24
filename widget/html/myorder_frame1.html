@@ -112,8 +112,10 @@
        "_relation":"orders"
      },function(ret,err){
        if(ret){
-         var data;
          var order;
+         var data={
+           noneorder:true
+         };
          for(var i=0;i<ret.length;i++){
            if(ret[i]["status"]=='1')
            order=ret[i];
@@ -133,16 +135,7 @@
              drivertel:order["drivertel"],
              date:order["date"]
            };}
-           else{
-             data={
-               noneorder:true
-             };
-           }
        }
-       else{
-         data={
-           noneorder:true
-         };}
        var html = template('order-template', data); //data为模板数据
        document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
      });
@@ -151,10 +144,10 @@
        api.setCustomRefreshHeaderInfo({
            bgColor : '#f0f0f0',
        }, function() {
+           fnGetOrder();
            setTimeout(
              function(){
                api.refreshHeaderLoadDone();
-               fnGetOrder();
              },500);
        });
    }
