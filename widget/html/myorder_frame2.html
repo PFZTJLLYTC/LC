@@ -71,15 +71,15 @@
           </div>
           <div class="from-to wrap-row item">
             <div class="from item">
-              <div class="addr fromaddr" id="fromaddr">{{$value.fromaddr}}</div>
+              <div class="addr fromaddr" id="fromaddr">{{$value.source}}</div>
             </div>
             <div class="middle item"></div>
             <div class="to item">
-              <div class="addr toaddr" id="toaddr">{{$value.toaddr}}</div>
+              <div class="addr toaddr" id="toaddr">{{$value.destination}}</div>
             </div>
           </div>
           <div class="passenger wrap-row item">
-            <div class="passengernumber item">乘客数:{{$value.passengernumber}}</div>
+            <div class="passengernumber item">乘客数:{{$value.peoplecount}}</div>
             <div class="date item">{{$value.date}}</div>
           </div>
         </div>
@@ -87,50 +87,62 @@
       {{/each}}
     {{/if}}
   </script>
+  <script type="text/javascript" src="../script/api.js"></script>
+  <script type="text/javascript" src="../script/SHA1.js"></script>
+  <script type="text/javascript" src="../script/APICloud-rest.js"></script>
   <script>
-  apiready=function(){
-      api.setCustomRefreshHeaderInfo({
-          bgColor : '#f0f0f0',
-      }, function() {
-          //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
-          var data = {
-            noneorder:true,
-            // list:[{
-            //     carname:"奔驰 沪B66666",
-            //     fromaddr:"北京",
-            //     toaddr:"上海",
-            //     passengernumber:"4",
-            //     date:"2019年1月11日"
-            //   }]
+    apiready=function(){
+      fnGetOrder();
+      fnPullRefresh();
+    };
+    var appId="A6096149079402";
+    var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
+    var userInfo=$api.getStorage("userInfo");
+    var client=new Resource(appId,appKey);
+    var Model=client.Factory('user');
+    function fnGetOrder(){
+      Model.get({
+        "_id":userInfo.userId,
+        "_relation":"orders"
+      },function(ret,err){
+        if(ret){
+          var orderlist=[];
+          var data={
+            noneorder:true
           };
-          var html = template('order-template', data); //data为模板数据
-          setTimeout(function(){
-            api.refreshHeaderLoadDone();
-            if(data.noneorder==true)
-            $api.byId('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
-            else
-            $api.prepend($api.byId('content'),html);
-          }, 1000);
+          for(var i=0;i<ret.length;i++){           //查询已完成订单，生成orderlist
+            if(ret[i]["status"]=='2'){
+              var finshed = {
+                carname:ret[i]["carname"],
+                source:ret[i]["source"],
+                destination:ret[i]["destination"],
+                peoplecount:ret[i]["peoplecount"],
+                date:ret[i]["date"]
+              };
+              orderlist.push(finshed);
+            }
+          }
+          if(orderlist.length!=0){
+            data = {
+              noneorder:false,
+              list:orderlist
+            };}
+        }
+        var html = template('order-template', data); //data为模板数据
+        document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
       });
-  };
-  var data = {
-    noneorder:true,
-    // list:[{
-    //   time:"21:00 -- 23:00",
-    //   detailaddr:"中南海405"
-    //   carinfo:"宝马 沪A66666",
-    //   status: "1",
-    //   source:"上海",
-    //   destination:"杭州",
-    //   peoplecount:"2".
-    //   drivername:"老司机",
-    //   custel:   "10086111008",
-    //   drivertel:"18977778888",
-    //   date:"2019-1-23"
-    //   }]
-  };
-  var html = template('order-template', data); //data为模板数据
-  $api.prepend($api.byId('content'),html);
+    }
+    function fnPullRefresh(){
+        api.setCustomRefreshHeaderInfo({
+            bgColor : '#f0f0f0',
+        }, function() {
+            fnGetOrder();
+            setTimeout(
+              function(){
+                api.refreshHeaderLoadDone();
+              },500);
+        });
+    }
   </script>
 </body>
 </html>
