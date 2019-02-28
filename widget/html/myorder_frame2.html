@@ -10,21 +10,6 @@
     <link rel="stylesheet" type="text/css" href="../css/order.css"/>
     <script src="../script/template-web.js"></script>
     <style>
-      .carinfo .logo{
-        height: 30px;
-        width: 30px;
-        background-image: url("../image/LC_round.png");
-        background-repeat: no-repeat;
-        background-position:10px auto;
-        background-size:20px;
-      }
-      .carinfo .carname{
-        width: 100%;
-        height:30px;
-        line-height: 20px;
-        text-align:left;
-        font-size: 14px;
-      }
       .from-to{
         margin: 20px 0;
       }
@@ -110,7 +95,7 @@
           var data={
             noneorder:true
           };
-          for(var i=0;i<ret.length;i++){           //查询已完成订单，生成orderlist
+          for(var i=0;i<ret.length;i++){          //查询已完成订单，生成orderlist
             if(ret[i]["status"]=='2'){
               var finshed = {
                 carname:ret[i]["carname"],
