@@ -6,7 +6,7 @@
     <author email="446110075@qq.com" href="https://github.com/PFZTJLLYTC">
         PFZTJLLYTC
     </author>
-    <content src="./index.html" />
+    <content src="./html/login.html" />
     <access origin="*" />
     <preference name="pageBounce" value="false"/>
 	<preference name="appBackground" value="rgba(0,0,0,0.0)"/>
