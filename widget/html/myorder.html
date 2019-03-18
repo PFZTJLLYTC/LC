@@ -81,10 +81,6 @@
     </nav>
     <script type="text/javascript" src="../script/api.js"></script>
     <script type="text/javascript">
-    var header = $api.byId("header");
-    var nav = $api.byId("nav");
-    var headerH = $api.offset(header).h;
-    var navH = $api.offset(nav).h;
     apiready = function() {
       $api.fixStatusBar( $api.byId('header') );
         var frames = [];
@@ -102,7 +98,7 @@
             scrollEnabled: true, // 支持手势滑动切换
             rect: {
                 x:0,
-                y: headerH + navH,
+                y: 114,
                 w: 'auto',
                 h: 'auto'
             },
