@@ -101,9 +101,10 @@
             name: 'myorderFrameGroup',
             scrollEnabled: true, // 支持手势滑动切换
             rect: {
-                marginTop: headerH + navH, // 采用margin布局
-                w: 'auto', // 自动填充所在Window的宽度
-                h: 'auto' // 自动填充所在Window的高度
+                x:0,
+                y: headerH + navH,
+                w: 'auto',
+                h: 'auto'
             },
             index: 0, // 默认显示第一个Frame
             frames: frames,
