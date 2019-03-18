@@ -86,6 +86,7 @@
     var headerH = $api.offset(header).h;
     var navH = $api.offset(nav).h;
     apiready = function() {
+      $api.fixStatusBar( $api.byId('header') );
         var frames = [];
         for (var i = 0; i < 3; i++) {
             frames.push({
