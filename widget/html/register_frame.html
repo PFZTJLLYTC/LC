@@ -211,32 +211,46 @@
 
       var appId="A6096149079402";
       var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
+      var now=Date.now();
+      var appCode=SHA1(appId+"UZ"+appKey+"UZ"+now)+"."+now;
 
-      var client=new Resource(appId,appKey);
-      var user=client.Factory("user");
-
-      user.save({
-          "username": usernameValue,
-          "password": passwordValue
+      api.ajax({
+          url: 'https://d.apicloud.com/mcm/api/user',
+          method: 'post',
+          headers: {
+              "X-APICloud-AppId": appId,
+              "X-APICloud-AppKey": appCode
+          },
+          data:{
+            values:{
+              username:usernameValue,
+              password:passwordValue
+            }
+          }
       }, function(ret, err) {
-          api.alert({
-              title: '提示',
-              msg: '注册成功',
-          }, function(ret, err) {
-              if (ret) {
-                  // 跨窗口执行Script, 将用户名传给登录页面
-                  api.execScript({
-                      name: 'login',
-                      frameName: 'login_frame',
-                      script: 'fnSetUsername(\"' + usernameValue + '\");'
-                  });
-                  api.closeWin();
-              } else {
-                  alert("注册失败，用户名已被占用");
-              }
-          });
-      });
-
+        if (ret && ret.id) {
+            api.alert({
+                title: '提示',
+                msg: '注册成功',
+            }, function(ret, err) {
+                if (ret) {
+                    // 跨窗口执行Script, 将用户名传给登录页面
+                    api.execScript({
+                        name: 'login',
+                        frameName: 'login_frame',
+                        script: 'fnSetUsername(\"' + usernameValue + '\");'
+                    });
+                    api.closeWin();
+                }
+            });
+        } else {
+            api.toast({
+                msg: '注册失败，用户名已被占用',
+                duration: 2000,
+                location: 'middle'
+            });
+        }
+        });
     }
 
     </script>

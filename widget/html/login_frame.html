@@ -270,32 +270,41 @@
           return;
       }
 
-      var appId="A6096149079402";
-      var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
+      // var appId="A6096149079402";
+      // var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
+      // var now=Date.now();
+      // var appCode=SHA1(appId+"UZ"+appKey+"UZ"+now)+"."+now;
 
-      var client=new Resource(appId,appKey);
-      var user=client.Factory("user");
-
-      user.login({
-        "username":usernameValue,
-        "password":passwordValue
-      },function(ret, err) {
-          if (ret) {
-              // 保存用户信息
-              $api.setStorage('userInfo', ret);
+        api.ajax({
+            url: 'http://172.30.249.215:8080/user/login',
+            method: 'post',
+            headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+              },
+            data:{
+              body:{
+                "mobile": usernameValue,  //手机登陆
+                "password": passwordValue
+              }
+            }
+        }, function(ret, err) {
+            alert(JSON.stringify(ret));
+            alert(JSON.stringify(err));
+            if (ret) {
+              $api.setStorage('userInfo', ret.data);
               api.openWin({
                     name: 'index',
                     url: '../index.html',
                     slidBackEnabled:false
               });
-          } else {
+            } else {
               api.toast({
-                  msg: '登录失败，用户名或密码错误',
-                  duration: 2000,
-                  location: 'middle'
+              msg: '登录失败，用户名或密码错误',
+              duration: 2000,
+              location: 'middle'
               });
-          }
-      });
+             }
+           });
     }
     // 被注册页面调用，用于从注册页面传递用户名
     function fnSetUsername(username_) {
