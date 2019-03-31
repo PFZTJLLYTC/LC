@@ -11,10 +11,10 @@
     .row {
         box-sizing: border-box;
         width: auto;
-        height: 70px;
+        height: 50px;
         margin-left: 32px;
         margin-right: 32px;
-        padding-top: 40px;
+        padding-top: 20px;
         border-bottom: 1px solid #888;
     }
     .wrap-row{
@@ -60,6 +60,20 @@
         text-align: center;
         border-radius: 8px;
     }
+    .msg-Err{
+      margin-left: 32px;
+      height:14px;
+      font-size: 14px;
+      color: red;
+      text-align: left;
+    }
+    .msg-Ok{
+      margin-left: 32px;
+      height:14px;
+      font-size: 14px;
+      color: green;
+      text-align: left;
+    }
 
     .highlight {
         opacity: 0.7;
@@ -70,12 +84,19 @@
 <body>
     <div class="row wrap-row">
         <div class="icon icon-user"></div>
-        <input id="username" class="input" type="text">
+        <input id="phone" class="input" type="text">
     </div>
+    <div id="phone-msg"class="msg-Err"></div>
     <div class="row wrap-row">
         <div class="icon icon-pswd"></div>
         <input id="password" class="input" type="password">
     </div>
+    <div id="password-msg"class="msg-Err"></div>
+    <div class="row wrap-row">
+        <div class="icon icon-pswd"></div>
+        <input id="confirmPassword" class="input" type="password">
+    </div>
+    <div id="confirmPassword-msg"class="msg-Err"></div>
     <div class="btn" tapmode="highlight" onclick="fnRegister();">注册</div>
     <script type="text/javascript" src="../script/api.js"></script>
     <script type="text/javascript" src="../script/APICloud-rest.js"></script>
@@ -86,21 +107,23 @@
     };
 
     var UIInput;
-    var usernameUIInputId;
+    var phoneUIInputId;
     var passwordUIInputId;
-    var usernameValue;
+    var confirmPasswordUIInputId;
+    var phoneValue;
     var passwordValue;
+    var confirmPasswordValue;
 
     function fnInitUIInput(){
-        var username=$api.byId("username");
-        var usernameRect=$api.offset(username);
+        var phone=$api.byId("phone");
+        var phoneRect=$api.offset(phone);
         UIInput=api.require('UIInput');
         UIInput.open({
              rect: {
-                x: usernameRect.l,
-                y: usernameRect.t,
-                w: usernameRect.w,
-                h: usernameRect.h
+                x: phoneRect.l,
+                y: phoneRect.t,
+                w: phoneRect.w,
+                h: phoneRect.h
             },
             styles: {
                 bgColor: '#fff',
@@ -112,26 +135,26 @@
             },
             autoFocus: false,
             maxRows: 1,
-            placeholder: '用户名',
+            placeholder: '11位手机号码',
             keyboardType: 'default',
             fixed:false,
             fixedOn: api.frameName
         }, function(ret, err){
             if( ret ){
-                 usernameUIInputId = ret.id;
+                 phoneUIInputId = ret.id;
                  if(ret&&ret.eventType=="show"){   //模块成功打开
                    setTimeout(function(){
                      UIInput.popupKeyboard({
-                       id:usernameUIInputId
+                       id:phoneUIInputId
                      });
                    },200);                         //200ms后，弹出用户名输入框的键盘
                  }else if(ret.eventType=="change"){//输入框内容改变
                    UIInput.value({                  //获取输入框内容
-                     id:usernameUIInputId
+                     id:phoneUIInputId
                    },function(ret,err){
                      if(ret){
                        if(ret.status){
-                         usernameValue=ret.msg;
+                         phoneValue=ret.msg;
                        }
                      }
                    });
@@ -157,7 +180,7 @@
           },
           autoFocus: false,
           maxRows: 1,
-          placeholder: '密码',
+          placeholder: '6-20位的数字、字母或下划线',
           keyboardType: 'default',
           inputType: 'password',
           fixed:false,
@@ -178,23 +201,128 @@
               }
           }
       });
+        var confirmPassword = $api.byId('confirmPassword');
+        var confirmPasswordRect = $api.offset(confirmPassword);
+        UIInput.open({
+             rect: {
+                x: confirmPasswordRect.l,
+                y: confirmPasswordRect.t,
+                w: confirmPasswordRect.w,
+                h: confirmPasswordRect.h
+            },
+            styles: {
+                bgColor: '#fff',
+                size: 16,
+                color: '#000',
+                placeholder: {
+                    color: '#ccc'
+                }
+            },
+            autoFocus: false,
+            maxRows: 1,
+            placeholder: '确认密码',
+            keyboardType: 'default',
+            inputType: 'password',
+            fixed:false,
+            fixedOn: api.frameName
+        }, function(ret, err){
+            if( ret ){
+                 confirmPasswordUIInputId = ret.id;
+                 if(ret&&ret.eventType=="show"){   //模块成功打开
+                   setTimeout(function(){
+                     UIInput.popupKeyboard({
+                       id:confirmPasswordUIInputId
+                     });
+                   },200);                         //200ms后，弹出用户名输入框的键盘
+                 }else if(ret.eventType=="change"){//输入框内容改变
+                   UIInput.value({                  //获取输入框内容
+                     id:confirmPasswordUIInputId
+                   },function(ret,err){
+                     if(ret){
+                       if(ret.status){
+                         confirmPasswordValue=ret.msg;
+                       }
+                     }
+                   });
+                 }
+               }
+            });
     }
+    //手机号码验证
+    function fnCheckPhone(phoneNumber){
+      var msg=$api.byId("phone-msg");
+      $api.removeCls(msg, 'msg-Ok');
+      $api.addCls(msg, 'msg-Err');
+      if(!phoneNumber){
+        $api.text(msg,"请输入手机号码");
+        return false;
+      }
+      var reg=/^[1][3,4,5,7,8,9][0-9]{9}$/;
+      if(!reg.test(phoneNumber)){
+        $api.text(msg,"手机号码格式错误");
+        return false;
+      }
+      $api.removeCls(msg, 'msg-Err');
+      $api.addCls(msg, 'msg-Ok');
+      $api.text(msg,"手机号合法");
+      return true;
+    }
+    //密码验证
+    function fnCheckPassword(passwordValue,confirmPasswordValue){
+      var passwordMessage=$api.byId("password-msg");
+      var confirmMessage=$api.byId("confirmPassword-msg");
+
+      $api.removeCls(passwordMessage, 'msg-Ok');
+      $api.addCls(passwordMessage, 'msg-Err');
+      $api.removeCls(confirmMessage, 'msg-Ok');
+      $api.addCls(confirmMessage, 'msg-Err');
+
+      if(!passwordValue){
+        $api.text(passwordMessage,"请输入密码");
+        return false;
+      }
+      if(!confirmPasswordValue){
+        $api.text(confirmMessage,"请确认密码");
+        return false;
+      }
+      //6到20位的数字字母下划线
+      if(passwordValue != confirmPasswordValue){
+        $api.text(confirmMessage,"两次密码输入不一致");
+        return false;
+      }
+      var reg=/^(\w){6,20}$/;
+      if(!reg.test(passwordValue)){
+        $api.text(passwordMessage,"密码格式错误");
+        return false;
+      }
+      $api.removeCls(passwordMessage, 'msg-Err');
+      $api.addCls(passwordMessage, 'msg-Ok');
+      $api.text(passwordMessage,"密码合法");
+
+      $api.removeCls(confirmMessage, 'msg-Err');
+      $api.addCls(confirmMessage, 'msg-Ok');
+      $api.text(confirmMessage,"确认成功");
+      return true;
+    }
+
     function fnRegister(){
-      if (!usernameValue) {
+      var CheckPhone=fnCheckPhone(phoneValue);
+      var CheckPassword=fnCheckPassword(passwordValue,confirmPasswordValue);
+      if (!CheckPhone) {
           if (api.systemType == 'android') {
               setTimeout(function() {
                   UIInput.popupKeyboard({
-                      id: usernameUIInputId
+                      id: phoneUIInputId
                   });
               }, 200);
           } else {
               UIInput.popupKeyboard({
-                  id: usernameUIInputId
+                  id: phoneUIInputId
               });
           }
           return;
       }
-      if (!passwordValue) {
+      if (!CheckPassword) {
           if (api.systemType == 'android') {
               setTimeout(function() {
                   UIInput.popupKeyboard({
@@ -209,36 +337,31 @@
           return;
       }
 
-      var appId="A6096149079402";
-      var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
-      var now=Date.now();
-      var appCode=SHA1(appId+"UZ"+appKey+"UZ"+now)+"."+now;
-
       api.ajax({
-          url: 'https://d.apicloud.com/mcm/api/user',
+          url: 'http://172.29.170.17:8080/user',
           method: 'post',
           headers: {
-              "X-APICloud-AppId": appId,
-              "X-APICloud-AppKey": appCode
+               'Content-Type': 'application/json;charset=utf-8'
           },
           data:{
-            values:{
-              username:usernameValue,
-              password:passwordValue
+            body:{
+              "mobile": phoneValue,  //手机注册
+              "password": passwordValue
             }
           }
       }, function(ret, err) {
-        if (ret && ret.id) {
+        if (ret.data) {
             api.alert({
                 title: '提示',
                 msg: '注册成功',
+                buttons:["确定"]
             }, function(ret, err) {
                 if (ret) {
                     // 跨窗口执行Script, 将用户名传给登录页面
                     api.execScript({
                         name: 'login',
                         frameName: 'login_frame',
-                        script: 'fnSetUsername(\"' + usernameValue + '\");'
+                        script: 'fnSetUsername(\"' + phoneValue + '\");'
                     });
                     api.closeWin();
                 }
