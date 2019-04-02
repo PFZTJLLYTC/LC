@@ -34,17 +34,22 @@
         font-size: 16px;
     }
     .icon{
-      width: 20px;
-      height:20px;
+      width: 25px;
+      height:25px;
       background-size: 100%;
       background-repeat: no-repeat;
       background-position: left;
     }
     .icon-user{
-      background-image: url("../image/username.png");
+      background-image: url("../image/mobile.png");
     }
     .icon-pswd{
+      width: 20px;
+      height:20px;
       background-image: url("../image/password.png");
+    }
+    .icon-confirm{
+      background-image: url("../image/confirm.png");
     }
     .btn {
         width: 200px;
@@ -59,6 +64,17 @@
         line-height: 50px;
         text-align: center;
         border-radius: 8px;
+    }
+
+    .confirm-btn{
+    height: 20px;
+    width: 150px;
+    padding-bottom: 5px;
+    text-align: center;
+    color: blue;
+    font-size: 18px;
+    line-height: 25px;
+    text-align: center;
     }
     .msg-Err{
       margin-left: 32px;
@@ -85,8 +101,17 @@
     <div class="row wrap-row">
         <div class="icon icon-user"></div>
         <input id="phone" class="input" type="text">
+        <div class="confirm-btn" onclick="fnGetTextCode()">获取验证码</div>
     </div>
     <div id="phone-msg"class="msg-Err"></div>
+
+    <div class="row wrap-row">
+        <div class="icon icon-confirm"></div>
+        <input id="confirm" class="input" type="text">
+        <div class="confirm-btn" onclick="fnCommitCode()">提交验证码</div>
+    </div>
+    <div id="confirm-msg"class="msg-Err"></div>
+
     <div class="row wrap-row">
         <div class="icon icon-pswd"></div>
         <input id="password" class="input" type="password">
@@ -108,16 +133,22 @@
 
     var UIInput;
     var phoneUIInputId;
+    var confirmUIInputId;
     var passwordUIInputId;
     var confirmPasswordUIInputId;
     var phoneValue;
+    var confirmValue;
     var passwordValue;
     var confirmPasswordValue;
+    var moduleSMSSDK;
 
     function fnInitUIInput(){
         var phone=$api.byId("phone");
         var phoneRect=$api.offset(phone);
         UIInput=api.require('UIInput');
+
+        moduleSMSSDK=api.require('smssdk');
+
         UIInput.open({
              rect: {
                 x: phoneRect.l,
@@ -161,6 +192,53 @@
                  }
                }
             });
+            var confirm=$api.byId("confirm");
+            var confirmRect=$api.offset(confirm);
+            UIInput=api.require('UIInput');
+            UIInput.open({
+                 rect: {
+                    x: confirmRect.l,
+                    y: confirmRect.t,
+                    w: confirmRect.w,
+                    h: confirmRect.h
+                },
+                styles: {
+                    bgColor: '#fff',
+                    size: 16,
+                    color: '#000',
+                    placeholder: {
+                        color: '#ccc'
+                    }
+                },
+                autoFocus: false,
+                maxRows: 1,
+                placeholder: '短信验证码',
+                keyboardType: 'default',
+                fixed:false,
+                fixedOn: api.frameName
+            }, function(ret, err){
+                if( ret ){
+                     confirmUIInputId = ret.id;
+                     if(ret&&ret.eventType=="show"){   //模块成功打开
+                       setTimeout(function(){
+                         UIInput.popupKeyboard({
+                           id:confirmUIInputId
+                         });
+                       },200);                         //200ms后，弹出用户名输入框的键盘
+                     }else if(ret.eventType=="change"){//输入框内容改变
+                       UIInput.value({                  //获取输入框内容
+                         id:confirmUIInputId
+                       },function(ret,err){
+                         if(ret){
+                           if(ret.status){
+                             confirmValue=ret.msg;
+                           }
+                         }
+                       });
+                     }
+                   }
+                });
+
         var password = $api.byId('password');
         var passwordRect = $api.offset(password);
         UIInput.open({
@@ -247,6 +325,35 @@
                  }
                }
             });
+    }
+    //获取验证码
+    function fnGetTextCode(){
+
+		    var country = '86';
+		    var phone = phoneValue;
+		    var tempCode = '1319972';
+		    // param中的key命名不能改变
+			var param = {zone:country, phoneNumber:phone, tempCode:tempCode};
+	        moduleSMSSDK.getTextCode(param, function(ret, err){
+	            if (err !== null && err !== undefined && err !== '') {
+	                // 错误消息示例：{"msg":"Template not exist.","code":484}
+	                alert("Error:\n"+JSON.stringify(err));
+	            } else {
+	                // 正常消息示例：{"smart":false}
+	        	    alert(JSON.stringify(ret));
+	        	}
+	        });
+    }
+    //提交验证码
+    function fnCommitCode(){
+      var param = {zone:'86', phoneNumber:phoneValue, code:confirmValue};
+      moduleSMSSDK.commitCode(param, function(ret, err){
+      if (err !== null && err !== undefined && err !== '') {
+        // 错误消息示例：{"msg":"Template not exist.","code":484}
+        alert("Error:\n" + JSON.stringify(err));
+        } else {
+        }
+      });
     }
     //手机号码验证
     function fnCheckPhone(phoneNumber){
