@@ -66,15 +66,17 @@
         border-radius: 8px;
     }
 
-    .confirm-btn{
+    .btn-confirm{
     height: 20px;
-    width: 150px;
+    width: 175px;
     padding-bottom: 5px;
     text-align: center;
     color: blue;
     font-size: 18px;
     line-height: 25px;
     text-align: center;
+    outline: none;
+    border: none;
     }
     .msg-Err{
       margin-left: 32px;
@@ -101,14 +103,14 @@
     <div class="row wrap-row">
         <div class="icon icon-user"></div>
         <input id="phone" class="input" type="text">
-        <div class="confirm-btn" onclick="fnGetTextCode()">获取验证码</div>
+        <input id="tel" class="btn-confirm" tapmode type="button" value="获取验证码" onclick="fnGetTextCode()"></input>
     </div>
     <div id="phone-msg"class="msg-Err"></div>
 
     <div class="row wrap-row">
         <div class="icon icon-confirm"></div>
         <input id="confirm" class="input" type="text">
-        <div class="confirm-btn" onclick="fnCommitCode()">提交验证码</div>
+        <input class="btn-confirm" tapmode type="button" value="提交验证码" onclick="fnCommitCode()"></input>
     </div>
     <div id="confirm-msg"class="msg-Err"></div>
 
@@ -131,6 +133,8 @@
         fnInitUIInput();
     };
 
+    var countdown;   //短信重发倒计时间
+    var timer;      //setInterval 返回ID
     var UIInput;
     var phoneUIInputId;
     var confirmUIInputId;
@@ -340,7 +344,21 @@
 	                alert("Error:\n"+JSON.stringify(err));
 	            } else {
 	                // 正常消息示例：{"smart":false}
+                  countdown=60;                              //60秒后重发
+                  var tel=$api.byId("tel");
+                  tel.disabled=true;
+                  timer=setInterval(function(){
+                    if(countdown==0){
+                      clearInterval(timer);
+                      tel.disabled=false;                  //用$api.attr(tel,"disabled",false)无效，原因不明
+                      $api.val(tel,"获取验证码");
+                    }else{
+                      $api.val(tel,countdown+"s 重新发送");
+                      countdown--;
+                    }
+                  },1000);
 	        	    alert(JSON.stringify(ret));
+
 	        	}
 	        });
     }
