@@ -86,42 +86,37 @@
      fnGetOrder();
      fnPullRefresh();
    };
-   var appId="A6096149079402";
-   var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
+
    var userInfo=$api.getStorage("userInfo");
-   var client=new Resource(appId,appKey);
-   var Model=client.Factory('user');
+   var data={noneorder:true};
+
    function fnGetOrder(){
-     Model.get({
-       "_id":userInfo.userId,
-       "_relation":"orders"
-     },function(ret,err){
-       if(ret){
-         var order;
-         var data={
-           noneorder:true
-         };
-         for(var i=0;i<ret.length;i++){
-           if(ret[i]["status"]=='1')
-           order=ret[i];
-         }
-         if(order){
-           var timearray=order["time"].split(" -- ",2);
-           data = {
-             noneorder:false,
-             fromtime:timearray[0],
-             totime:timearray[1],
-             carinfo:order["carinfo"],
-             source:order["source"],
-             destination:order["destination"],
-             drivername:order["drivername"],
-             drivertel:order["drivertel"],
-             date:order["date"]
-           };}
+
+     api.ajax({
+         url: 'http://172.29.170.17:8080/orders/processin'+"?userId="+userInfo.userId,
+         method: 'get',
+         headers: {
+               'Content-Type': 'application/json;charset=utf-8'
+           }
+     }, function(ret, err) {
+       if(ret.data){
+         var order=ret.data;
+         var timearray=order["time"].split(" -- ",2);
+         data = {
+            noneorder:false,
+            fromtime:timearray[0],
+            totime:timearray[1],
+            carinfo:order["carNum"],
+            source:order["source"],
+            destination:order["destination"],
+            drivername:order["driverName"],
+            drivertel:order["dnum"],
+            date:order["date"]
+          };
        }
        var html = template('order-template', data); //data为模板数据
        document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
-     });
+        });
    }
    function fnPullRefresh(){
        api.setCustomRefreshHeaderInfo({
