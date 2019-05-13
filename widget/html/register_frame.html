@@ -126,6 +126,7 @@
     <div id="confirmPassword-msg"class="msg-Err"></div>
     <div class="btn" tapmode="highlight" onclick="fnRegister();">注册</div>
     <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/common.js"></script>
     <script type="text/javascript" src="../script/APICloud-rest.js"></script>
     <script type="text/javascript" src="../script/SHA1.js"></script>
     <script type="text/javascript">
@@ -463,7 +464,7 @@
       }
 
       api.ajax({
-          url: 'http://118.24.96.45/signUp',
+          url: 'http://'+url+':'+port+'/user/register',
           method: 'post',
           headers: {
                'Content-Type': 'application/json;charset=utf-8'
@@ -475,7 +476,7 @@
             }
           }
       }, function(ret, err) {
-        if (ret.data) {
+        if (ret.code==0) {
             api.alert({
                 title: '提示',
                 msg: '注册成功',

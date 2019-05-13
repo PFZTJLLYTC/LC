@@ -79,6 +79,7 @@
      {{/if}}
    </script>
    <script type="text/javascript" src="../script/api.js"></script>
+   <script type="text/javascript" src="../script/common.js"></script>
    <script type="text/javascript" src="../script/SHA1.js"></script>
    <script type="text/javascript" src="../script/APICloud-rest.js"></script>
    <script>
@@ -93,7 +94,7 @@
    function fnGetOrder(){
 
      api.ajax({
-         url: 'http://118.24.96.45:8080/orders/processin'+"?userId="+userInfo.userId,
+         url: 'http://'+url+':'+port+':8080/orders/processin'+"?userId="+userInfo.userId,
          method: 'get',
          headers: {
                'Content-Type': 'application/json;charset=utf-8'

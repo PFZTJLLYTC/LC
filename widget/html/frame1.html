@@ -142,6 +142,7 @@
   </div>
   <div class="btn" tapmode="highlight" onclick="fnSubmit()">提交订单</div>
   <script type="text/javascript" src="../script/api.js"></script>
+  <script type="text/javascript" src="../script/common.js"></script>  
   <script type="text/javascript" src="../script/SHA1.js"></script>
   <script type="text/javascript" src="../script/APICloud-rest.js"></script>
   <script>
@@ -298,7 +299,7 @@
         dateValue=''+formatDate(new Date());
 
         api.ajax({
-            url: 'http://118.24.96.45:8080/orders'+"?userId="+userInfo.userId,
+            url: 'http://'+url+':'+port+'/orders'+"?userId="+userInfo.userId,
             method: 'post',
             headers: {
                   'Content-Type': 'application/json;charset=utf-8'
