@@ -90,11 +90,11 @@
               <img src="../image/slide/slide1.jpg" />
               <label>经典：人吃人的武侠世界</label>
           </div>
-          <div>
+          <div tapmode onclick="fnOpenMoreMusicRecommendWin();">
               <img src="../image/slide/slide2.jpg" />
               <label>路与歌</label>
           </div>
-          <div>
+          <div tapmode onclick="fnOpenMoreBooksRecommendWin();">
               <img src="../image/slide/slide3.jpg" />
               <label>途与书</label>
           </div>
@@ -105,56 +105,7 @@
       </div>
       <em class="pointer"></em>
   </div>
-  <section>
-  <header  tapmode onclick="fnOpenMoreNewsWin();">
-      <span>实时热点(xx电鳗？)</span><em>热搜榜单&gt;</em>
-  </header>
-  <!--<ul class="content" >
-      <li>
-          <div tapmode onclick="fnOpenNewsWin(0);">
-              <img src="../image/canadadianman.jpg" />
-          </div>
-          <label>xx吸毒</label>
-      </li>
-      <li>
-          <div tapmode onclick="fnOpenNewsWin(1);">
-              <img src="../image/canadadianman.jpg" />
-          </div>
-          <label>xx离婚</label>
-      </li>
-      <li>
-          <div tapmode onclick="fnOpenNewsWin(2);">
-              <img src="../image/canadadianman.jpg" />
-          </div>
-          <label>加拿大电鳗</label>
-      </li>
-  </ul>!-->
-  </section>
-  <section>
-  <header>
-      <span>路途歌单推荐</span><em tapmode onclick="fnOpenMoreMusicRecommendWin();">更多&gt;</em>
-  </header>
-  <ul class="content">
-      <li>
-          <div tapmode onclick="fnOpenMusicRecommendWin(0);">
-              <img src="../image/music1.jpg" />
-          </div>
-          <label>在得失之间游刃有余</label>
-      </li>
-      <li>
-          <div tapmode onclick="fnOpenMusicRecommendWin(1);">
-              <img src="../image/music2.jpg" />
-          </div>
-          <label>平凡的世界</label>
-      </li>
-      <li>
-          <div tapmode onclick="fnOpenMusicRecommendWin(2);">
-              <img src="../image/music3.jpg" />
-          </div>
-          <label>红与白</label>
-      </li>
-  </ul>
-  </section>
+
   <section>
   <header>
       <span>风云文学</span><em tapmode onclick="fnOpenMoreBooksRecommendWin();">更多&gt;</em>
@@ -195,7 +146,7 @@
           <div tapmode onclick="fnOpenOtherNewsWin(1);">
               <img src="../image/houseprice.jpg" />
           </div>
-          <label>房价预测</label>
+          <label>微博热搜</label>
       </li>
       <li>
           <div tapmode onclick="fnOpenOtherNewsWin(2);">
@@ -205,31 +156,7 @@
       </li>
   </ul>
   </section>
-  <section>
-  <header>
-      <span>连城动态</span><em tapmode onclick=alert("敬请期待")>更多&gt;</em>
-  </header>
-  <ul class="content">
-      <li>
-          <div tapmode onclick="fnOpenLcNewsWin(0);">
-              <img src="../image/linesinfo.jpg" />
-          </div>
-          <label>线路信息</label>
-      </li>
-      <li>
-          <div tapmode onclick="fnOpenLcNewsWin(1);">
-              <img src="../image/hezuo.jpg" />
-          </div>
-          <label>合作</label>
-      </li>
-      <li>
-          <div tapmode onclick="fnOpenLcNewsWin(2);">
-              <img src="../image/contact.jpg" />
-          </div>
-          <label>更多联系方式</label>
-      </li>
-  </ul>
-  </section>
+
   </body>
   <script type="text/javascript" src="../script/api-lite.js"></script>
   <script type="text/javascript" src="../script/zepto.js"></script>
@@ -252,16 +179,7 @@
 
   apiready = function(){
   };
-  // 打开更多音乐推荐Window
-  function fnOpenMusicRecommendWin(num) {
-      api.openWin({
-          name: 'MusicRecommend',
-          url: './MusicRecommend.html',
-          pageParam:{
-            pagenum : num
-          }
-      });
-  }
+
   // 打开更多书籍Window
   function fnOpenBooksRecommendWin(num) {
       api.openWin({
@@ -272,15 +190,7 @@
           }
       });
   }
-  function fnOpenLcNewsWin(num) {
-      api.openWin({
-          name: 'LcNews',
-          url: './LcNews.html',
-          pageParam : {
-            pagenum : num
-          }
-      });
-  }
+
   function fnOpenOtherNewsWin(num) {
       api.openWin({
           name: 'OtherNews',
@@ -307,14 +217,6 @@
           name: 'LCJ-b',
           url: 'https://www.bilibili.com/video/av13017548?from=search&seid=10529078456526712984'
       });
-  }
-  function fnOpenMoreNewsWin(){
-    api.openWin({
-        name: '热搜榜单',
-        url: './MoreNews.html',
-
-    });
-
   }
 
   </script>

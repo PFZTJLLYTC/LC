@@ -69,7 +69,7 @@
 <div id="wrap" class="flex-wrap flex-vertical">
     <header id="header">
       <div class="item"></div>
-        <div class="item ">
+    <div class="item ">
     <ul>
         <li class="border-b active" >发现</li>
         <li class="border-b" >出发</li>
@@ -103,9 +103,10 @@
 
     var websocket=null;
     var lineId=1;
+    var userInfo=api.getStorage('userInfo');
     function fnWebSocket(){
       if('WebSocket' in window){
-         websocket=new WebSocket("ws://127.0.0.1:8080/webSocket/"+lineId);
+         websocket=new WebSocket("ws://192.168.1.102:8080/webSocket/2");
           //连接成功建立的回调方法
           websocket.onopen=function(){
           console.log('连接建立');
