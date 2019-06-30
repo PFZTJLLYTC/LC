@@ -7,6 +7,7 @@
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>消息Frame</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <script src="../script/template-web.js"></script>
     <style>
     html,
     body {
@@ -31,13 +32,13 @@
         position: relative;
         box-sizing: border-box;
         height: 30px;
-        padding-left: 40px;
+        padding-left: 30px;
         color: #888;
         font-size: 12px;
         line-height: 30px;
         background-repeat: no-repeat;
         background-size: auto 16px;
-        background-image: url(../image/icon_user_coupon.png);
+        background-image: url(../image/LC_round.png);
         background-position: 8px center;
     }
 
@@ -69,7 +70,7 @@
         line-height: 30px;
     }
 
-    .list .message .tag .arrow {
+    .list .message .type .del {
         position: absolute;
         box-sizing: border-box;
         padding-right: 16px;
@@ -79,10 +80,34 @@
         text-align: right;
         font-size: 10px;
         line-height: 30px;
-        background-image: url(../image/arrow_right.png);
+        color: red;
         background-repeat: no-repeat;
         background-size: 10px 16px;
         background-position: right center;
+    }
+
+    .list .message .tag .check {
+        position: absolute;
+        box-sizing: border-box;
+        padding-right: 16px;
+        right: 0;
+        height: 30px;
+        margin-right: 12px;
+        text-align: right;
+        font-size: 10px;
+        line-height: 30px;
+        color: blue;
+        background-repeat: no-repeat;
+        background-size: 10px 16px;
+        background-position: right center;
+    }
+
+    .show{
+      display:inline;
+    }
+
+    .hide{
+      display: none;
     }
 
     .highlight {
@@ -92,30 +117,135 @@
 </head>
 
 <body>
-    <section id="list" class="list">
-        <div class="message" tapmode="highlight">
-            <div class="type">出行提醒</div>
-            <div class="content">【连城】尊敬的客户，您的行程状态有更新，快去看看吧~！</div>
-            <div class="tag">
-                <div class="time">2016-02-26 12:02:08</div>
-                <div class="arrow">查看详情</div>
+  <ul id="list" class="list"></ul>
+
+  <script id="message-template" type="text/html">
+    {{if nomessage}}
+      <li>暂无消息</li>
+    {{else if !nomessage}}
+      {{each list}}
+        <li id="li-{{$value.id}}" class="message" tapmode="highlight">
+            <div class="type">出行提醒
+              <span class="del hide" tapmode onclick="fnDel({{$value.id}});">删除消息</span>
             </div>
-        </div>
-        <div class="message" tapmode="highlight">
-            <div class="type">出行提醒</div>
-            <div class="content">【连城】尊敬的客户，您的行程状态有更新，快去看看吧~！</div>
+            <div class="content">【连城】{{$value.message}}</div>
             <div class="tag">
-                <div class="time">2016-02-25 11:30:33</div>
-                <div class="arrow">查看详情</div>
+                <div class="time">{{$value.createTime}}</div>
+                <div class="check" tapmode onclick="fnCheck();">查看详情</div>
             </div>
-        </div>
-    </section>
+        </li>
+      {{/each}}
+    {{/if}}
+  </script>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/common.js"></script>
+    <script type="text/javascript">
+    apiready = function() {
+        fnGetMessages();
+        fnPullRefresh();
+    };
+
+    var userInfo=$api.getStorage("userInfo");
+    var data={'nomessage':true};
+    var list= document.getElementById('list');
+
+    function fnGetMessages(){
+      api.ajax({
+          url: 'http://'+url+':'+port+'/user/messages/findMessages?dnum='+userInfo.dnum,
+          method: 'get',
+          headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+      }, function(ret, err) {
+        console.log(JSON.stringify(ret));
+        if(ret.data.length>0){
+          data={
+            'nomessage':false,
+            'list':ret.data
+          };
+        }else{
+          data={
+            'nomessage':true
+          };
+        }
+          console.log(JSON.stringify(data));
+          var html = template('message-template', data); //data为模板数据
+          list.innerHTML = html; //将生成的模板填充添加到对应的容器中
+        });
+    }
+
+    function fnPullRefresh(){
+        api.setCustomRefreshHeaderInfo({
+            bgColor : '#f0f0f0',
+        }, function() {
+            fnGetMessages();
+            setTimeout(
+              function(){
+                api.refreshHeaderLoadDone();
+              },500);
+        });
+    }
+
+    function fnCheck(){
+      api.openWin({
+          name: 'myorder',
+          url: './myorder.html'
+      });
+    }
+
+    function fnDel(id,index){
+      api.confirm({
+          title: '删除消息',
+          msg: '确定删除该条消息吗？',
+          buttons: ['确定', '取消']
+      }, function(ret, err){
+          if( ret ){
+            console.log(JSON.stringify(ret));
+            if(ret.buttonIndex===1){
+              var li=document.getElementById('li-'+id);
+              list.removeChild(li);
+              api.ajax({
+                  url: 'http://'+url+':'+port+'/user/messages/delete/'+id,
+                  method: 'post',
+                  headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    }
+              },function(ret, err){
+                  if (ret) {
+                    console.log(JSON.stringify(ret));
+
+                  } else {
+                    console.log(JSON.stringify(err));
+                  }
+              });
+            }
+          }else{
+                  console.log(JSON.stringify(err));
+          }
+      });
+
+
+    }
+
+
+    function fnDelToggle(){
+      var del=document.getElementsByClassName('del');
+      if(del.length>0){
+        var change=del[0].classList.contains('hide');
+        if(change){
+            for(var i=0;i<del.length;i++){
+              del[i].classList.remove('hide');
+              del[i].classList.add('show');
+              }
+          }else{
+            for(var i=0;i<del.length;i++){
+              del[i].classList.remove('show');
+              del[i].classList.add('hide');
+              }
+          }
+        }
+      }
+
+    </script>
 </body>
-<script type="text/javascript" src="../script/api.js"></script>
-<script type="text/javascript">
-apiready = function() {
-
-};
-</script>
-
 </html>
