@@ -338,11 +338,12 @@
 		    var phone = phoneValue;
 		    var tempCode = '1319972';
 		    // param中的key命名不能改变
-			var param = {zone:country, phoneNumber:phone, tempCode:tempCode};
+			var param = {zone:country, phoneNumber:phone};
 	        moduleSMSSDK.getTextCode(param, function(ret, err){
 	            if (err !== null && err !== undefined && err !== '') {
 	                // 错误消息示例：{"msg":"Template not exist.","code":484}
 	                alert("Error:\n"+JSON.stringify(err));
+                  console.log("Error:\n"+JSON.stringify(err));
 	            } else {
 	                // 正常消息示例：{"smart":false}
                   countdown=60;                              //60秒后重发
@@ -366,6 +367,7 @@
     //提交验证码
     function fnCommitCode(){
       var param = {zone:'86', phoneNumber:phoneValue, code:confirmValue};
+      console.log(JSON.stringify(param));
       moduleSMSSDK.commitCode(param, function(ret, err){
       if (err !== null && err !== undefined && err !== '') {
         // 错误消息示例：{"msg":"Template not exist.","code":484}
