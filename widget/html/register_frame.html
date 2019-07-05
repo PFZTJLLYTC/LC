@@ -372,7 +372,18 @@
       if (err !== null && err !== undefined && err !== '') {
         // 错误消息示例：{"msg":"Template not exist.","code":484}
         alert("Error:\n" + JSON.stringify(err));
+        api.toast({
+            msg: '验证失败',
+            duration: 2000,
+            location: 'middle'
+        });
         } else {
+          api.toast({
+              msg: '验证成功',
+              duration: 2000,
+              location: 'middle'
+          });
+
         }
       });
     }
