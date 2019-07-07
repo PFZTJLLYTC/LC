@@ -7,6 +7,7 @@
     <title>出发</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <script src="../script/template-web.js"></script>
     <style>
     .wrap-row{
       display: -webkit-box;
@@ -49,6 +50,12 @@
     .icon-addr{
       background-image: url("../image/address.png");
     }
+    .icon-line{
+      background-image: url("../image/line.png");
+    }
+    .icon-remark{
+      background-image: url("../image/remark.png");
+    }
     .option{
       box-sizing: border-box;
       width: 100%;
@@ -74,6 +81,10 @@
         font-size: 16px;
         line-height: 20px;
     }
+    .option .select{
+        background-color: white;
+    }
+
     .option .input-time{
       pointer-events: none;
     }
@@ -113,42 +124,53 @@
     </style>
 </head>
 <body>
-  <div class="wrap-col">
-    <div class="wrap-row option item">
-      <div id=source class="source item" tapmode onclick="fnCitySelect(1)">出发地</div>
-      <div class="to item" tapmode onclick="fnChange()"></div>
-      <div id=destination class="destination item" tapmode onclick="fnCitySelect(2)">目的地</div>
+  <div id="content"></div>
+
+  <script id="option-template" type="text/html">
+    <div class="wrap-col">
+      <div class="wrap-row option item">
+        <div class="item icon icon-line"></div>
+        <label class="title item" for="line">选择线路</label>
+        <select id="line" class="input select item">
+          <option value="" hidden>--请选择--</option>
+          {{each list}}
+            <option value="{{$value}}">{{$value}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="option wrap-row item" tapmode onclick="fnTimeSelect()">
+        <div class="item icon icon-time"></div>
+        <label class="title item"for="time">预约时间</label>
+        <input id="time" class="input item input-time" type="text" placeholder="预计出发时间">
+      </div>
+      <div class="option wrap-row item"  tapmode onclick="fnClose()">
+        <div class="item icon icon-tel"></div>
+        <label class="title item" for="tel">联系电话</label>
+        <input id="tel" class="input item" type="number" placeholder="11位手机号码">
+      </div>
+      <div class="option wrap-row item"  tapmode onclick="fnClose()">
+        <div class="item icon icon-people"></div>
+        <label class="title item" for="people">乘客人数</label>
+        <input id="people" class="input item" type="number" placeholder="1-7人">
+      </div>
+      <div class="option wrap-row item"  tapmode onclick="fnClose()">
+        <div class="item icon icon-addr"></div>
+        <label class="title item" for="address">详细地址</label>
+        <input id="address" class="input item" type="text" placeholder="选填">
+      </div>
+      <div class="option wrap-row item"  tapmode onclick="fnClose()">
+        <div class="item icon icon-remark"></div>
+        <label class="title item" for="remark">订单备注</label>
+        <input id="remark" class="input item" type="text" placeholder="填写额外对约车服务的要求">
+      </div>
     </div>
-    <div class="option wrap-row item" tapmode onclick="fnTimeSelect()">
-      <div class="item icon icon-time"></div>
-      <span class="title item"for="time">预约时间</span>
-      <input id="time" class="input item input-time" type="text" placeholder="预计出发时间">
-    </div>
-    <div class="option wrap-row item"  tapmode onclick="fnClose()">
-      <div class="item icon icon-tel"></div>
-      <label class="title item" for="tel">联系电话</label>
-      <input id="tel" class="input item" type="number" placeholder="11位手机号码">
-    </div>
-    <div class="option wrap-row item"  tapmode onclick="fnClose()">
-      <div class="item icon icon-people"></div>
-      <label class="title item" for="people">乘客人数</label>
-      <input id="people" class="input item" type="number" placeholder="1-4人">
-    </div>
-    <div class="option wrap-row item"  tapmode onclick="fnClose()">
-      <div class="item icon icon-addr"></div>
-      <label class="title item" for="address">详细地址</label>
-      <input id="address" class="input item" type="text" placeholder="选填">
-    </div>
-  </div>
-  <div class="btn" tapmode="highlight" onclick="fnSubmit()">提交订单</div>
+    <div class="btn" tapmode="highlight" onclick="fnSubmit()">提交订单</div>
+  </script>
   <script type="text/javascript" src="../script/api.js"></script>
-  <script type="text/javascript" src="../script/common.js"></script>  
-  <script type="text/javascript" src="../script/SHA1.js"></script>
-  <script type="text/javascript" src="../script/APICloud-rest.js"></script>
-  <script>
+  <script type="text/javascript" src="../script/common.js"></script>
+  <script type="text/javascript">
 
   var periodSelector;
-  var UIActionSelector;
   var sourceValue;
   var destinationValue;
   var timeValue;
@@ -164,87 +186,28 @@
    function fnInit(){
      periodSelector=null;
      UIActionSelector=null;
-   }
-   function fnCitySelect(index_){
-     if(periodSelector)fnClose();
-     UIActionSelector = api.require('UIActionSelector');
-     UIActionSelector.open({
-          datas: 'widget://res/city.json',
-          layout: {
-              row: 5,
-              col: 3,
-              height: 30,
-              size: 12,
-              sizeActive: 14,
-              rowSpacing: 5,
-              colSpacing: 10,
-              maskBg: 'rgba(0,0,0,0.2)',
-              bg: '#fff',
-              color: '#888',
-              colorActive: '#f00',
-              colorSelected: '#f00'
-          },
-          animation: true,
-          cancel: {
-              text: '取消',
-              size: 12,
-              w: 90,
-              h: 35,
-              bg: '#fff',
-              bgActive: '#ccc',
-              color: '#888',
-              colorActive: '#fff'
-          },
-          ok: {
-              text: '确定',
-              size: 12,
-              w: 90,
-              h: 35,
-              bg: '#fff',
-              bgActive: '#ccc',
-              color: '#888',
-              colorActive: '#fff'
-          },
-          title: {
-              text: '请选择',
-              size: 12,
-              h: 44,
-              bg: '#eee',
-              color: '#888'
-          },
-          fixedOn: api.frameName
-      }, function(ret, err) {
-          if (ret.eventType=='ok') {
-            if(index_==1){
-              var source=$api.byId('source');
-              if(ret.level2=="县"||ret.level2=="市辖区"||ret.level2=="市")
-              {
-                sourceValue=ret.level1+'-'+ret.level3;
-                source.innerHTML=sourceValue;
-              }
-              else{
-                sourceValue=ret.level2+'-'+ret.level3;
-                source.innerHTML=sourceValue;
-              }
 
-            }
-            else if(index_==2){
-              var destination=$api.byId('destination');
-              if(ret.level2=="县"||ret.level2=="市辖区"||ret.level2=="市")
-              {
-                destinationValue=ret.level1+'-'+ret.level3;
-                destination.innerHTML=destinationValue;
-              }
-              else{
-                destinationValue=ret.level2+'-'+ret.level3;
-                destination.innerHTML=destinationValue;
-              }
+     api.ajax({
+         url: 'http://'+url+':'+port+'/user/lines/all',
+         method: 'get',
+         headers: {
+               'Content-Type': 'application/json;charset=utf-8'
+           },
+     },function(ret, err){
+         if (ret) {
+             console.log( JSON.stringify( ret ) );
+             var data={
+               list:ret.data
+             }
+             var html = template('option-template', data); //data为模板数据
+             document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+         } else {
+             console.log( JSON.stringify( err ) );
+         }
+     });
 
-            }
-          } else {
-          }
-      });
    }
+
    function fnTimeSelect(){
      if(periodSelector)periodSelector.show();
      else{
@@ -270,14 +233,7 @@
        });
      }
    }
-    function fnChange(){
-      if(periodSelector)fnClose();
-      var source=$api.byId('source');
-      var destination=$api.byId('destination');
-      var temp=source.innerHTML;
-      source.innerHTML=destination.innerHTML;
-      destination.innerHTML=temp;
-    }
+
     function fnClose(){
       if(periodSelector)periodSelector.hide();
     }
@@ -299,7 +255,7 @@
         dateValue=''+formatDate(new Date());
 
         api.ajax({
-            url: 'http://'+url+':'+port+'/orders'+"?userId="+userInfo.userId,
+            url: 'http://'+url+':'+port+'/user/orders/create'+"?userId="+userInfo.userId,
             method: 'post',
             headers: {
                   'Content-Type': 'application/json;charset=utf-8'

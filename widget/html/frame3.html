@@ -201,7 +201,7 @@ function getUserInfo() {
             $api.text(username,ret.username);
             fnUpdateLocalAvatar(ret);
         } else {
-            alert(JSON.stringify(err));
+            console.log(JSON.stringify(err));
         }
     });
 }
@@ -280,7 +280,7 @@ function fnUploadAtavar(avatarUrl_) {
         if (ret) {
             fnUpdateUserAtavar(ret);
         } else {
-            alert(JSON.stringify(err));
+            console.log(JSON.stringify(err));
         }
     });
 }
@@ -305,7 +305,7 @@ function fnUpdateUserAtavar(avatar_) {
         if (ret) {
             fnUpdateLocalAvatar(ret);
         } else {
-            alert(JSON.stringify(err));
+            console.log(JSON.stringify(err));
         }
     });
 }

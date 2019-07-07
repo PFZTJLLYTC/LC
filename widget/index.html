@@ -94,6 +94,7 @@
     </div>
 </div>
 <script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="./script/common.js"></script>
 <script type="text/javascript">
     apiready = function () {
         $api.fixStatusBar( $api.byId('header') );
@@ -102,11 +103,10 @@
     }
 
     var websocket=null;
-    var lineId=1;
-    var userInfo=api.getStorage('userInfo');
+    var userInfo=$api.getStorage('userInfo');
     function fnWebSocket(){
       if('WebSocket' in window){
-         websocket=new WebSocket("ws://192.168.1.102:8080/webSocket/2");
+          websocket=new WebSocket('ws://'+url+':'+port+'/webSocket/'+userInfo.userId);
           //连接成功建立的回调方法
           websocket.onopen=function(){
           console.log('连接建立');
@@ -121,16 +121,23 @@
           websocket.onMessage=function(event){
            console.log('收到消息:'+event.data);
            //弹窗提醒：来新单了
-          api.alert({
-                   title: '订单提醒',
-                   msg: '您有新的订单了',
-                   }, function(ret, err) {
-                   });
-               };
+           api.alert({
+                    title: '订单提醒',
+                    msg: '您有新的订单了',
+                    }, function(ret, err) {
+                      if(ret){
+                        api.openWin({
+                            name: 'message',
+                            url: './html/message.html'
+                        });
+                      }
+                    });
+          }
 
          //连接错误的回调方法
           websocket.onerror=function(){
                  alert('websocket 通信错误');
+                 console.log('websocket 通信错误');
                };
 
         //监听窗口关闭事件，窗口关闭时主动关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
@@ -139,6 +146,7 @@
                };
       }else{
         alert('不支持websocket');
+        console.log('不支持websocket');
       }
 
     }

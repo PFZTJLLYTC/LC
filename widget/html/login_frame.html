@@ -290,8 +290,8 @@
               }
             }
         }, function(ret, err) {
-            alert(JSON.stringify(ret));
-            alert(JSON.stringify(err));
+            console.log(JSON.stringify(ret));
+            console.log(JSON.stringify(err));
             if (ret.data) {
               $api.setStorage('userInfo', ret.data);
               api.openWin({

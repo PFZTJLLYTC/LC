@@ -146,6 +146,7 @@
     var passwordValue;
     var confirmPasswordValue;
     var moduleSMSSDK;
+    var checkCode;//检查验证码是否填写
 
     function fnInitUIInput(){
         var phone=$api.byId("phone");
@@ -342,7 +343,7 @@
 	        moduleSMSSDK.getTextCode(param, function(ret, err){
 	            if (err !== null && err !== undefined && err !== '') {
 	                // 错误消息示例：{"msg":"Template not exist.","code":484}
-	                alert("Error:\n"+JSON.stringify(err));
+	                alert(JSON.stringify(err.msg));
                   console.log("Error:\n"+JSON.stringify(err));
 	            } else {
 	                // 正常消息示例：{"smart":false}
@@ -366,24 +367,22 @@
     }
     //提交验证码
     function fnCommitCode(){
+
+      fnCheckTextCode(false);//检查是否填写验证码
       var param = {zone:'86', phoneNumber:phoneValue, code:confirmValue};
       console.log(JSON.stringify(param));
       moduleSMSSDK.commitCode(param, function(ret, err){
       if (err !== null && err !== undefined && err !== '') {
         // 错误消息示例：{"msg":"Template not exist.","code":484}
-        alert("Error:\n" + JSON.stringify(err));
-        api.toast({
-            msg: '验证失败',
-            duration: 2000,
-            location: 'middle'
-        });
-        } else {
-          api.toast({
-              msg: '验证成功',
-              duration: 2000,
-              location: 'middle'
-          });
+        alert(JSON.stringify(err.msg));
+        fnCheckTextCode(false);
 
+        } else {
+          api.alert({
+              title: '提醒',
+              msg: '验证成功',
+          });
+          fnCheckTextCode(true);
         }
       });
     }
@@ -392,7 +391,7 @@
       var msg=$api.byId("phone-msg");
       $api.removeCls(msg, 'msg-Ok');
       $api.addCls(msg, 'msg-Err');
-      if(!phoneNumber){
+      if(typeof(phoneNumber)=="undefined"){
         $api.text(msg,"请输入手机号码");
         return false;
       }
@@ -406,6 +405,25 @@
       $api.text(msg,"手机号合法");
       return true;
     }
+    function fnCheckTextCode(checkCode){
+      var textCodeMessage=$api.byId("confirm-msg");
+      $api.removeCls(textCodeMessage, 'msg-Ok');
+      $api.addCls(textCodeMessage, 'msg-Err');
+
+      if(typeof(confirmValue)=="undefined"){
+        $api.text(textCodeMessage,"请输入短信验证码");
+        return false;
+      }
+      if(checkCode==false){
+        $api.text(textCodeMessage,"验证失败");
+        return false;
+      }
+
+      $api.removeCls(textCodeMessage, 'msg-Err');
+      $api.addCls(textCodeMessage, 'msg-Ok');
+      $api.text(textCodeMessage,"验证成功");
+      return true;
+    }
     //密码验证
     function fnCheckPassword(passwordValue,confirmPasswordValue){
       var passwordMessage=$api.byId("password-msg");
@@ -416,22 +434,23 @@
       $api.removeCls(confirmMessage, 'msg-Ok');
       $api.addCls(confirmMessage, 'msg-Err');
 
-      if(!passwordValue){
+      if(typeof(passwordValue)=="undefined"){
         $api.text(passwordMessage,"请输入密码");
         return false;
       }
-      if(!confirmPasswordValue){
+      if(typeof(confirmPasswordValue)=="undefined"){
         $api.text(confirmMessage,"请确认密码");
         return false;
       }
       //6到20位的数字字母下划线
       if(passwordValue != confirmPasswordValue){
+        $api.text(passwordMessage,"");
         $api.text(confirmMessage,"两次密码输入不一致");
         return false;
       }
       var reg=/^(\w){6,20}$/;
       if(!reg.test(passwordValue)){
-        $api.text(passwordMessage,"密码格式错误");
+        $api.text(passwordMessage,"请输入6到20位的数字字母下划线");
         return false;
       }
       $api.removeCls(passwordMessage, 'msg-Err');
@@ -447,6 +466,7 @@
     function fnRegister(){
       var CheckPhone=fnCheckPhone(phoneValue);
       var CheckPassword=fnCheckPassword(passwordValue,confirmPasswordValue);
+      var CheckTextCode=fnCheckTextCode(checkCode);
       if (!CheckPhone) {
           if (api.systemType == 'android') {
               setTimeout(function() {
@@ -460,6 +480,20 @@
               });
           }
           return;
+      }
+      if(!CheckTextCode){
+        if (api.systemType == 'android') {
+            setTimeout(function() {
+                UIInput.popupKeyboard({
+                    id: confirmUIInputId
+                });
+            }, 200);
+        } else {
+            UIInput.popupKeyboard({
+                id: confirmUIInputId
+            });
+        }
+        return;
       }
       if (!CheckPassword) {
           if (api.systemType == 'android') {
@@ -475,7 +509,8 @@
           }
           return;
       }
-
+      //默认昵称手机号'xxx****xxxx'
+      var usernameValue=phoneValue.slice(0,3)+"****"+phoneValue.slice(7,11);
       api.ajax({
           url: 'http://'+url+':'+port+'/user/register',
           method: 'post',
@@ -484,6 +519,7 @@
           },
           data:{
             body:{
+              "username":usernameValue,
               "mobile": phoneValue,  //手机注册
               "password": passwordValue
             }
