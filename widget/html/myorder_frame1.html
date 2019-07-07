@@ -52,36 +52,34 @@
        <div class="icon-no"></div>
        <div class="text">暂无相关订单</div>
      </div>
-     {{else if !noneorder}}
-     <div class="order wrap-col">
-       <div class="carinfo wrap-row item">
-         <div class="logo"></div>
-         <span class="carname">{{carinfo}}</span>
-       </div>
-       <div class="from-to wrap-row item">
-         <div class="from item">
-           <div class="addr fromaddr">{{source}}</div>
-           <div class="time fromtime">{{fromtime}}</div>
-           <div class="date fromdate">{{date}}</div>
+     {{else if}}
+       {{each list}}
+       <div class="order wrap-col">
+         <div class="carinfo wrap-row item">
+           <div class="logo"></div>
+           <span class="carname">{{$value.carNum}}</span>
          </div>
-         <div class="middle item"></div>
-         <div class="to item">
-           <div class="addr toaddr">{{destination}}</div>
-           <div class="time totime">{{totime}}</div>
-           <div class="date todate">{{date}}</div>
+         <div class="from-to wrap-row item">
+           <div class="from item">
+             <div class="addr fromaddr">{{$value.source}}</div>
+             <div class="date fromdate">{{$value.date}}</div>
+           </div>
+           <div class="middle item"></div>
+           <div class="to item">
+             <div class="addr toaddr">{{$value.destination}}</div>
+             <div class="date todate">{{$value.date}}</div>
+           </div>
+         </div>
+         <div class="driver wrap-row item">
+           <div class="drivername item">司机:{{$value.driverName}}</div>
+           <div class="drivertel item">联系电话:{{$value.dnum}}</div>
          </div>
        </div>
-       <div class="driver wrap-row item">
-         <div class="drivername item">司机:{{drivername}}</div>
-         <div class="drivertel item">联系电话:{{drivertel}}</div>
-       </div>
-     </div>
+       {{/each}}
      {{/if}}
    </script>
    <script type="text/javascript" src="../script/api.js"></script>
    <script type="text/javascript" src="../script/common.js"></script>
-   <script type="text/javascript" src="../script/SHA1.js"></script>
-   <script type="text/javascript" src="../script/APICloud-rest.js"></script>
    <script>
    apiready=function(){
      fnGetOrder();
@@ -94,25 +92,16 @@
    function fnGetOrder(){
 
      api.ajax({
-         url: 'http://'+url+':'+port+':8080/orders/processin'+"?userId="+userInfo.userId,
+         url: 'http://'+url+':'+port+'/orders/processin'+"?userId="+userInfo.userId,
          method: 'get',
          headers: {
                'Content-Type': 'application/json;charset=utf-8'
            }
      }, function(ret, err) {
        if(ret.data){
-         var order=ret.data;
-         var timearray=order["time"].split(" -- ",2);
          data = {
             noneorder:false,
-            fromtime:timearray[0],
-            totime:timearray[1],
-            carinfo:order["carNum"],
-            source:order["source"],
-            destination:order["destination"],
-            drivername:order["driverName"],
-            drivertel:order["dnum"],
-            date:order["date"]
+            list:ret.data
           };
        }
        var html = template('order-template', data); //data为模板数据
@@ -131,24 +120,6 @@
        });
    }
 
-
-
-    //var data = {
-    //noneorder:true,
-    //  time:"21:00 -- 23:00",
-    //  detailaddr:"中南海405"
-    //  carinfo:"宝马 沪A66666",
-    //  status: "1",
-    //  source:"上海",
-    //  destination:"杭州",
-    //  peoplecount:"2".
-    //  drivername:"老司机",
-    //  custel:   "10086111008",
-    //  drivertel:"18977778888",
-    //  date:"2019-1-23"
-    //};
-    // var html = template('order-template', data); //data为模板数据
-    //document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
    </script>
 </body>
 </html>

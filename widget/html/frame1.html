@@ -143,22 +143,22 @@
         <label class="title item"for="time">预约时间</label>
         <input id="time" class="input item input-time" type="text" placeholder="预计出发时间">
       </div>
-      <div class="option wrap-row item"  tapmode onclick="fnClose()">
+      <div class="option wrap-row item">
         <div class="item icon icon-tel"></div>
         <label class="title item" for="tel">联系电话</label>
         <input id="tel" class="input item" type="number" placeholder="11位手机号码">
       </div>
-      <div class="option wrap-row item"  tapmode onclick="fnClose()">
+      <div class="option wrap-row item">
         <div class="item icon icon-people"></div>
         <label class="title item" for="people">乘客人数</label>
         <input id="people" class="input item" type="number" placeholder="1-7人">
       </div>
-      <div class="option wrap-row item"  tapmode onclick="fnClose()">
+      <div class="option wrap-row item">
         <div class="item icon icon-addr"></div>
         <label class="title item" for="address">详细地址</label>
         <input id="address" class="input item" type="text" placeholder="选填">
       </div>
-      <div class="option wrap-row item"  tapmode onclick="fnClose()">
+      <div class="option wrap-row item">
         <div class="item icon icon-remark"></div>
         <label class="title item" for="remark">订单备注</label>
         <input id="remark" class="input item" type="text" placeholder="填写额外对约车服务的要求">
@@ -170,7 +170,7 @@
   <script type="text/javascript" src="../script/common.js"></script>
   <script type="text/javascript">
 
-  var periodSelector;
+  var UIDatePickerS;
   var sourceValue;
   var destinationValue;
   var timeValue;
@@ -178,14 +178,15 @@
   var peopleValue;
   var addrValue;
   var dateValue;
+  var lineNameValue;
+  var timeValue;
 
   apiready = function() {
        fnInit();
   }
 
    function fnInit(){
-     periodSelector=null;
-     UIActionSelector=null;
+     UIDatePickerS=null;
 
      api.ajax({
          url: 'http://'+url+':'+port+'/user/lines/all',
@@ -209,34 +210,51 @@
    }
 
    function fnTimeSelect(){
-     if(periodSelector)periodSelector.show();
+     if(UIDatePickerS)UIDatePickerS.show();
      else{
-       periodSelector = api.require('periodSelector');
-       periodSelector.open({
-           x:0,
-           y:api.frameHeight/2-12,
-           w:api.frameWidth,
-           h:340,
-           titleColor:"#000000",
-           fixedOn: api.frameName
-       }, function(ret, err) {
-           if (ret) {
-             var time=$api.byId("time");
-             var sHour=ret.sHour>9?ret.sHour:("0"+ret.sHour);
-             var sMinute=ret.sMinute>9?ret.sMinute:("0"+ret.sMinute);
-             var eHour=ret.eHour>9?ret.eHour:("0"+ret.eHour);
-             var eMinute=ret.eMinute>9?ret.eMinute:("0"+ret.eMinute);
-             timeValue=sHour+":"+sMinute+" -- "+eHour+":"+eMinute;
-             $api.attr(time, 'value', timeValue);
-           } else {
-           }
-       });
+       UIDatePickerS = api.require('UIDatePickerS');
+
+       UIDatePickerS.open({
+            rowHeight:40,
+            styles: {
+                   bg: 'rgba(0,0,0,0)',
+                   headerViewBackgroundColor:'rgba(0,0,0,0)',
+                   lineBackgroundColor: 'rgba(0,0,0,0)',
+            item:{
+                 normal: '#f00',
+                 normalFont: 14,
+                 selected: '#000079',
+                 selectedFont: 17,
+                 cancelBtn:{
+                     cancelButtonTextColor: '#1E1E1E',
+                     cancelButtonText: '取消' ,
+                     cancelButtonFont:17
+                 },
+                 confirmBtn:{
+                     confirmButtonTextColor: '#1E1E1E',
+                     confirmButtonText: '确定' ,
+                     confirmButtonFont:17
+                    },
+            }
+            },
+        }, function(ret, err) {
+            if (ret) {
+                console.log(JSON.stringify(ret));
+                if(ret.eventType=='submit'){
+                  timeValue=ret.month+'月'+ret.day+'日'+ret.hour+'时'+ret.minute+"分";
+                  $api.val($api.byId('time'),timeValue);
+
+                }else{
+                  UIDatePickerS.hide();
+                }
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+
      }
    }
 
-    function fnClose(){
-      if(periodSelector)periodSelector.hide();
-    }
     function formatDate(date) {
         month = '' + (date.getMonth() + 1),
         day = '' + date.getDate(),
@@ -249,35 +267,68 @@
     }
     function fnSubmit(){
         var userInfo = $api.getStorage('userInfo');
+        lineNameValue=$api.val($api.byId('line'));
         telValue=$api.val($api.byId('tel'));
         peopleValue=$api.val($api.byId('people'));
         addrValue=$api.val($api.byId('address'));
         dateValue=''+formatDate(new Date());
+        remarkValue=$api.val($api.byId('remark'));
 
-        api.ajax({
-            url: 'http://'+url+':'+port+'/user/orders/create'+"?userId="+userInfo.userId,
-            method: 'post',
-            headers: {
-                  'Content-Type': 'application/json;charset=utf-8'
-              },
-            data:{
-              body:{
-                "source":sourceValue,
-                "destination":destinationValue,
-                "time":timeValue,           //预约时间，格式： hh:ss -- hh:ss
-                "userPhone":telValue,
-                "userCount":peopleValue,
-                "detailAddress":addrValue,
-                "date":dateValue
-              }
+        api.confirm({
+            title: '提醒',
+            msg: '确定信息无误并提交订单吗？（待处理订单可自行取消，进行中订单需联系客服取消）',
+            buttons: ['确定', '取消']
+        }, function(ret, err){
+            if( ret ){
+                if(ret.buttonIndex==1){
+                  api.ajax({
+                      url: 'http://'+url+':'+port+'/user/orders/create'+"?userId="+userInfo.userId,
+                      method: 'post',
+                      headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                      data:{
+                        body:{
+                          "lineName":lineNameValue,
+                          "time":timeValue,           //预约日期和时间 x月x日xx时xx分
+                          "userPhone":telValue,
+                          "userCount":peopleValue,
+                          "detailAddress":addrValue,
+                          "date":dateValue,
+                          "remark":remarkValue,
+                        }
+                      }
+                  }, function(ret, err) {
+                    if (ret) {
+                        console.log(JSON.stringify(ret));
+                        if(ret.code==0){
+                          api.alert({
+                              title: '提醒',
+                              msg: '提交成功',
+                          });
+                        }else{
+                          api.alert({
+                            title:'提醒',
+                            msg:ret.msg,
+                          });
+                        }
+                    } else {
+                        console.log(JSON.stringify(err));
+                        api.toast({
+                            msg: err.msg,
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+                       }
+                     });
+                }else{
+                  //取消不处理
+                }
+            }else{
+                 console.log( JSON.stringify( err ) );
             }
-        }, function(ret, err) {
-          if (ret.data) {
-              alert("提交成功");
-          } else {
-              alert("提交失败");
-             }
-           });
+        });
+        
     }
   </script>
 </body>

@@ -52,40 +52,38 @@
         <div class="icon-no"></div>
         <div class="text">暂无相关订单</div>
       </div>
-      {{else if !noneorder}}
-      <div class="order wrap-col">
-        <div class="carinfo wrap-row item">
-          <div class="logo"></div>
-          <span class="mark">订单正在处理......</span>
-        </div>
-        <div class="from-to wrap-row item">
-          <div class="from item">
-            <div class="addr fromaddr">{{source}}</div>
-            <div class="time fromtime">{{fromtime}}</div>
-            <div class="date fromdate">{{date}}</div>
+      {{else}}
+        {{each list}}
+        <div class="order wrap-col">
+          <div class="carinfo wrap-row item">
+            <div class="logo"></div>
+            <span class="mark">订单正在处理......</span>
           </div>
-          <div class="middle item"></div>
-          <div class="to item">
-            <div class="addr toaddr">{{destination}}</div>
-            <div class="time totime">{{totime}}</div>
-            <div class="date todate">{{date}}</div>
-          </div>
-        </div>
-        <div class="passenger wrap-row item">
-          <div class="passengernumber item">乘客数:
-            <span>{{peoplecount}}人</span>
-          </div>
-          <div class="passengertel item">联系电话:
-            <span>{{custel}}</span>
+          <div class="from-to wrap-row item">
+            <div class="from item">
+              <div class="addr fromaddr">{{$value.source}}</div>
+              <div class="date fromdate">{{$value.date}}</div>
             </div>
+            <div class="middle item"></div>
+            <div class="to item">
+              <div class="addr toaddr">{{$value.destination}}</div>
+              <div class="date todate">{{$value.date}}</div>
+            </div>
+          </div>
+          <div class="passenger wrap-row item">
+            <div class="passengernumber item">乘客数:
+              <span>{{$value.userCount}}人</span>
+            </div>
+            <div class="passengertel item">联系电话:
+              <span>{{$value.userPhone}}</span>
+              </div>
+          </div>
         </div>
-      </div>
+        {{/each}}
       {{/if}}
     </script>
     <script type="text/javascript" src="../script/api.js"></script>
     <script type="text/javascript" src="../script/common.js"></script>
-    <script type="text/javascript" src="../script/SHA1.js"></script>
-    <script type="text/javascript" src="../script/APICloud-rest.js"></script>
     <script>
 
     apiready=function(){
@@ -107,11 +105,8 @@
       }, function(ret, err) {
         if(ret.data){
           var order=ret.data;
-          var timearray=order["time"].split(" -- ",2);
           data = {
               noneorder:false,
-              fromtime:timearray[0],
-              totime:timearray[1],
               source:order["source"],
               destination:order["destination"],
               peoplecount:order["userCount"],
