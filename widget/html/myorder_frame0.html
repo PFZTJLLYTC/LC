@@ -11,41 +11,42 @@
     <script src="../script/template-web.js"></script>
     <style>
     .from-to{
-      -webkit-box-flex: 4;
-      -webkit-flex: 4;
-      flex: 4;
-      margin:20px 0px;
+      margin: 20px 0;
     }
     .from-to .middle{
-      position: relative;
-      height: 91px;
-      width: 100%;
+      width: auto;
+      height: 23px;
+      padding-bottom: 13px;
       background-image: url("../image/travel.png");
       background-repeat: no-repeat;
-      background-size: 40px 40px;
-      background-position: center;
+      background-size: 30px 23px;
+      background-position: top center;
     }
     .from-to .addr{
       font-size:20px;
+      line-height: 20px;
       color:grey;
     }
-    .from-to .time{
-      font-size:45px;
-    }
-    .from-to .date{
-      font-size:14px;
-      color:grey;
-    }
-    .passenger .passengernumber{
+
+    .tag{
       text-align: left;
     }
-    .passenger .passengertel{
+
+    .text{
       text-align: right;
+      color: grey;
     }
+
+    .delete{
+      text-align: right;
+      color: red;
+    }
+
     </style>
 </head>
 <body>
-    <div id="content"></div>
+    <ul id="content"></ul>
+
     <script id="order-template" type="text/html">
       {{if noneorder}}
       <div class="noneorder">
@@ -54,34 +55,58 @@
       </div>
       {{else}}
         {{each list}}
-        <div class="order wrap-col">
-          <div class="carinfo wrap-row item">
-            <div class="logo"></div>
-            <span class="mark">订单正在处理......</span>
-          </div>
-          <div class="from-to wrap-row item">
-            <div class="from item">
-              <div class="addr fromaddr">{{$value.source}}</div>
-              <div class="date fromdate">{{$value.date}}</div>
+        <li id="{{$value.orderId}}">
+          <div class="order wrap-col">
+            <div class="carinfo wrap-row item">
+              <div class="logo"></div>
+              <span class="mark item">订单正在处理......</span>
+              <span class="delete item" tapmode onclick="fnDeleteOrder('{{$value.orderId}}');">取消订单</span>
             </div>
-            <div class="middle item"></div>
-            <div class="to item">
-              <div class="addr toaddr">{{$value.destination}}</div>
-              <div class="date todate">{{$value.date}}</div>
-            </div>
-          </div>
-          <div class="passenger wrap-row item">
-            <div class="passengernumber item">乘客数:
-              <span>{{$value.userCount}}人</span>
-            </div>
-            <div class="passengertel item">联系电话:
-              <span>{{$value.userPhone}}</span>
+            <div class="from-to wrap-row item">
+              <div class="from item">
+                <div class="addr fromaddr">{{$value.source}}</div>
               </div>
+              <div class="middle item"></div>
+              <div class="to item">
+                <div class="addr toaddr">{{$value.destination}}</div>
+              </div>
+            </div>
+
+              <div class="item wrap-row">
+                <span class="tag item">乘客人数:</span>
+                <span class="text item">{{$value.userCount}}人</span>
+              </div>
+              <div class="item wrap-row">
+                <span class="tag item">联系电话:</span>
+                <span class="text item">{{$value.userPhone}}</span>
+              </div>
+              {{if $value.detailAddress}}
+              <div class="item wrap-row">
+                <span class="tag item">详细地址:</span>
+                <span class="text item">{{$value.orderId}}</span>
+              </div>
+              {{/if}}
+              {{if $value.remark}}
+              <div class="item wrap-row">
+                <span class="tag item">订单备注:</span>
+                <span class="text item">{{$value.remark}}</span>
+              </div>
+              {{/if}}
+              <div class="item wrap-row">
+                <span class="tag item">预约时间:</span>
+                <span class="text item">{{$value.time}}</span>
+              </div>
+              <div class="item wrap-row">
+                <span class="tag item">下单时间:</span>
+                <span class="text item">{{$value.createTime}}</span>
+              </div>
+
           </div>
-        </div>
+        </li>
         {{/each}}
       {{/if}}
     </script>
+
     <script type="text/javascript" src="../script/api.js"></script>
     <script type="text/javascript" src="../script/common.js"></script>
     <script>
@@ -97,26 +122,83 @@
     function fnGetOrder(){
 
       api.ajax({
-          url: 'http://'+url+':'+port+'/orders/wait'+"?userId="+userInfo.userId,
+          url: 'http://'+url+':'+port+'/user/orders/wait'+"?userId="+userInfo.userId,
           method: 'get',
           headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
       }, function(ret, err) {
+        console.log(JSON.stringify(ret));
         if(ret.data){
-          var order=ret.data;
           data = {
-              noneorder:false,
-              source:order["source"],
-              destination:order["destination"],
-              peoplecount:order["userCount"],
-              custel:   order["userPhone"],
-              date:order["date"]
-            };
+             noneorder:false,
+             list:ret.data
+           };
         }
         var html = template('order-template', data); //data为模板数据
         document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
          });
+    }
+
+    function fnDeleteOrder(orderId){
+
+      console.log("value:"+orderId);
+      api.confirm({
+          title: '取消订单',
+          msg: '确定要取消预约吗？',
+          buttons: ['确定', '取消']
+      }, function(ret, err){
+          if( ret ){
+
+            if(ret.buttonIndex==1){
+
+
+              //后台请求删除
+              api.ajax({
+                  url: 'http://'+url+':'+port+'/user/orders/delete',
+                  method: 'post',
+                  data: {
+                      values: {
+                          orderId:orderId,
+                      },
+                  },
+              },function(ret, err){
+                  if (ret) {
+                      console.log(JSON.stringify(ret));
+                      if(ret.code==0){
+                        //前台移除
+                        var list=$api.byId("content");
+                        var li=$api.byId(orderId);
+                        list.removeChild(li);
+
+                        api.alert({
+                            title: '提醒',
+                            msg: '取消成功'
+                        },);
+
+                      }else{
+                        api.alert({
+                            title: '提醒',
+                            msg: '取消订单失败'+ret.msg,
+                        },);
+
+                      }
+                  } else {
+                      console.log( JSON.stringify( err ) );
+                      api.alert({
+                          title: '提醒',
+                          msg: '异常错误'+err.msg,
+                      },);
+                  }
+              });
+            }
+          }else{
+               alert( JSON.stringify( err ) );
+          }
+      });
+
+
+
     }
     function fnPullRefresh(){
         api.setCustomRefreshHeaderInfo({

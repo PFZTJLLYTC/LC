@@ -241,7 +241,11 @@
             if (ret) {
                 console.log(JSON.stringify(ret));
                 if(ret.eventType=='submit'){
-                  timeValue=ret.month+'月'+ret.day+'日'+ret.hour+'时'+ret.minute+"分";
+                  var month=(ret.month<10)?('0'+ret.month):ret.month;
+                  var day=(ret.day<10)?('0'+ret.day):ret.day;
+                  var hour=(ret.hour<10)?('0'+ret.hour):ret.hour;
+                  var minute=(ret.minute<10)?('0'+ret.minute):ret.minute;
+                  timeValue=ret.year+'-'+month+'-'+day+' '+hour+':'+minute;
                   $api.val($api.byId('time'),timeValue);
 
                 }else{
@@ -265,6 +269,14 @@
 
         return [year, month, day].join('-');
     }
+
+    function fnOpenMyOrderWin() {
+        api.openWin({
+            name: 'myorder',
+            url: './myorder.html'
+        });
+    }
+
     function fnSubmit(){
         var userInfo = $api.getStorage('userInfo');
         lineNameValue=$api.val($api.byId('line'));
@@ -305,6 +317,12 @@
                           api.alert({
                               title: '提醒',
                               msg: '提交成功',
+                          },function(ret,err){
+                            if(ret){
+                              fnOpenMyOrderWin();
+                            }else{
+                              //do nothing
+                            }
                           });
                         }else{
                           api.alert({
@@ -328,7 +346,7 @@
                  console.log( JSON.stringify( err ) );
             }
         });
-        
+
     }
   </script>
 </body>

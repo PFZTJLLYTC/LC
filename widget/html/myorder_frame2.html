@@ -46,9 +46,9 @@
       <div class="icon-no"></div>
       <div class="text">暂无相关订单</div>
     </div>
-    {{else if !noneorder}}
+    {{else}}
       {{each list}}
-      <li>
+      <li id="{{$value.orderId}}">
         <div class="order wrap-col">
           <div class="carinfo wrap-row item">
             <div class="logo"></div>
@@ -85,7 +85,7 @@
 
     function fnGetOrder(){
       api.ajax({
-          url: 'http://'+url+':'+port+'/orders/done'+"?userId="+userInfo.userId,
+          url: 'http://'+url+':'+port+'/user/orders/done'+"?userId="+userInfo.userId,
           method: 'get',
           headers: {
                 'Content-Type': 'application/json;charset=utf-8'
