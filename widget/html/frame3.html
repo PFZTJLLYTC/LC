@@ -133,11 +133,14 @@
 
 <body>
     <header>
-        <div class="icon-panel" tapmode onclick="fnSetAvatar()">
+        <div class="icon-panel">
             <div id="icon" class="icon"></div>
         </div>
         <div id="username" class="username"></div>
-        <div class="account-info">本月乘车次数：0 <span class="separator">|</span>余额：￥0</div>
+        <div class="account-info">手机号：
+          <span id='mobile'></span>&nbsp;|&nbsp;乘车次数：
+          <span id='takeTimes'></span>
+        </div>
     </header>
     <section>
         <div class="option" tapmode onclick="fnOpenMyOrderWin();">
@@ -149,7 +152,7 @@
         </div>
         <div class="option" tapmode onclick="fnOpenSetWin();">
             <div class="icon icon-set"></div>
-            <div class="title">个性化</div>
+            <div class="title">本地设置</div>
             <div class="arrow-panel">
                 <div class="text">修改设置</div>
             </div>
@@ -172,142 +175,37 @@
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/common.js"></script>
-<script type="text/javascript" src="../script/SHA1.js"></script>
 <script type="text/javascript">
 /*初始化得到用户信息*/
 apiready = function() {
-    getUserInfo();
+  fnGetUserInfo();
 };
 
-var appId="A6096149079402";
-var appKey="32CFC654-7074-7E4E-38A5-48B190D16721";
-var now=Date.now();
-var appCode=SHA1(appId+"UZ"+appKey+"UZ"+now)+"."+now;
+var userInfo=$api.getStorage('userInfo');
 
-// 获取个人信息
-function getUserInfo() {
-    var userInfo = $api.getStorage('userInfo');
-    api.ajax({
-        url: 'https://d.apicloud.com/mcm/api/user/' + userInfo.userId,
-        method: 'get',
-        headers: {
-            "X-APICloud-AppId":appId,
-            "X-APICloud-AppKey":appCode,
-            "Authorization": userInfo.id
-        }
-    }, function(ret, err) {
-        if (ret) {
-            var username=$api.byId("username");
-            $api.text(username,ret.username);
-            fnUpdateLocalAvatar(ret);
-        } else {
-            console.log(JSON.stringify(err));
-        }
-    });
-}
 
-// 更新头像显示
-function fnUpdateLocalAvatar(data_) {
-    if (!data_.avatar) {
-        return;
-    }
+function fnGetUserInfo(){
+  api.ajax({
+      url: 'http://'+url+':'+port+'/user/info',
+      method: 'get',
+      data: {
+          values: {
+              userId:userInfo.userId,
+          }
+      }
+  },function(ret, err){
+      if (ret) {
+          console.log(JSON.stringify(ret));
+          if(ret.code==0){
+              $api.text($api.byId('username'),ret.data.username);
+              $api.text($api.byId('mobile'),ret.data.mobile);
+              $api.text($api.byId('takeTimes'),ret.data.takeTimes);
+          }
+      } else {
+          console.log( JSON.stringify( err ) );
+      }
+  });
 
-    // 缓存头像
-    var icon = $api.byId('icon');
-    api.imageCache({
-        url: data_.avatar.url
-    }, function(ret, err) {
-        if (ret) {
-            icon.style.backgroundImage = 'url(' + ret.url + ')';
-        } else {
-            api.toast({
-                msg: '获取头像失败',
-                duration: 2000,
-                location: 'bottom'
-            });
-        }
-    });
-}
-
-// 选择头像
-function fnSetAvatar() {
-    api.actionSheet({
-        title: '选择',
-        cancelTitle: '取消',
-        buttons: ['拍照', '相册']
-    }, function(ret, err) {
-        if (ret) {
-            var sourceTypes = [
-                'camera',
-                'album'
-            ];
-            if (ret.buttonIndex == (sourceTypes.length + 1)) {
-                return;
-            }
-            api.getPicture({
-                sourceType: sourceTypes[ret.buttonIndex - 1],
-                allowEdit: true,
-                quality: 50, // 指定图片质量
-                targetWidth: 100, // 指定图片宽度
-                targetHeight: 100 // 指定图片宽度
-            }, function(ret, err) {
-                if (ret) {
-                    fnUploadAtavar(ret.data);
-                }
-            });
-        }
-    });
-}
-
-// 上传头像文件
-function fnUploadAtavar(avatarUrl_) {
-    api.ajax({
-        url: 'https://d.apicloud.com/mcm/api/file',
-        method: 'post',
-        headers: {
-            "X-APICloud-AppId": appId,
-            "X-APICloud-AppKey": appCode
-        },
-        data: {
-            values: {
-                filename: 'icon'
-            },
-            files: {
-                file: avatarUrl_
-            }
-        }
-    }, function(ret, err) {
-        if (ret) {
-            fnUpdateUserAtavar(ret);
-        } else {
-            console.log(JSON.stringify(err));
-        }
-    });
-}
-
-// 更新用户头像
-function fnUpdateUserAtavar(avatar_) {
-    var userInfo = $api.getStorage('userInfo');
-    api.ajax({
-        url: 'https://d.apicloud.com/mcm/api/user/' + userInfo.userId,
-        method: 'put',
-        headers: {
-            "X-APICloud-AppId": appId,
-            "X-APICloud-AppKey": appCode,
-            "Authorization": userInfo.id
-        },
-        data: {
-            values: {
-                avatar: avatar_
-            }
-        }
-    }, function(ret, err) {
-        if (ret) {
-            fnUpdateLocalAvatar(ret);
-        } else {
-            console.log(JSON.stringify(err));
-        }
-    });
 }
 
 // 打开我的订单Window

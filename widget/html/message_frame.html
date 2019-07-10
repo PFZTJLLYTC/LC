@@ -226,6 +226,14 @@
             if(ret.buttonIndex===1){
               var li=document.getElementById('li-'+id);
               list.removeChild(li);
+
+              //删完了重新渲染
+              if(list.getElementsByTagName('li').length==0){
+
+                data={noneorder:true};
+                var html = template('order-template', data); //data为模板数据
+                document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+              }
               api.ajax({
                   url: 'http://'+url+':'+port+'/user/messages/delete/'+id,
                   method: 'post',

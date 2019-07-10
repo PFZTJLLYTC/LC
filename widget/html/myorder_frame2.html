@@ -26,14 +26,33 @@
         font-size:20px;
         color:#000;
       }
-      .passenger .passengernumber{
+      .wrap-row .tag{
         text-align: left;
-        color: grey;
       }
-      .passenger .date{
+
+      .wrap-row .text{
         text-align: right;
         color: grey;
       }
+
+      .call{
+        -webkit-box-flex: 4;
+        -webkit-flex: 4;
+        flex: 4;
+      }
+
+      .call-text{
+        text-align: right;
+        color: blue;
+      }
+
+      .call-icon{
+        background-image: url("../image/tel.png");
+        background-position: top right;
+        background-repeat: no-repeat;
+        background-size: 20px 20px;
+      }
+
     </style>
 </head>
 
@@ -63,10 +82,22 @@
               <div class="addr toaddr" id="toaddr">{{$value.destination}}</div>
             </div>
           </div>
-          <div class="passenger wrap-row item">
-            <div class="passengernumber item">乘客数:{{$value.userCount}}</div>
-            <div class="date item">{{$value.date}}</div>
+
+          <div class="item wrap-row">
+            <span class="tag item">乘客人数:</span>
+            <span class="text item">{{$value.userCount}}</span>
           </div>
+
+          <div class="item wrap-row">
+            <span class="tag item">预约司机:</span>
+            <div class="call wrap-row" tapmode onclick="fnCallDriver('{{$value.dnum}}');">
+              <span class="call-icon item"></span>
+              <span class="call-text item">
+                   联系司机&nbsp;&nbsp;|&nbsp;&nbsp;{{$value.driverName}}
+              </span>
+            </div>
+          </div>
+
         </div>
       </li>
       {{/each}}
@@ -91,12 +122,16 @@
                 'Content-Type': 'application/json;charset=utf-8'
             }
       }, function(ret, err) {
-        if(ret.data){
+        if(ret.data.length!=0){
           data = {
              noneorder:false,
              list:ret.data
            };
+        }else{
+
+          data={noneorder:true};
         }
+        console.log(JSON.stringify(data));
         var html = template('order-template', data); //data为模板数据
         document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
          });
@@ -111,6 +146,14 @@
                 api.refreshHeaderLoadDone();
               },500);
         });
+    }
+
+    function fnCallDriver(dnum){
+      api.call({
+          type: 'tel_prompt',
+          number: dnum,
+      });
+
     }
   </script>
 </body>

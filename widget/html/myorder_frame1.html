@@ -11,37 +11,50 @@
     <script src="../script/template-web.js"></script>
     <style>
     .from-to{
-      -webkit-box-flex: 4;
-      -webkit-flex: 4;
-      flex: 4;
-      margin: 20px 0px;
+      margin: 20px 0;
     }
     .from-to .middle{
-      position: relative;
-      height: 91px;
-      width: 100%;
+      width: auto;
+      height: 23px;
+      padding-bottom: 13px;
       background-image: url("../image/travel.png");
       background-repeat: no-repeat;
-      background-size: 40px 40px;
-      background-position: center;
+      background-size: 30px 23px;
+      background-position: top center;
     }
     .from-to .addr{
       font-size:20px;
-      color:grey;
+      line-height: 20px;
     }
-    .from-to .time{
-      font-size:45px;
-    }
-    .from-to .date{
-      font-size:14px;
-      color:grey;
-    }
-    .driver .drivername{
+
+    .wrap-row .tag{
       text-align: left;
     }
-    .driver .drivertel{
+
+    .wrap-row .text{
       text-align: right;
+      color: grey;
     }
+
+    .call{
+      -webkit-box-flex: 4;
+      -webkit-flex: 4;
+      flex: 4;
+    }
+
+    .call-text{
+      width: 100%;
+      text-align: right;
+      color: blue;
+    }
+
+    .call-icon{
+      background-image: url("../image/tel.png");
+      background-position: top right;
+      background-repeat: no-repeat;
+      background-size: 20px 20px;
+    }
+
     </style>
 </head>
 <body>
@@ -61,20 +74,54 @@
              <span class="carname">{{$value.carNum}}</span>
            </div>
            <div class="from-to wrap-row item">
-             <div class="from item">
-               <div class="addr fromaddr">{{$value.source}}</div>
-               <div class="date fromdate">{{$value.date}}</div>
+             <div class="item">
+               <div class="addr">{{$value.source}}</div>
              </div>
              <div class="middle item"></div>
-             <div class="to item">
-               <div class="addr toaddr">{{$value.destination}}</div>
-               <div class="date todate">{{$value.date}}</div>
+             <div class="item">
+               <div class="addr">{{$value.destination}}</div>
              </div>
            </div>
-           <div class="driver wrap-row item">
-             <div class="drivername item">司机:{{$value.driverName}}</div>
-             <div class="drivertel item">司机电话:{{$value.dnum}}</div>
+
+
+           <div class="item wrap-row">
+             <span class="tag item">预约司机:</span>
+             <div class="call wrap-row" tapmode onclick="fnCallDriver('{{$value.dnum}}');">
+               <span class="call-icon item"></span>
+               <span class="call-text item">
+                 联系司机&nbsp;&nbsp;|&nbsp;&nbsp;{{$value.driverName}}
+               </span>
+             </div>
            </div>
+           <div class="item wrap-row">
+             <span class="tag item">乘客人数:</span>
+             <span class="text item">{{$value.userCount}}人</span>
+           </div>
+           <div class="item wrap-row">
+             <span class="tag item">联系电话:</span>
+             <span class="text item">{{$value.userPhone}}</span>
+           </div>
+           {{if $value.detailAddress}}
+           <div class="item wrap-row">
+             <span class="tag item">详细地址:</span>
+             <span class="text item">{{$value.orderId}}</span>
+           </div>
+           {{/if}}
+           {{if $value.remark}}
+           <div class="item wrap-row">
+             <span class="tag item">订单备注:</span>
+             <span class="text item">{{$value.remark}}</span>
+           </div>
+           {{/if}}
+           <div class="item wrap-row">
+             <span class="tag item">预约时间:</span>
+             <span class="text item">{{$value.time}}</span>
+           </div>
+           <div class="item wrap-row">
+             <span class="tag item">下单时间:</span>
+             <span class="text item">{{$value.createTime}}</span>
+           </div>
+
          </div>
        </li>
        {{/each}}
@@ -100,16 +147,20 @@
                'Content-Type': 'application/json;charset=utf-8'
            }
      }, function(ret, err) {
-       if(ret.data){
+       if(ret.data.length!=0){
          data = {
             noneorder:false,
             list:ret.data
           };
+       }else{
+         data={noneorder:true};
        }
+       console.log(JSON.stringify(data));
        var html = template('order-template', data); //data为模板数据
        document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
         });
    }
+
    function fnPullRefresh(){
        api.setCustomRefreshHeaderInfo({
            bgColor : '#f0f0f0',
@@ -120,6 +171,14 @@
                api.refreshHeaderLoadDone();
              },500);
        });
+   }
+
+   function fnCallDriver(dnum){
+     api.call({
+         type: 'tel_prompt',
+         number: dnum,
+     });
+
    }
 
    </script>

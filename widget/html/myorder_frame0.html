@@ -25,14 +25,13 @@
     .from-to .addr{
       font-size:20px;
       line-height: 20px;
-      color:grey;
     }
 
-    .tag{
+    .wrap-row .tag{
       text-align: left;
     }
 
-    .text{
+    .wrap-row .text{
       text-align: right;
       color: grey;
     }
@@ -63,12 +62,12 @@
               <span class="delete item" tapmode onclick="fnDeleteOrder('{{$value.orderId}}');">取消订单</span>
             </div>
             <div class="from-to wrap-row item">
-              <div class="from item">
-                <div class="addr fromaddr">{{$value.source}}</div>
+              <div class="item">
+                <div class="addr">{{$value.source}}</div>
               </div>
               <div class="middle item"></div>
-              <div class="to item">
-                <div class="addr toaddr">{{$value.destination}}</div>
+              <div class="item">
+                <div class="addr">{{$value.destination}}</div>
               </div>
             </div>
 
@@ -129,12 +128,15 @@
             }
       }, function(ret, err) {
         console.log(JSON.stringify(ret));
-        if(ret.data){
+        if(ret.data.length!=0){
           data = {
              noneorder:false,
              list:ret.data
            };
+        }else{
+          data={noneorder:true};
         }
+        console.log(JSON.stringify(data));
         var html = template('order-template', data); //data为模板数据
         document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
          });
@@ -170,6 +172,14 @@
                         var list=$api.byId("content");
                         var li=$api.byId(orderId);
                         list.removeChild(li);
+
+                        //删完了重新渲染
+                        if(list.getElementsByTagName('li').length==0){
+
+                          data={noneorder:true};
+                          var html = template('order-template', data); //data为模板数据
+                          document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+                        }
 
                         api.alert({
                             title: '提醒',
