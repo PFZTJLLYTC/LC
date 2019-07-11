@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-    <title>音乐推荐</title>
+    <title>连城</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
     <style>
     header {
@@ -41,7 +41,7 @@
 <body>
     <header id="header">
         <div class="back" tapmode onclick="api.closeWin();"></div>
-        <h1>音乐推荐</h1>
+        <h1>连城</h1>
     </header>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -50,47 +50,17 @@ apiready = function() {
     var header = $api.byId('header');
     $api.fixStatusBar(header);
     var headerH = $api.offset(header).h;
-    var pageParam = api.pageParam;
-    var x = pageParam["pagenum"];
-    if(x == 0){
-      api.openFrame({
-          name: 'MusicRecommend_frame0',
-          url: './forDiscovery/MusicRecommend_frame0.html',
-          rect: {
-              x: 0,
-              y: headerH,
-              w: 'auto',
-              h: 'auto'
-          },
-          bounces: false,
-      });
-    }
-    else if (x == 1) {
-      api.openFrame({
-          name: 'MusicRecommend_frame1',
-          url: './forDiscovery/MusicRecommend_frame1.html',
-          rect: {
-              x: 0,
-              y: headerH,
-              w: 'auto',
-              h: 'auto'
-          },
-          bounces: false,
-      });
-    }
-    else {
-      api.openFrame({
-          name: 'MusicRecommend_frame2',
-          url: './forDiscovery/MusicRecommend_frame2.html',
-          rect: {
-              x: 0,
-              y: headerH,
-              w: 'auto',
-              h: 'auto'
-          },
-          bounces: false,
-      });
-    }
+    api.openFrame({
+        name: 'LianChengRecommend_frame',
+        url: './forDiscovery/LianChengRecommend_frame.html',
+        rect: {
+            x: 0,
+            y: headerH,
+            w: 'auto',
+            h: 'auto'
+        },
+        bounces: false,
+    });
 };
 </script>
 

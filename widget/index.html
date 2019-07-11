@@ -158,7 +158,7 @@
                     name: 'frame'+i,
                     url: './html/frame'+i+'.html',
                     bgColor : 'rgba(0,0,0,.2)',
-                    bounces:true
+                    bounces:(i==2)?true:false,
                 } )
         }
         api.openFrameGroup({
