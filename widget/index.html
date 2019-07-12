@@ -118,7 +118,7 @@
           };
 
           //收到消息的回调方法
-          websocket.onMessage=function(event){
+          websocket.onmessage=function(event){
            console.log('收到消息:'+event.data);
            //弹窗提醒：来新单了
            api.alert({

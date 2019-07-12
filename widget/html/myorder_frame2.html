@@ -122,18 +122,21 @@
                 'Content-Type': 'application/json;charset=utf-8'
             }
       }, function(ret, err) {
-        if(ret.data.length!=0){
-          data = {
-             noneorder:false,
-             list:ret.data
-           };
+        if(ret){
+          console.log(JSON.stringify(ret));
+          if(ret.code==0&&ret.data.length!=0){
+            data = {
+               noneorder:false,
+               list:ret.data
+             };
+          }else{
+            data={noneorder:true};
+          }
+          var html = template('order-template', data); //data为模板数据
+          document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
         }else{
-
-          data={noneorder:true};
+         console.log(JSON.stringify(err));
         }
-        console.log(JSON.stringify(data));
-        var html = template('order-template', data); //data为模板数据
-        document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
          });
     }
     function fnPullRefresh(){

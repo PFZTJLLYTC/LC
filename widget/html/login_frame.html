@@ -287,20 +287,29 @@
         }, function(ret, err) {
             console.log(JSON.stringify(ret));
             console.log(JSON.stringify(err));
-            if (ret.data) {
-              $api.setStorage('userInfo', ret.data);
-              api.openWin({
-                    name: 'index',
-                    url: '../index.html',
-                    slidBackEnabled:false
-              });
-            } else {
+            if(ret){
+              if (ret.code==0) {
+                $api.setStorage('userInfo', ret.data);
+                api.openWin({
+                      name: 'index',
+                      url: '../index.html',
+                      slidBackEnabled:false
+                });
+              } else {
+                api.toast({
+                msg: '登录失败，用户名或密码错误',
+                duration: 2000,
+                location: 'middle'
+                });
+               }
+            }else{
               api.toast({
-              msg: '登录失败，用户名或密码错误',
+              msg: err.msg,
               duration: 2000,
               location: 'middle'
               });
-             }
+            }
+
            });
     }
 
