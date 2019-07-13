@@ -173,7 +173,7 @@
 
     function fnGetMessages(){
       api.ajax({
-          url: 'http://'+url+':'+port+'/user/messages/findMessages?dnum='+userInfo.dnum,
+          url: 'http://'+url+':'+port+'/user/messages/findMessages?userId='+userInfo.userId,
           method: 'get',
           headers: {
                 'Content-Type': 'application/json;charset=utf-8'
