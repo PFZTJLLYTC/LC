@@ -78,7 +78,7 @@
     </ul>
     </div>
     <div class = "item item-message">
-    <div class="button message" tapmode onclick="fnOpenMessageWin();"></div>
+    <div id="message" class="button message" tapmode onclick="fnOpenMessageWin();"></div>
     </div>
     </header>
     <div id="main" class="flex-con">
@@ -99,11 +99,13 @@
     apiready = function () {
         $api.fixStatusBar( $api.byId('header') );
         funIniGroup();
+        fnInitMessage();
         fnWebSocket();
     }
 
     var websocket=null;
     var userInfo=$api.getStorage('userInfo');
+
     function fnWebSocket(){
       if('WebSocket' in window){
           websocket=new WebSocket('ws://'+url+':'+port+'/webSocket/'+userInfo.userId);
@@ -121,9 +123,12 @@
           websocket.onmessage=function(event){
            console.log('收到消息:'+event.data);
            //弹窗提醒：来新单了
+
+           api.notification();
+
            api.alert({
                     title: '订单提醒',
-                    msg: '您有新的订单了',
+                    msg: '您有新的消息了',
                     }, function(ret, err) {
                       if(ret){
                         api.openWin({
@@ -150,6 +155,45 @@
       }
 
     }
+
+   function fnInitMessage(){
+     api.ajax({
+         url: 'http://'+url+':'+port+'/user/messages/findMessages',
+         method: 'get',
+         headers: {
+               'Content-Type': 'application/json;charset=utf-8'
+           },
+           data: {
+               values: {
+                   userId:$api.getStorage("userInfo").userId,
+               },
+           }
+     }, function(ret, err) {
+       if(ret){
+         console.log(JSON.stringify(ret));
+         if(ret.data.length!=0){
+            $api.byId('message').style.backgroundImage="url(./image/new_message.png)";
+         }else{
+            $api.byId('message').style.backgroundImage="url(./image/message.png)";
+         }
+       }else{
+         console.log(JSON.stringify(err));
+       }
+
+     });
+   }
+
+   //给message_frame使用
+   function fnSetMessageImage(index){
+     if(index==0){
+          $api.byId('message').style.backgroundImage="url(./image/message.png)";
+     }else if(index==1){
+          $api.byId('message').style.backgroundImage="url(./image/new_message.png)";
+     }
+
+   }
+
+
     function funIniGroup(){
         var eHeaderLis = $api.domAll('header li'),
             frames = [];
@@ -161,6 +205,8 @@
                     bounces:(i==2)?true:false,
                 } )
         }
+
+
         api.openFrameGroup({
             name: 'group',
             scrollEnabled: false,
@@ -205,7 +251,6 @@
               frameName: 'frame1',
               script: 'fnClearInput();'
           });
-
         }
         api.setFrameGroupIndex({
             name: 'group',

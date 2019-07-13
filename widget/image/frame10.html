@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>出发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <script src="../script/template-web.js"></script>
+    <style>
+    .wrap-row{
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-flex-flow: row;
+      flex-flow: row;
+    }
+    .wrap-col{
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-flex-flow: column;
+      flex-flow: column;
+    }
+    .item{
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      margin:auto 0px;
+    }
+    .icon{
+      width: 25px;
+      height:25px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size:25px;
+    }
+    .icon-tel{
+      background-image: url("../image/telphone.png");
+    }
+    .icon-time{
+      background-image: url("../image/time.png");
+    }
+    .icon-people{
+      background-image: url("../image/people.png");
+    }
+    .icon-addr{
+      background-image: url("../image/address.png");
+    }
+    .icon-line{
+      background-image: url("../image/line.png");
+    }
+    .icon-remark{
+      background-image: url("../image/remark.png");
+    }
+    .option{
+      box-sizing: border-box;
+      width: 100%;
+      height: 61px;
+      border-bottom: 1px solid #ddd;
+    }
+    .option .source{
+      text-align: center;
+    }
+    .option .destination{
+      text-align: center;
+    }
+    .time{
+      text-align: center;
+    }
+    .option .input {
+        -webkit-box-flex: 6;
+        -webkit-flex: 6;
+        flex: 6;
+        border: none;
+        outline: none;
+        height: 20px;
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .option .select{
+        background-color: white;
+    }
+
+    .option .input-time{
+      pointer-events: none;
+    }
+    .option .title {
+        -webkit-box-flex:2;
+        -webkit-flex: 2;
+        flex: 2;
+        box-sizing: border-box;
+        font-size: 14px;
+        text-align: left;
+    }
+    .btn {
+        width: 200px;
+        height: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 32px;
+        background: -webkit-linear-gradient(to right , #7A88FF, #7AFFAF);
+        background: linear-gradient(to right , #7A88FF, #7AFFAF);
+        line-height: 50px;
+        color: #fff;
+        font-size: 24px;
+        text-align: center;
+        border-radius: 8px;
+    }
+    .to{
+      width: 30px;
+      height: 30px;
+      background-size: 30px;
+      background-repeat: no-repeat;
+      background-image: url("../image/wangfan.png");
+      background-position: center center;
+    }
+    .highlight {
+        opacity: 0.7;
+    }
+    </style>
+</head>
+<body>
+  <div id="content"></div>
+
+  <script id="option-template" type="text/html">
+    <div class="wrap-col">
+      <div class="wrap-row option item">
+        <div class="item icon icon-line"></div>
+        <label class="title item" for="line">选择线路</label>
+        <select id="line" class="input select item">
+          <option value="" hidden>--请选择--</option>
+          {{each list}}
+            <option value="{{$value}}">{{$value}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="option wrap-row item" tapmode onclick="fnTimeSelect()">
+        <div class="item icon icon-time"></div>
+        <label class="title item"for="time">预约时间</label>
+        <input id="time" class="input item input-time" type="text" placeholder="预计出发时间">
+      </div>
+      <div class="option wrap-row item">
+        <div class="item icon icon-tel"></div>
+        <label class="title item" for="tel">联系电话</label>
+        <input id="tel" class="input item" type="number" placeholder="11位手机号码">
+      </div>
+      <div class="option wrap-row item">
+        <div class="item icon icon-people"></div>
+        <label class="title item" for="people">乘客人数</label>
+        <select id="people" class="input select item">
+             <option value="" hidden>--请选择--</option>
+             <option value="1">1</option>
+             <option value="2">2</option>
+             <option value="3">3</option>
+             <option value="4">4</option>
+             <option value="5">5</option>
+             <option value="6">6</option>
+             <option value="7">7</option>
+        </select>
+      </div>
+      <div class="option wrap-row item">
+        <div class="item icon icon-addr"></div>
+        <label class="title item" for="address">详细地址</label>
+        <input id="address" class="input item" type="text" placeholder="选填">
+      </div>
+      <div class="option wrap-row item">
+        <div class="item icon icon-remark"></div>
+        <label class="title item" for="remark">订单备注</label>
+        <input id="remark" class="input item" type="text" placeholder="填写额外对约车服务的要求">
+      </div>
+    </div>
+    <div class="btn" tapmode="highlight" onclick="fnSubmit()">提交订单</div>
+  </script>
+  <script type="text/javascript" src="../script/api.js"></script>
+  <script type="text/javascript" src="../script/common.js"></script>
+  <script type="text/javascript">
+
+  var UIDatePickerS;
+  var sourceValue;
+  var destinationValue;
+  var timeValue;
+  var telValue;
+  var peopleValue;
+  var addrValue;
+  var dateValue;
+  var lineNameValue;
+  var timeValue;
+
+  apiready = function() {
+       fnInit();
+  }
+
+   function fnInit(){
+     UIDatePickerS=null;
+
+     api.ajax({
+         url: 'http://'+url+':'+port+'/user/lines/all',
+         method: 'get',
+         headers: {
+               'Content-Type': 'application/json;charset=utf-8'
+           },
+     },function(ret, err){
+         if (ret) {
+             console.log( JSON.stringify( ret ) );
+             var data={
+               list:ret.data
+             }
+             var html = template('option-template', data); //data为模板数据
+             document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+         } else {
+             console.log( JSON.stringify( err ) );
+         }
+     });
+
+   }
+
+   function fnTimeSelect(){
+     if(UIDatePickerS)UIDatePickerS.show();
+     else{
+       UIDatePickerS = api.require('UIDatePickerS');
+
+       UIDatePickerS.open({
+            rowHeight:40,
+            styles: {
+                   bg: 'rgba(0,0,0,0)',
+                   headerViewBackgroundColor:'rgba(0,0,0,0)',
+                   lineBackgroundColor: 'rgba(0,0,0,0)',
+            item:{
+                 normal: '#f00',
+                 normalFont: 14,
+                 selected: '#000079',
+                 selectedFont: 17,
+                 cancelBtn:{
+                     cancelButtonTextColor: '#1E1E1E',
+                     cancelButtonText: '取消' ,
+                     cancelButtonFont:17
+                 },
+                 confirmBtn:{
+                     confirmButtonTextColor: '#1E1E1E',
+                     confirmButtonText: '确定' ,
+                     confirmButtonFont:17
+                    },
+            }
+            },
+        }, function(ret, err) {
+            if (ret) {
+                console.log(JSON.stringify(ret));
+                if(ret.eventType=='submit'){
+                  var month=(ret.month<10)?('0'+ret.month):ret.month;
+                  var day=(ret.day<10)?('0'+ret.day):ret.day;
+                  var hour=(ret.hour<10)?('0'+ret.hour):ret.hour;
+                  var minute=(ret.minute<10)?('0'+ret.minute):ret.minute;
+                  timeValue=ret.year+'-'+month+'-'+day+' '+hour+':'+minute;
+                  $api.val($api.byId('time'),timeValue);
+
+                }else{
+                  UIDatePickerS.hide();
+                }
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+
+     }
+   }
+
+    function formatDate(date) {
+        month = '' + (date.getMonth() + 1),
+        day = '' + date.getDate(),
+        year = date.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    function fnClearInput(){
+      var inputList=document.getElementsByTagName('input');
+
+      for(var i=0;i<inputList.length;i++){
+        $api.val(inputList[i],"");
+      }
+
+      $api.byId("line").options.selectedIndex=0;
+      $api.byId('people').options.selectedIndex=0;
+
+
+    }
+
+    function fnOpenMyOrderWin() {
+        api.openWin({
+            name: 'myorder',
+            url: './myorder.html'
+        });
+    }
+
+    function fnSubmit(){
+        var userInfo = $api.getStorage('userInfo');
+        lineNameValue=$api.val($api.byId('line'));
+        telValue=$api.val($api.byId('tel'));
+        peopleValue=$api.val($api.byId('people'));
+        addrValue=$api.val($api.byId('address'));
+        dateValue=''+formatDate(new Date());
+        remarkValue=$api.val($api.byId('remark'));
+
+        api.confirm({
+            title: '提醒',
+            msg: '确定信息无误并提交订单吗？（待处理订单可自行取消，进行中订单需联系客服取消）',
+            buttons: ['确定', '取消']
+        }, function(ret, err){
+            if( ret ){
+                if(ret.buttonIndex==1){
+                  api.ajax({
+                      url: 'http://'+url+':'+port+'/user/orders/create'+"?userId="+userInfo.userId,
+                      method: 'post',
+                      headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                      data:{
+                        body:{
+                          "lineName":lineNameValue,
+                          "time":timeValue,           //预约日期和时间 x月x日xx时xx分
+                          "userPhone":telValue,
+                          "userCount":peopleValue,
+                          "detailAddress":addrValue,
+                          "date":dateValue,
+                          "remark":remarkValue,
+                        }
+                      }
+                  }, function(ret, err) {
+                    if (ret) {
+                        console.log(JSON.stringify(ret));
+                        if(ret.code==0){
+                          api.alert({
+                              title: '提醒',
+                              msg: '提交成功',
+                          },function(ret,err){
+                            if(ret){
+                              fnOpenMyOrderWin();
+                            }else{
+                              //do nothing
+                            }
+                          });
+                        }else{
+                          api.alert({
+                            title:'提醒',
+                            msg:ret.msg,
+                          });
+                        }
+                    } else {
+                        console.log(JSON.stringify(err));
+                        api.toast({
+                            msg: err.msg,
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+                       }
+                     });
+                }else{
+                  //取消不处理
+                }
+            }else{
+                 console.log( JSON.stringify( err ) );
+            }
+        });
+
+    }
+  </script>
+</body>
+</html>

@@ -171,24 +171,40 @@
     var data={'nomessage':true};
     var list= document.getElementById('list');
 
+
     function fnGetMessages(){
       api.ajax({
-          url: 'http://'+url+':'+port+'/user/messages/findMessages?userId='+userInfo.userId,
+          url: 'http://'+url+':'+port+'/user/messages/findMessages',
           method: 'get',
           headers: {
                 'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                values: {
+                    userId:userInfo.userId,
+                },
             }
       }, function(ret, err) {
         console.log(JSON.stringify(ret));
-        if(ret.data){
+        if(ret.data.length!=0){
           data={
             'nomessage':false,
             'list':ret.data
           };
+          //消息通知图片更改
+          api.execScript({
+              name: 'index',
+              script: 'fnSetMessageImage(1);'
+          });
         }else{
           data={
             'nomessage':true
           };
+          //消息通知图片更改
+          api.execScript({
+              name: 'index',
+              script: 'fnSetMessageImage(0);'
+          });
         }
           console.log(JSON.stringify(data));
           var html = template('message-template', data); //data为模板数据
@@ -230,9 +246,15 @@
               //删完了重新渲染
               if(list.getElementsByTagName('li').length==0){
 
-                data={noneorder:true};
-                var html = template('order-template', data); //data为模板数据
-                document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+                data={nomessage:true};
+                var html = template('message-template', data); //data为模板数据
+                list.innerHTML = html; //将生成的模板填充添加到对应的容器中
+                //消息通知图片更改
+                api.execScript({
+                    name: 'index',
+                    script: 'fnSetMessageImage(0);'
+                });
+
               }
               api.ajax({
                   url: 'http://'+url+':'+port+'/user/messages/delete/'+id,
