@@ -200,6 +200,13 @@
         }
         $api.addCls( eFootLis[index], 'active');
         $api.addCls( eHeaderLis[index], 'active');
+        if(index==1){
+          api.execScript({
+              frameName: 'frame1',
+              script: 'fnClearInput();'
+          });
+
+        }
         api.setFrameGroupIndex({
             name: 'group',
             index: index

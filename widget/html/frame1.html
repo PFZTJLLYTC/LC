@@ -152,7 +152,7 @@
         <div class="item icon icon-people"></div>
         <label class="title item" for="people">乘客人数</label>
         <select id="people" class="input select item">
-             <option value="0">0</option>
+             <option value="" hidden>--请选择--</option>
              <option value="1">1</option>
              <option value="2">2</option>
              <option value="3">3</option>
@@ -277,6 +277,19 @@
         if (day.length < 2) day = '0' + day;
 
         return [year, month, day].join('-');
+    }
+
+    function fnClearInput(){
+      var inputList=document.getElementsByTagName('input');
+
+      for(var i=0;i<inputList.length;i++){
+        $api.val(inputList[i],"");
+      }
+
+      $api.byId("line").options.selectedIndex=0;
+      $api.byId('people').options.selectedIndex=0;
+
+
     }
 
     function fnOpenMyOrderWin() {
