@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>线路选择</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    header {
+        width: 100%;
+        height: 50px;
+        background-color: -webkit-linear-gradient(to right , #7A88FF, #7AFFAF);
+        background: linear-gradient(to right , #7A88FF, #7AFFAF);
+    }
+
+    header .back {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px;
+        height: 50px;
+        background: url(../image/back.png);
+        background-position: 12px 16px;
+        background-size: 11px 18px;
+        background-repeat: no-repeat;
+    }
+
+    header h1 {
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        color: #fff;
+        font-size: 20px;
+    }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="back" tapmode onclick="api.closeWin();"></div>
+        <h1>线路选择</h1>
+    </header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+apiready = function() {
+    var header = $api.byId('header');
+    $api.fixStatusBar(header);
+    var headerH = $api.offset(header).h;
+    api.openFrame({
+        name: 'lineSelect_frame',
+        url: './lineSelect_frame.html',
+        rect: {
+            x: 0,
+            y: headerH,
+            w: 'auto',
+            h: 'auto'
+        },
+        bounces: false,
+        pageParam:api.pageParam,
+    });
+};
+</script>
+
+</html>

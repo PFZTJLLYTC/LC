@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>线路选择Frame</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+  apiready = function() {
+    fnInitLineList();
+  };
+
+  function fnInitLineList(){
+    var UIListCard=api.require("UIListCard");
+    console.log(JSON.stringify(api.pageParam.data));
+
+
+    UIListCard.open({
+      rect:{
+        x:0,
+        y:0,
+        w:'auto',
+        h:'auto'
+      },
+      contacts:api.pageParam.data,
+      styles:{
+        backgroudColor:'rgba(0,0,0,0)', // (可选项) 模块的背景颜色，默认：'rgba(0,0,0,0)'
+        sectionTitle: {                 //（可选项）JSON对象；标题的样式
+            bgColor: '#eee',            //（可选项）字符串类型；标题的背景色，支持 rgb、rgba、#；默认：'#EEEEEE'
+            color: '#000',              //（可选项）字符串类型；标题文字颜色，支持 rgb、rgba、#；默认：'#000000'
+            size: 12,                   //（可选项）数字类型；标题文字大小；默认：12.0
+            height: 25,                  //（可选项）数字类型；区域标题的高度，默认：25.0
+        },
+        item: {                         //（可选项）JSON对象；列表项的样式
+            bgColor: '#fff',            //（可选项）字符串类型；列表项的背景色，支持 rgb、rgba、#；默认：'#FFFFFF'
+            activeBgColor: '#696969',   //（可选项）字符串类型；列表项按下时的背景色，支持 rgb、rgba、#；默认：'#696969'
+            color: '#000',              //（可选项）字符串类型；列表项的文字颜色，支持 rgb、rgba、#，默认：'#000000'
+            size: 14,                   //（可选项）数字类型；列表项的文字大小，默认：14.0
+            height: 40,                  //（可选项）数字类型；列表项的高度，默认：40.0
+            customerColor:'#C0C0C0',        // (可选项)字符串类型；条目类型的文字颜色
+            customerSize: 14,           //（可选项）数字类型；条目类型的文字的大小
+      }
+      },
+      fixedOn:api.frameName
+    },function(ret){
+    if(ret){
+      console.log(JSON.stringify(ret));
+      if(ret.eventType=="click"){
+        api.execScript({
+            name: 'index',
+            frameName: 'frame1',
+            script: 'fnSetLine("'+ret.contact.name+'")',//函数传字符串参数
+        });
+        api.closeWin();
+
+      }
+    }
+  });
+
+  }
+</script>
+
+</html>

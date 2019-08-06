@@ -78,12 +78,6 @@
                 <div id="cacheSize" class="text"></div>
             </div>
         </div>
-        <div class="option" tapmode onclick="fnOpenAboutWin();">
-            <div class="title">关于</div>
-            <div class="arrow-panel">
-                <div class="text"></div>
-            </div>
-        </div>
         <div class="button" tapmode onclick="fnLogout();">退出登录</div>
     </section>
 </body>
@@ -123,13 +117,6 @@ function fnClearCache() {
   });
 }
 
-function fnOpenAboutWin () {
-    api.openWin({
-        name: 'about',
-        url: './about.html'
-    });
-}
-
 function fnLogout() {
     api.confirm({
         title: '提示',
@@ -140,7 +127,7 @@ function fnLogout() {
             if (1 == ret.buttonIndex) {
                 $api.rmStorage('userInfo');
                 api.closeToWin({
-                    name: 'login'
+                    name: 'root'
                 });
             }
         }

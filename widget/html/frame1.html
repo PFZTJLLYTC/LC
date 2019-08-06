@@ -56,18 +56,16 @@
     .icon-remark{
       background-image: url("../image/remark.png");
     }
+    .icon-wangfan{
+      background-image: url("../image/wangfan.png");
+    }
     .option{
       box-sizing: border-box;
       width: 100%;
       height: 61px;
       border-bottom: 1px solid #ddd;
     }
-    .option .source{
-      text-align: center;
-    }
-    .option .destination{
-      text-align: center;
-    }
+
     .time{
       text-align: center;
     }
@@ -83,6 +81,27 @@
     }
     .option .select{
         background-color: white;
+    }
+
+    .option .line{
+      -webkit-box-flex: 6;
+      -webkit-flex: 6;
+      flex: 6;
+      margin:auto 0px;
+    }
+
+    #source{
+      height: 20px;
+      font-size: 16px;
+      line-height: 26px;
+      text-align: center;
+    }
+
+    #destination{
+      height: 20px;
+      font-size: 16px;
+      line-height: 26px;
+      text-align: center;
     }
 
     .option .input-time{
@@ -124,19 +143,18 @@
     </style>
 </head>
 <body>
-  <div id="content"></div>
 
-  <script id="option-template" type="text/html">
     <div class="wrap-col">
       <div class="wrap-row option item">
         <div class="item icon icon-line"></div>
-        <label class="title item" for="line">选择线路</label>
-        <select id="line" class="input select item">
-          <option value="" hidden>--请选择--</option>
-          {{each list}}
-            <option value="{{$value}}">{{$value}}</option>
-          {{/each}}
-        </select>
+        <label class="title item">选择线路</label>
+        <div class="line wrap-row">
+          <div id="source" onclick="fnOpenLineSelectWin();">出发</div>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="icon icon-wangfan" onclick="fnReverse();"></div>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <div id="destination" onclick="fnOpenLineSelectWin();">到达</div>
+        </div>
       </div>
       <div class="option wrap-row item" tapmode onclick="fnTimeSelect()">
         <div class="item icon icon-time"></div>
@@ -174,12 +192,13 @@
       </div>
     </div>
     <div class="btn" tapmode="highlight" onclick="fnSubmit()">提交订单</div>
-  </script>
+
   <script type="text/javascript" src="../script/api.js"></script>
   <script type="text/javascript" src="../script/common.js"></script>
   <script type="text/javascript">
 
-  var UIDatePickerS;
+  var UIDatePickerS=null;
+  var UIListCard=null;
   var sourceValue;
   var destinationValue;
   var timeValue;
@@ -189,32 +208,38 @@
   var dateValue;
   var lineNameValue;
   var timeValue;
+  var source =$api.byId("source");
+  var destination=$api.byId("destination");
 
   apiready = function() {
-       fnInit();
+
   }
 
-   function fnInit(){
-     UIDatePickerS=null;
+   function fnOpenLineSelectWin(){
 
-     api.ajax({
-         url: 'http://'+url+':'+port+'/user/lines/all',
-         method: 'get',
-         headers: {
-               'Content-Type': 'application/json;charset=utf-8'
-           },
-     },function(ret, err){
-         if (ret) {
-             console.log( JSON.stringify( ret ) );
-             var data={
-               list:ret.data
-             }
-             var html = template('option-template', data); //data为模板数据
-             document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
-         } else {
-             console.log( JSON.stringify( err ) );
-         }
-     });
+      api.ajax({
+          url: 'http://'+url+':'+port+'/user/lines/all',
+          method: 'get',
+          headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+      },function(ret, err){
+          if (ret) {
+              console.log( JSON.stringify( ret ) );
+              api.openWin({
+                  name: 'lineSelect',
+                  url: './lineSelect.html',
+                  pageParam: {
+                      data:ret.data,
+                  }
+              });
+
+          } else {
+              console.log( JSON.stringify( err ) );
+          }
+      });
+
+
 
    }
 
@@ -286,11 +311,12 @@
         $api.val(inputList[i],"");
       }
 
-      $api.byId("line").options.selectedIndex=0;
       $api.byId('people').options.selectedIndex=0;
 
 
     }
+
+
 
     function fnOpenMyOrderWin() {
         api.openWin({
@@ -301,7 +327,7 @@
 
     function fnSubmit(){
         var userInfo = $api.getStorage('userInfo');
-        lineNameValue=$api.val($api.byId('line'));
+        lineNameValue=source.innerHTML+"-"+destination.innerHTML;
         telValue=$api.val($api.byId('tel'));
         peopleValue=$api.val($api.byId('people'));
         addrValue=$api.val($api.byId('address'));
@@ -369,6 +395,19 @@
             }
         });
 
+    }
+
+    function fnReverse(){
+      var tmp;
+      tmp=source.innerHTML;
+      source.innerHTML=destination.innerHTML;
+      destination.innerHTML=tmp;
+    }
+
+    function fnSetLine(name){
+      var lineName=name.split("-");
+      source.innerHTML=lineName[0];
+      destination.innerHTML=lineName[1];
     }
   </script>
 </body>
