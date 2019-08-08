@@ -163,7 +163,9 @@
     var phoneValue;
     var passwordValue;
 
+
     function fnInitUIInput(){
+
       var phone=$api.byId("phone");
       var phoneRect=$api.offset(phone);
       UIInput=api.require("UIInput");
@@ -191,13 +193,7 @@
           }, function(ret, err) {
               if (ret) {
                   phoneUIInputId = ret.id;
-                  if (ret && ret.eventType == "show") {
-                      setTimeout(function() {
-                          UIInput.popupKeyboard({
-                              id: phoneUIInputId
-                          });
-                      }, 200);
-                  } else if (ret.eventType == "change") {
+                  if (ret.eventType == "change") {
                       UIInput.value({
                           id: phoneUIInputId
                       }, function(ret, err) {
