@@ -83,10 +83,17 @@
             </div>
           </div>
 
+          {{if $value.userCount === 0}}
+          <div class="item wrap-row">
+            <span class="tag item">订单类型:</span>
+            <span class="text item">寄件</span>
+          </div>
+          {{else}}
           <div class="item wrap-row">
             <span class="tag item">乘客人数:</span>
-            <span class="text item">{{$value.userCount}}</span>
+            <span class="text item">{{$value.userCount}}人</span>
           </div>
+          {{/if}}
 
           <div class="item wrap-row">
             <span class="tag item">预约司机:</span>
