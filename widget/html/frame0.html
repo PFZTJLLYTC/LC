@@ -94,7 +94,7 @@
               <img src="../image/slide/slide2.jpg" />
               <label>路与歌</label>
           </div>
-          <div tapmode onclick="fnOpenMoreBooksRecommendWin();">
+          <div tapmode onclick="fnOpenBooksRecommendWin(0);">
               <img src="../image/slide/slide3.jpg" />
               <label>途与书</label>
           </div>
@@ -108,7 +108,7 @@
 
   <section>
   <header>
-      <span>风云文学</span><em tapmode onclick="fnOpenMoreBooksRecommendWin();">更多&gt;</em>
+      <!-- <span>风云文学</span><em tapmode onclick="fnOpenMoreBooksRecommendWin();">更多&gt;</em> -->
   </header>
   <ul class="content">
       <li>
@@ -205,12 +205,12 @@
           }
       });
   }
-  function fnOpenMoreBooksRecommendWin(){
-    api.openWin({
-        name: 'readbook',
-        url: './readbook.html'
-    });
-  }
+  // function fnOpenMoreBooksRecommendWin(){
+  //   api.openWin({
+  //       name: 'readbook',
+  //       url: './readbook.html'
+  //   });
+  // }
   function fnOpenMoreMusicRecommendWin(){
     api.openWin({
         name: 'moremusic',
