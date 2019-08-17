@@ -78,6 +78,11 @@
                 <div id="cacheSize" class="text"></div>
             </div>
         </div>
+
+        <div class="option" tapmode onclick="fnChangePassword();">
+            <div class="title">修改密码</div>
+            <div class="arrow-panel"></div>
+        </div>
         <div class="button" tapmode onclick="fnLogout();">退出登录</div>
     </section>
 </body>
@@ -132,6 +137,18 @@ function fnLogout() {
             }
         }
     });
+}
+
+function fnChangePassword(){
+  api.openWin({
+      name: 'checkPhone',
+      url: './checkPhone.html',
+      pageParam: {
+          nextPage:"changePassword",
+          backPage:"setting"
+      }
+  });
+
 }
 </script>
 

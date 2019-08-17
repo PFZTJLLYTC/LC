@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>手机验证Frame</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+
+    .title{
+       height: 60px;
+       padding-top: 30px;
+       font-size: 26px;
+       text-align: center;
+       line-height: 60px;
+    }
+
+    .row{
+      height: 35px;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      margin-left: 20px;
+      margin-right: 20px;
+      border-bottom: 1px solid #E0E0E0;
+    }
+
+    .tag{
+      display: inline-block;
+      width: 85px;
+      font-size: 16px;
+      text-align: left;
+    }
+
+    .btn{
+      width: 90%;
+      height: 50px;
+      margin-left: 20px;
+      margin-right: 20px;
+      margin-top: 32px;
+      color: #fff;
+      font-size: 16px;
+      line-height: 50px;
+      text-align: center;
+      background-color: #41d922;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .btn-confirm{
+        height: 20px;
+        width: 30%;
+        text-align: right;
+        color: #41d922;
+        font-size: 14px;
+        line-height: 25px;
+        outline: none;
+        border: none;
+    }
+
+    .input {
+      width: 35%;
+      height: 20px;
+      line-height: 20px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+    }
+
+    .highlight {
+        opacity: 0.7;
+    }
+    </style>
+</head>
+
+<body>
+     <div class="title">请输入你的手机号</div>
+     <div class="row">
+       <label for="country" class="tag">国家/地区</label>
+       <input id="country" class="input" readonly="readonly" value="中国" onclick="fnOpenCountrySelectWin();"></input>
+     </div>
+     <div class="row">
+       <label for="phone" class="tag">+86</label>
+       <input id="phone" class="input" placeholder="请输入手机号码"></input>
+     </div>
+     <div class="row">
+       <label for="textCode" class="tag">验证码</label>
+       <input id="textCode" class="input" placeholder="请输入验证码"></input>
+       <button id="getCode" class="btn-confirm" tapmode type="button" onclick="fnGetTextCode()">获取验证码</button>
+     </div>
+     <div class="btn" tapmode="highlight" onclick="fnCommitCode();">
+       提交认证
+     </div>
+     <script type="text/javascript" src="../script/api.js"></script>
+     <script type="text/javascript" src="../script/common.js"></script>
+     <script type="text/javascript">
+       apiready=function(){
+
+       };
+
+       var phoneValue;
+       var textCodeValue;
+       var moduleSMSSDK;
+
+       function fnGetTextCode(){
+
+           moduleSMSSDK=api.require('smssdk');
+           var country = '86';
+           var phone = $api.val($api.byId("phone"));
+           // param中的key命名不能改变
+           var param = {zone:country, phoneNumber:phone};
+           moduleSMSSDK.getTextCode(param, function(ret, err){
+                 if (err !== null && err !== undefined && err !== '') {
+                     // 错误消息示例：{"msg":"Template not exist.","code":484}
+                     alert(JSON.stringify(err.msg));
+                     console.log("Error:\n"+JSON.stringify(err));
+                 } else {
+                     // 正常消息示例：{"smart":false}
+                     console.log("Success:"+JSON.stringify(ret));
+                     var countdown=60;                              //60秒后重发
+                     var getCode=$api.byId("getCode");
+
+                     getCode.disabled=true;
+
+                     var timer=setInterval(function(){
+                       if(countdown==0){
+                         clearInterval(timer);
+
+                         getCode.style="color:#41d922;";
+                         getCode.innerHTML="获取验证码";
+                         getCode.disabled=false;      //用$api.attr(getCode,"disabled",false)无效，原因不明
+
+                       }else{
+                         getCode.style="color:grey;";
+                         getCode.innerHTML="重新发送("+countdown+"s)";
+                         countdown--;
+                       }
+                     },1000);
+               }
+             });
+       }
+
+       function fnCommitCode(){
+
+         moduleSMSSDK=api.require('smssdk');
+         phoneValue=$api.val($api.byId("phone"));
+         textCodeValue=$api.val($api.byId("textCode"));
+
+         var param = {zone:'86', phoneNumber:phoneValue, code:textCodeValue};
+         console.log(JSON.stringify(param));
+         moduleSMSSDK.commitCode(param, function(ret, err){
+         if (err !== null && err !== undefined && err !== '') {
+           // 错误消息示例：{"msg":"Template not exist.","code":484}
+           alert(JSON.stringify(err.msg));
+           } else {
+             api.openWin({
+                 name: api.pageParam.nextPage,
+                 url: './'+api.pageParam.nextPage+'.html',
+                 pageParam: {
+                     phoneValue: phoneValue,
+                     backPage:api.pageParam.backPage
+                 }
+             });
+
+           }
+         });
+       }
+
+       function fnOpenCountrySelectWin(){
+          api.toast({
+              msg: '目前仅支持中国地区',
+              duration: 2000,
+              location: 'middle'
+          });
+       }
+     </script>
+</body>
+</html>

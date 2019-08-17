@@ -104,6 +104,15 @@
         vertical-align: -20%;
         margin: 0 10px;
     }
+
+    .forgetPassword{
+       height: 25px;
+       text-align: right;
+       font-size: 14px;
+       line-height: 35px;
+       margin-right: 30px;
+       color: #41d922;
+    }
     #btn-third-party ul{
       height: 50px;
       width: auto;
@@ -135,7 +144,12 @@
       <div class="icon icon-pswd"></div>
       <input id="password" class="input" type="password">
   </div>
-    <div class="btn" tapmode="highlight" onclick="fnLogin();">登录</div>
+
+  <div class="forgetPassword" onclick="fnForgetPassword();">忘记密码</div>
+  <div class="btn" tapmode="highlight" onclick="fnLogin();">登录</div>
+
+
+
     <div class="third-party">
         <span class="line"></span>
         <span class="txt">第三方登陆</span>
@@ -326,6 +340,18 @@
           msg: '该功能仍在测试，尚未开放',
           duration: 2000,
           location: 'middle'
+      });
+
+    }
+
+    function fnForgetPassword(){
+      api.openWin({
+          name: 'checkPhone',
+          url: './checkPhone.html',
+          pageParam:{
+            nextPage:"changePassword",
+            backPage:"root",
+          }
       });
 
     }
