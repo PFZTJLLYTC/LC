@@ -538,7 +538,9 @@
                         frameName: 'login_frame',
                         script: 'fnSetPhone(\"' + phoneValue + '\");'
                     });
-                    api.closeWin();
+                    api.closeToWin({
+                        name:'root'
+                    });
                 }
             });
         } else {
