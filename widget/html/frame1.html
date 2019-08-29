@@ -17,14 +17,7 @@
       -webkit-flex-flow: row;
       flex-flow: row;
     }
-    .wrap-col{
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-flex-flow: column;
-      flex-flow: column;
-    }
+
     .item{
       -webkit-box-flex: 1;
       -webkit-flex: 1;
@@ -90,14 +83,14 @@
       margin:auto 0px;
     }
 
-    #source{
+    #source,#destination{
       height: 20px;
       font-size: 16px;
       line-height: 26px;
       text-align: center;
     }
 
-    #destination{
+{
       height: 20px;
       font-size: 16px;
       line-height: 26px;
@@ -144,7 +137,6 @@
 </head>
 <body>
 
-    <div class="wrap-col">
       <div class="wrap-row option item">
         <div class="item icon icon-line"></div>
         <label class="title item">选择线路</label>
@@ -191,7 +183,7 @@
         <label class="title item" for="remark">订单备注</label>
         <input id="remark" class="input item" type="text" placeholder="填写额外对约车服务的要求">
       </div>
-    </div>
+
     <div class="btn" tapmode="highlight" onclick="fnSubmit()">提交订单</div>
 
   <script type="text/javascript" src="../script/api.js"></script>
