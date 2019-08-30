@@ -27,4 +27,7 @@
 	<permission name="fileSystem" />
 	<permission name="internet" />
 	<permission name="bootCompleted" />
-	<permission name="hardware" />  <feature name="QQPlus">                        //qq开放平台      <param name="urlScheme" value="tencent101064640" />      <param name="apiKey" value="101064640" />   </feature>  <!-- For Android --><meta-data name="Mob-AppKey" value="2aaa44ae9bf7e"/><meta-data name="Mob-AppSecret" value="4da0aaef83af6827fe1303350f1a5221"/></widget>
+	<permission name="hardware" />  <feature name="QQPlus">                        //qq开放平台      <param name="urlScheme" value="tencent101064640" />      <param name="apiKey" value="101064640" />   </feature>  <!-- For Android --><meta-data name="Mob-AppKey" value="2aaa44ae9bf7e"/><meta-data name="Mob-AppSecret" value="4da0aaef83af6827fe1303350f1a5221"/>
+<meta-data tools:replace="android:value"/>
+
+</widget>
