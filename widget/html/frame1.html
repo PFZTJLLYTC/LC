@@ -190,6 +190,7 @@
   <script type="text/javascript" src="../script/common.js"></script>
   <script type="text/javascript">
 
+  var UIDatePicker=null;
   var UIDatePickerS=null;
   var UIListCard=null;
   var sourceValue;
@@ -236,80 +237,38 @@
 
    }
 
-  //  function fnTimeSelect(){
-   //
-  //      UIDatePickerS = api.require('UIDatePickerS');
-   //
-  //      UIDatePickerS.open({
-  //           rowHeight:40,
-  //           styles: {
-  //                  bg: 'rgba(0,0,0,0)',
-  //                  headerViewBackgroundColor:'rgba(0,0,0,0)',
-  //                  lineBackgroundColor: 'rgba(0,0,0,0)',
-  //           item:{
-  //                normal: '#f00',
-  //                normalFont: 14,
-  //                selected: '#000079',
-  //                selectedFont: 17,
-  //                cancelBtn:{
-  //                    cancelButtonTextColor: '#1E1E1E',
-  //                    cancelButtonText: '取消' ,
-  //                    cancelButtonFont:17
-  //                },
-  //                confirmBtn:{
-  //                    confirmButtonTextColor: '#1E1E1E',
-  //                    confirmButtonText: '确定' ,
-  //                    confirmButtonFont:17
-  //                   },
-  //           }
-  //           },
-  //       }, function(ret, err) {
-  //           if (ret) {
-  //               console.log(JSON.stringify(ret));
-  //               if(ret.eventType=='submit'){
-  //                 var month=(ret.month<10)?('0'+ret.month):ret.month;
-  //                 var day=(ret.day<10)?('0'+ret.day):ret.day;
-  //                 var hour=(ret.hour<10)?('0'+ret.hour):ret.hour;
-  //                 var minute=(ret.minute<10)?('0'+ret.minute):ret.minute;
-  //                 timeValue=ret.year+'-'+month+'-'+day+' '+hour+':'+minute;
-  //                 $api.val($api.byId('time'),timeValue);
-   //
-  //               }else{
-  //                 UIDatePickerS.close();
-  //               }
-  //           } else {
-  //               console.log(JSON.stringify(err));
-  //           }
-  //       });
-   //
-  //  }
+
 
    function fnTimeSelect(){
 
-       UIDatePickerS = api.require('UIDatePickerS');
+       UIDatePicker = api.require('UIDatePicker');
 
-       UIDatePickerS.open({
+       UIDatePicker.open({
+       type: 'dateHourMinute',
+       minDate: formatDate(new Date(),'yyyy-MM-dd hh:mm:ss'),
+       maxDate: formatDate(addDate(new Date(),30),'yyyy-MM-dd hh:mm:ss'),
        rowHeight:40,
+       title: '选择时间',
        styles: {
                bg: 'rgba(255,255,255,1)',
                headerViewBackgroundColor:'rgba(0,0,0,0)',
                lineBackgroundColor: 'rgba(0,0,0,0.4)',
-               item:{
-                    normal: 'rgba(0,0,0,0.5)',
-                    normalFont: 14,
-                    selected: '#000',
-                    selectedFont: 17,
-                    cancelBtn:{
-                       cancelButtonTextColor: '#999999',
-                       cancelButtonText: '取消' ,
-                       cancelButtonFont:17
-                    },
-                     confirmBtn:{
-                        confirmButtonTextColor: '#41d922',
-                        confirmButtonText: '确认' ,
-                        confirmButtonFont:17
-                    },
-               },
+        item:{
+             normal: 'rgba(0,0,0,0.5)',
+             normalFont: 14,
+             selected: '#000',
+             selectedFont: 17,
+             cancelBtn:{
+                 cancelButtonTextColor: '#999999',
+                 cancelButtonText: '取消' ,
+                 cancelButtonFont:17
+             },
+             confirmBtn:{
+                confirmButtonTextColor: '#41d922',
+                 confirmButtonText: '确认' ,
+                 confirmButtonFont:17
+                },
+        }
         },
       }, function(ret, err) {
         if (ret) {
@@ -323,7 +282,7 @@
             $api.val($api.byId('time'),timeValue);
 
           }else{
-            UIDatePickerS.close();
+            UIDatePicker.close();
           }
       } else {
           console.log(JSON.stringify(err));
@@ -332,7 +291,13 @@
 
    }
 
+   function addDate(date,days){
+      date.setDate(date.getDate()+days);
+      return date;
+   }
+
     function formatDate(date,pattern) {
+
         var month = '' + (date.getMonth() + 1);
         var day = '' + date.getDate();
         var year = date.getFullYear();
@@ -354,7 +319,6 @@
     }
 
     function fnClearInput(){
-
       var inputList=document.getElementsByTagName('input');
 
       for(var i=0;i<inputList.length;i++){
