@@ -288,8 +288,7 @@
   //  }
 
    function fnTimeSelect(){
-     if(UIDatePicker)UIDatePicker.show();
-     else{
+
        UIDatePicker = api.require('UIDatePicker');
 
        UIDatePicker.open({
@@ -329,15 +328,13 @@
             $api.val($api.byId('time'),timeValue);
 
           }else{
-            UIDatePicker.hide();
+            UIDatePicker.close();
           }
       } else {
           console.log(JSON.stringify(err));
       }
     });
 
-
-     }
    }
 
     function formatDate(date) {
