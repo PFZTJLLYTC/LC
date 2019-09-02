@@ -190,7 +190,6 @@
   <script type="text/javascript" src="../script/common.js"></script>
   <script type="text/javascript">
 
-  var UIDatePicker=null;
   var UIDatePickerS=null;
   var UIListCard=null;
   var sourceValue;
@@ -238,8 +237,7 @@
    }
 
   //  function fnTimeSelect(){
-  //    if(UIDatePickerS)UIDatePickerS.show();
-  //    else{
+   //
   //      UIDatePickerS = api.require('UIDatePickerS');
    //
   //      UIDatePickerS.open({
@@ -277,44 +275,41 @@
   //                 $api.val($api.byId('time'),timeValue);
    //
   //               }else{
-  //                 UIDatePickerS.hide();
+  //                 UIDatePickerS.close();
   //               }
   //           } else {
   //               console.log(JSON.stringify(err));
   //           }
   //       });
    //
-  //    }
   //  }
 
    function fnTimeSelect(){
 
-       UIDatePicker = api.require('UIDatePicker');
+       UIDatePickerS = api.require('UIDatePickerS');
 
-       UIDatePicker.open({
-       type: 'dateHourMinute',
+       UIDatePickerS.open({
        rowHeight:40,
-       title: '选择时间',
        styles: {
-               bg: 'rgba(0,0,0,0)',
+               bg: 'rgba(255,255,255,1)',
                headerViewBackgroundColor:'rgba(0,0,0,0)',
-               lineBackgroundColor: 'rgba(0,0,0,0)',
-        item:{
-             normal: '#f00',
-             normalFont: 14,
-             selected: '#000079',
-             selectedFont: 17,
-             cancelBtn:{
-                 cancelButtonTextColor: '#1E1E1E',
-                 cancelButtonText: '取消' ,
-                 cancelButtonFont:17
-             },
-             confirmBtn:{
-                confirmButtonTextColor: '#1E1E1E',
-                 confirmButtonText: '确认' ,
-                 confirmButtonFont:17
-                },
-        }
+               lineBackgroundColor: 'rgba(0,0,0,0.4)',
+               item:{
+                    normal: 'rgba(0,0,0,0.5)',
+                    normalFont: 14,
+                    selected: '#000',
+                    selectedFont: 17,
+                    cancelBtn:{
+                       cancelButtonTextColor: '#999999',
+                       cancelButtonText: '取消' ,
+                       cancelButtonFont:17
+                    },
+                     confirmBtn:{
+                        confirmButtonTextColor: '#41d922',
+                        confirmButtonText: '确认' ,
+                        confirmButtonFont:17
+                    },
+               },
         },
       }, function(ret, err) {
         if (ret) {
@@ -328,7 +323,7 @@
             $api.val($api.byId('time'),timeValue);
 
           }else{
-            UIDatePicker.close();
+            UIDatePickerS.close();
           }
       } else {
           console.log(JSON.stringify(err));
@@ -337,18 +332,29 @@
 
    }
 
-    function formatDate(date) {
-        month = '' + (date.getMonth() + 1),
-        day = '' + date.getDate(),
-        year = date.getFullYear();
+    function formatDate(date,pattern) {
+        var month = '' + (date.getMonth() + 1);
+        var day = '' + date.getDate();
+        var year = date.getFullYear();
+        var hour=date.getHours().toString();
+        var minute=date.getMinutes().toString();
+        var second=date.getSeconds().toString();
 
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
+        if(hour.length<2)hour='0'+hour;
+        if(minute.length<2)minute='0'+minute;
+        if(second.length<2)second='0'+second;
 
+        if(pattern=='yyyy-MM-dd')
         return [year, month, day].join('-');
+
+        if(pattern=='yyyy-MM-dd hh:mm:ss')
+        return [year, month, day].join('-')+' '+[hour,minute,second].join(':');
     }
 
     function fnClearInput(){
+
       var inputList=document.getElementsByTagName('input');
 
       for(var i=0;i<inputList.length;i++){
@@ -375,7 +381,7 @@
         telValue=$api.val($api.byId('tel'));
         peopleValue=$api.val($api.byId('people'));
         addrValue=$api.val($api.byId('address'));
-        dateValue=''+formatDate(new Date());
+        dateValue=''+formatDate(new Date(),'yyyy-MM-dd');
         remarkValue=$api.val($api.byId('remark'));
 
         api.confirm({
