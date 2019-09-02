@@ -190,6 +190,7 @@
   <script type="text/javascript" src="../script/common.js"></script>
   <script type="text/javascript">
 
+  var UIDatePicker=null;
   var UIDatePickerS=null;
   var UIListCard=null;
   var sourceValue;
@@ -236,52 +237,105 @@
 
    }
 
+  //  function fnTimeSelect(){
+  //    if(UIDatePickerS)UIDatePickerS.show();
+  //    else{
+  //      UIDatePickerS = api.require('UIDatePickerS');
+   //
+  //      UIDatePickerS.open({
+  //           rowHeight:40,
+  //           styles: {
+  //                  bg: 'rgba(0,0,0,0)',
+  //                  headerViewBackgroundColor:'rgba(0,0,0,0)',
+  //                  lineBackgroundColor: 'rgba(0,0,0,0)',
+  //           item:{
+  //                normal: '#f00',
+  //                normalFont: 14,
+  //                selected: '#000079',
+  //                selectedFont: 17,
+  //                cancelBtn:{
+  //                    cancelButtonTextColor: '#1E1E1E',
+  //                    cancelButtonText: '取消' ,
+  //                    cancelButtonFont:17
+  //                },
+  //                confirmBtn:{
+  //                    confirmButtonTextColor: '#1E1E1E',
+  //                    confirmButtonText: '确定' ,
+  //                    confirmButtonFont:17
+  //                   },
+  //           }
+  //           },
+  //       }, function(ret, err) {
+  //           if (ret) {
+  //               console.log(JSON.stringify(ret));
+  //               if(ret.eventType=='submit'){
+  //                 var month=(ret.month<10)?('0'+ret.month):ret.month;
+  //                 var day=(ret.day<10)?('0'+ret.day):ret.day;
+  //                 var hour=(ret.hour<10)?('0'+ret.hour):ret.hour;
+  //                 var minute=(ret.minute<10)?('0'+ret.minute):ret.minute;
+  //                 timeValue=ret.year+'-'+month+'-'+day+' '+hour+':'+minute;
+  //                 $api.val($api.byId('time'),timeValue);
+   //
+  //               }else{
+  //                 UIDatePickerS.hide();
+  //               }
+  //           } else {
+  //               console.log(JSON.stringify(err));
+  //           }
+  //       });
+   //
+  //    }
+  //  }
+
    function fnTimeSelect(){
-     if(UIDatePickerS)UIDatePickerS.show();
+     if(UIDatePicker)UIDatePicker.show();
      else{
-       UIDatePickerS = api.require('UIDatePickerS');
+       UIDatePicker = api.require('UIDatePicker');
 
-       UIDatePickerS.open({
-            rowHeight:40,
-            styles: {
-                   bg: 'rgba(0,0,0,0)',
-                   headerViewBackgroundColor:'rgba(0,0,0,0)',
-                   lineBackgroundColor: 'rgba(0,0,0,0)',
-            item:{
-                 normal: '#f00',
-                 normalFont: 14,
-                 selected: '#000079',
-                 selectedFont: 17,
-                 cancelBtn:{
-                     cancelButtonTextColor: '#1E1E1E',
-                     cancelButtonText: '取消' ,
-                     cancelButtonFont:17
-                 },
-                 confirmBtn:{
-                     confirmButtonTextColor: '#1E1E1E',
-                     confirmButtonText: '确定' ,
-                     confirmButtonFont:17
-                    },
-            }
-            },
-        }, function(ret, err) {
-            if (ret) {
-                console.log(JSON.stringify(ret));
-                if(ret.eventType=='submit'){
-                  var month=(ret.month<10)?('0'+ret.month):ret.month;
-                  var day=(ret.day<10)?('0'+ret.day):ret.day;
-                  var hour=(ret.hour<10)?('0'+ret.hour):ret.hour;
-                  var minute=(ret.minute<10)?('0'+ret.minute):ret.minute;
-                  timeValue=ret.year+'-'+month+'-'+day+' '+hour+':'+minute;
-                  $api.val($api.byId('time'),timeValue);
+       UIDatePicker.open({
+       type: 'dateHourMinute',
+       rowHeight:40,
+       title: '选择时间',
+       styles: {
+               bg: 'rgba(0,0,0,0)',
+               headerViewBackgroundColor:'rgba(0,0,0,0)',
+               lineBackgroundColor: 'rgba(0,0,0,0)',
+        item:{
+             normal: '#f00',
+             normalFont: 14,
+             selected: '#000079',
+             selectedFont: 17,
+             cancelBtn:{
+                 cancelButtonTextColor: '#1E1E1E',
+                 cancelButtonText: '取消' ,
+                 cancelButtonFont:17
+             },
+             confirmBtn:{
+                confirmButtonTextColor: '#1E1E1E',
+                 confirmButtonText: '确认' ,
+                 confirmButtonFont:17
+                },
+        }
+        },
+      }, function(ret, err) {
+        if (ret) {
+          console.log(JSON.stringify(ret));
+          if(ret.eventType=='submit'){
+            var month=(ret.month<10)?('0'+ret.month):ret.month;
+            var day=(ret.day<10)?('0'+ret.day):ret.day;
+            var hour=(ret.hour<10)?('0'+ret.hour):ret.hour;
+            var minute=(ret.minute<10)?('0'+ret.minute):ret.minute;
+            timeValue=ret.year+'-'+month+'-'+day+' '+hour+':'+minute;
+            $api.val($api.byId('time'),timeValue);
 
-                }else{
-                  UIDatePickerS.hide();
-                }
-            } else {
-                console.log(JSON.stringify(err));
-            }
-        });
+          }else{
+            UIDatePicker.hide();
+          }
+      } else {
+          console.log(JSON.stringify(err));
+      }
+    });
+
 
      }
    }
