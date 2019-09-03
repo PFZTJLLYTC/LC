@@ -54,7 +54,7 @@
       background-image: url("../image/password.png");
     }
 
-    .btn {
+    /*.btn {
         width: 200px;
         height: 50px;
         margin-left: auto;
@@ -67,6 +67,21 @@
         font-size: 24px;
         text-align: center;
         border-radius: 8px;
+    }*/
+
+    .btn{
+      width: 83%;
+      height: 50px;
+      margin-left: 30px;
+      margin-right: 35px;
+      margin-top: 32px;
+      color: #fff;
+      font-size: 16px;
+      line-height: 50px;
+      text-align: center;
+      background-color: #41d922;
+      background-repeat: no-repeat;
+      background-position: center;
     }
     .wrap-row{
       display: -webkit-box;
@@ -130,6 +145,13 @@
     #btn-third-party ul li:nth-child(3){
       background-image: url("../image/sina-weibo.png");
     }
+
+    #footer{
+      margin-top: 20px;
+      font-size:12px;
+      text-align: center;
+      color: grey;
+    }
     .highlight {
         opacity: 0.7;
     }
@@ -153,7 +175,7 @@
 
 
 
-    <div class="third-party">
+    <!-- <div class="third-party">
         <span class="line"></span>
         <span class="txt">第三方登陆</span>
         <span class="line"></span>
@@ -164,6 +186,10 @@
         <li class="item" onclick="fnThirdPartyLogin();"></li>
         <li class="item" onclick="fnThirdPartyLogin();"></li>
       </ul>
+    </div> -->
+    <div id="footer">
+      <span>登陆即代表你同意用户</span>
+      <span style="color:#41d922" tapmode onclick="fnOpenPrivacyPolicy();">隐私政策</span>
     </div>
     <script type="text/javascript" src="../script/api.js"></script>
     <script type="text/javascript" src="../script/common.js"></script>
@@ -355,6 +381,14 @@
             nextPage:"changePassword",
             backPage:"root",
           }
+      });
+
+    }
+
+    function fnOpenPrivacyPolicy(){
+      api.openWin({
+          name: 'privacyPolicy',
+          url: './privacyPolicy.html',
       });
 
     }
