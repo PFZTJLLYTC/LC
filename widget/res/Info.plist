@@ -6,5 +6,11 @@
     <string>2aaa44ae9bf7e</string>
     <key>MOBAppSecret</key>
     <string>4da0aaef83af6827fe1303350f1a5221</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>连城出行需要您的同意,才能在使用期间访问位置</string>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>连城出行需要您的同意,才能访问媒体资料库</string>
+    <key>NSContactsUsageDescription</key>
+    <string>连城出行需要您的同意,才能访问通讯录</string>
 </dict>
 </plist>
