@@ -153,7 +153,9 @@
             <div class="content">【连城】{{$value.message}}</div>
             <div class="tag">
                 <div class="time">{{$value.createTime}}</div>
-                <div class="check" tapmode onclick="fnCheck();">查看详情</div>
+                {{if $value.type!=0}}
+                <div class="check" tapmode onclick="fnCheck({{$value.type}});">查看详情</div>
+                {{/if}}
             </div>
         </li>
       {{/each}}
@@ -224,12 +226,20 @@
         });
     }
 
-    function fnCheck(){
-      api.openWin({
-          name: 'myorder',
-          url: './myorder.html'
-      });
-    }
+    function fnCheck(type){
+
+       if(type==1){
+         api.openWin({
+             name: 'myorder',
+             url: './myorder.html'
+         });
+       }else if(type==2){
+         api.openWin({
+             name: 'qusAndAns',
+             url: './qusAndAns.html'
+         });
+
+       }
 
     function fnDel(id,index){
       api.confirm({
