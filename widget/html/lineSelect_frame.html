@@ -23,7 +23,11 @@
 
   function fnInitLineList(){
     var UIListCard=api.require("UIListCard");
+    api.pageParam.data.forEach(function(value,index){
+        value.customerTypes="¥"+value.customerTypes;
+    });
     console.log(JSON.stringify(api.pageParam.data));
+
 
 
     UIListCard.open({
@@ -48,8 +52,8 @@
             color: '#000',              //（可选项）字符串类型；列表项的文字颜色，支持 rgb、rgba、#，默认：'#000000'
             size: 14,                   //（可选项）数字类型；列表项的文字大小，默认：14.0
             height: 40,                  //（可选项）数字类型；列表项的高度，默认：40.0
-            customerColor:'#C0C0C0',        // (可选项)字符串类型；条目类型的文字颜色
-            customerSize: 14,           //（可选项）数字类型；条目类型的文字的大小
+            customerColor:'#FF0000',        // (可选项)字符串类型；条目类型的文字颜色
+            customerSize: 16,           //（可选项）数字类型；条目类型的文字的大小
       }
       },
       fixedOn:api.frameName
@@ -63,7 +67,6 @@
             script: 'fnSetLine("'+ret.contact.name+'")',//函数传字符串参数
         });
         api.closeWin();
-
       }
     }
   });
