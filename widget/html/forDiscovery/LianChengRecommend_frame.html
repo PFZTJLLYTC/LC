@@ -17,22 +17,38 @@
        background-size: auto 150px;
        background-position: center center;
    }
+
+   .url{
+     color: blue;
+   }
+
    </style>
  </head>
  <body>
   <div>
    <div class="logo"></div>
    <p>连城：<br/>
-     &#12288;&#12288;连城二字传达着我们的初衷——将小城之间进行连接，以便人们出行。<br/>
-     &#12288;&#12288;连城取名自金庸先生的小说
-     <a href="https://www.bilibili.com/video/av13017548">连城诀</a>。<br/>
+      &#12288;&#12288;连城二字传达着我们的初衷——将小城之间进行连接，以便人们出行。<br/>
+      &#12288;&#12288;连城取名自金庸先生的小说<span class="url" tapmode onClick="fnOpenUrlWithBrowser('https://www.bilibili.com/video/av13017548');">连城诀</span><br/>。
       我们也希望您在生活中未曾被完全磨平棱角，持有一股江湖义气。<br/>
-      &#12288;&#12288;<a href="http://www.liancheng8102.cn">“欲行，则连城。”</a><br/>
+      &#12288;&#12288;<span class="url" tapmode onclick="fnOpenUrlWithBrowser('http://www.liancheng8102.cn');">“欲行，则连城。”</span><br/>
       &#12288;&#12288;期待我们的共同进步。<br/>
    </p>
    <p style="text-align: right;">
        ——LC项目组7月于上海
    </p>
+ <script type="text/javascript">
+   apiready=function(){
+     browser=api.require("webBrowser");
+   }
 
+   function fnOpenUrlWithBrowser(url){
+
+     browser.open({
+         url:url
+     });
+
+   }
+ </script>
  </body>
 </html>
