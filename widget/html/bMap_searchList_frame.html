@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>bMapBottomFrame</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <script src="../script/template-web.js"></script>
+    <style>
+    html,body{
+      background-color:rgb(245, 245, 245);
+    }
+
+    .wrap-row{
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-orient: horizontal;
+    }
+
+    .icon{
+      width: 13px;
+      height:13px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size:13px;
+    }
+
+    .icon-point{
+      background-image: url("../image/point.png");
+    }
+
+    .point-list{
+      border-top: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+      background-color: rgb(255, 255, 255);
+      margin-top: 7px;
+      margin-left: 7px;
+      margin-right: 7px;
+    }
+
+    .point-list .item{
+      height: 65px;
+      box-sizing: border-box;
+      border-bottom: 1px solid #eee;
+    }
+
+    .point-list .item:active{
+      background-color: rgb(235,235,235,0.5);
+    }
+
+    .point-list .item .icon{
+      flex-shrink: 0;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      margin:auto 0px;
+    }
+
+    .point-list .item .text{
+      -webkit-box-flex: 8;
+      -webkit-flex: 8;
+      flex: 8;
+      margin-right: 15px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .point-list .item .text .text-top{
+       font-size: 16px;
+       font-weight: 200;
+       color: #0a0303;
+
+       overflow: hidden;/*超出部分隐藏*/
+       text-overflow:ellipsis;/* 超出部分显示省略号 */
+       white-space: nowrap;/*规定段落中的文本不进行换行 */
+       width: 300px;/*配合宽度使用*/
+    }
+
+    .point-list .item .text .text-bottom{
+       font-size: 14px;
+       color: #aaa;
+
+       overflow: hidden;/*超出部分隐藏*/
+       text-overflow:ellipsis;/* 超出部分显示省略号 */
+       white-space: nowrap;/*规定段落中的文本不进行换行 */
+       width: 300px;/*配合宽度使用*/
+    }
+
+
+    </style>
+</head>
+
+<body>
+  <section>
+    <ul id="content" class="point-list"></ul>
+  </section>
+
+  <script id="point-list-template" type="text/html">
+  {{each list}}
+    <li id="{{$value.uid}}" class="item wrap-row" onclick="fnSelectPoint('{{$value.city}}','{{$value.name}}');">
+      <div class="icon icon-point"></div>
+      <div class="text">
+        <div class="text-top">{{$value.name}}</div>
+        <div class="text-bottom">{{$value.address}}</div>
+      </div>
+    </li>
+  {{/each}}
+  </script>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+
+<script type="text/javascript">
+
+apiready = function() {
+    fnInitSearch();
+};
+
+function fnInitSearch(){
+  api.execScript({
+      name: 'bMap_searchList',
+      script: 'fnSearchList();'
+  });
+}
+
+function fnUpdateSearchList(poiList){
+  var data={
+    list:poiList
+  }
+  console.log(JSON.stringify(data));
+  var html = template('point-list-template', data); //data为模板数据
+  document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
+}
+
+function fnSelectPoint(city,value){
+
+  if(city.indexOf(api.pageParam.sourceCity)!==-1){
+
+    api.execScript({
+        name: 'bMap',
+        frameName: 'bMap_bottom_frame',
+        script: 'fnSetBoardPoint(\''+value+'\');'
+    });
+  }else if(city.indexOf(api.pageParam.destinationCity)!==-1){
+    api.execScript({
+        name: 'bMap',
+        frameName: 'bMap_bottom_frame',
+        script: 'fnSetGetOffPoint(\''+value+'\');'
+    });
+  }else{//TODO:县城 city为所在的市级城市
+
+  }
+
+  api.closeWin();
+
+}
+</script>
+
+</html>

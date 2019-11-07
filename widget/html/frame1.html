@@ -40,8 +40,11 @@
     .icon-people{
       background-image: url("../image/people.png");
     }
-    .icon-addr{
-      background-image: url("../image/address.png");
+    .icon-boardPoint{
+      background-image: url("../image/board-point.png");
+    }
+    .icon-getOffPoint{
+      background-image: url("../image/getoff-point.png");
     }
     .icon-line{
       background-image: url("../image/line.png");
@@ -62,6 +65,7 @@
     .time{
       text-align: center;
     }
+
     .option .input {
         -webkit-box-flex: 6;
         -webkit-flex: 6;
@@ -72,6 +76,7 @@
         font-size: 16px;
         line-height: 20px;
     }
+
     .option .select{
         background-color: white;
     }
@@ -174,9 +179,14 @@
         </select>
       </div>
       <div class="option wrap-row item">
-        <div class="item icon icon-addr"></div>
-        <label class="title item" for="address">详细地址</label>
-        <input id="address" class="input item" type="text" placeholder="选填">
+        <div class="item icon icon-boardPoint"></div>
+        <label class="title item" for="boardPoint">上车地点</label>
+        <input id="board-point" class="input item" type="text" placeholder="选择上车地点" readonly="readonly" onclick="fnOpenbMap();">
+      </div>
+      <div class="option wrap-row item">
+        <div class="item icon icon-getOffPoint"></div>
+        <label class="title item" for="getOffPoint">下车地点</label>
+        <input id="getoff-point" class="input item" type="text" placeholder="选择下车地点" readonly="readonly" onclick="fnOpenbMap();">
       </div>
       <div class="option wrap-row item">
         <div class="item icon icon-remark"></div>
@@ -197,7 +207,12 @@
   var timeValue;
   var telValue;
   var peopleValue;
-  var addrValue;
+  var boardPointValue;
+  var startLon;
+  var startLat;
+  var getOffPointValue;
+  var endLon;
+  var endLat;
   var dateValue;
   var lineNameValue;
   var timeValue;
@@ -343,7 +358,8 @@
         lineNameValue=source.innerHTML+"-"+destination.innerHTML;
         telValue=$api.val($api.byId('tel'));
         peopleValue=$api.val($api.byId('people'));
-        addrValue=$api.val($api.byId('address'));
+        boardPointValue=$api.val($api.byId('board-point'));
+        getOffPointValue=$api.val($api.byId('getoff-point'));
         dateValue=''+formatDate(new Date(),'yyyy-MM-dd');
         remarkValue=$api.val($api.byId('remark'));
 
@@ -366,7 +382,12 @@
                           "time":timeValue,           //预约日期和时间 x年x月x日xx时xx分
                           "userPhone":telValue,
                           "userCount":peopleValue,
-                          "detailAddress":addrValue,
+                          "detailAddress":boardPointValue,
+                          "startLon":startLon,
+                          "startLat":startLat,
+                          "endDetailDestination":getOffPointValue,
+                          "endLon":endLon,
+                          "endLat":endLat,
                           "date":dateValue,
                           "remark":remarkValue,
                         }
@@ -422,6 +443,43 @@
       source.innerHTML=lineName[0];
       destination.innerHTML=lineName[1];
     }
+
+
+    function fnSetBoardPoint(value){
+        if(value!==undefined&&value!==null)
+          $api.val($api.byId('board-point'),value);
+    }
+
+    function fnSetGetOffPoint(value){
+        if(value!==undefined&&value!==null)
+         $api.val($api.byId('getoff-point'),value);
+    }
+
+    function fnOpenbMap(){
+      //未选择线路不能打开地图
+      if(source.innerHTML==="出发"||destination.innerHTML==="到达"){
+        api.toast({
+            msg: '未选择线路',
+            duration: 2000,
+            location: 'middle'
+        });
+        return;
+      }
+
+      api.openWin({
+          name: 'bMap',
+          url: './bMap.html',
+          pageParam:{
+            boardPoint: boardPointValue,
+            getOffPoint: getOffPointValue,
+            sourceCity: source.innerHTML,
+            destinationCity: destination.innerHTML
+          }
+      });
+
+    }
+
+
   </script>
 </body>
 </html>

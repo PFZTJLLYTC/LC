@@ -20,7 +20,7 @@
 	<preference name="smartUpdate" value="false" />
 	<preference name="debug" value="true"/>//调试模式，开发者使用
   <preference name="customRefreshHeader" value="UIPullRefresh"/>//下拉刷新模块
-	<preference name="statusBarAppearance" value="true"/>
+	<preference name="statusBarAppearance" value="true"/>  <preference name="backgroundMode" value="audio | location"/>//baiduNavigation 获取后台定位、后台播报功能
 	<permission name="readPhoneState" />
 	<permission name="camera" />
 	<permission name="record" />
@@ -28,7 +28,7 @@
 	<permission name="fileSystem" />
 	<permission name="internet" />
 	<permission name="bootCompleted" />
-	<permission name="hardware" />  <feature name="QQPlus">                        //qq开放平台      <param name="urlScheme" value="tencent101064640" />      <param name="apiKey" value="101064640" />   </feature>   //百度地图   <feature name="bMap">     <param name="android_api_key" value="WT88cDiVBiZK2ZfgWa4OgFY1dp4wnV5X"/>     <!-- <param name="ios_api_key" value="自己申请"/> --> </feature>  <!-- For Android --><meta-data name="Mob-AppKey" value="2aaa44ae9bf7e"/><meta-data name="Mob-AppSecret" value="4da0aaef83af6827fe1303350f1a5221"/>
+	<permission name="hardware" />  <feature name="QQPlus">                        //qq开放平台      <param name="urlScheme" value="tencent101064640" />      <param name="apiKey" value="101064640" />   </feature>   //百度地图   <feature name="bMap">     <param name="android_api_key" value="WT88cDiVBiZK2ZfgWa4OgFY1dp4wnV5X"/> -->     <!-- <param name="ios_api_key" value="自己申请"/> -->   </feature>  <!-- For Android --><meta-data name="Mob-AppKey" value="2aaa44ae9bf7e"/><meta-data name="Mob-AppSecret" value="4da0aaef83af6827fe1303350f1a5221"/>
 
 
 </widget>

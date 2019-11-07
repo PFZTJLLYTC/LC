@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>百度地图</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+      header{
+        background-color: rgb(255,255,255);
+      }
+    </style>
+</head>
+
+<body>
+
+<header id="header"></header>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+
+var bMap;
+var header;
+var heaerH;
+
+apiready=function(){
+  bMap=api.require("bMap");
+
+  header=$api.byId("header");
+  $api.fixStatusBar(header);
+  headerH=$api.offset(header).h;
+
+  if(api.systemType=="ios"){
+    bMap.initMapSDK(function(ret) {
+        if (ret.status) {
+            fnOpenbMap();
+        }
+    });
+  }else{
+    fnOpenbMap();
+  }
+}
+
+function fnOpenbMap(){
+  bMap.open({
+      rect: {
+          x: 0,
+          y: headerH,
+          w: api.winWidth,
+          h: api.winHeight
+      },
+      center: {
+          lon: 116.4021310000,
+          lat: 39.9994480000
+      },
+      zoomLevel: 18,
+      showUserLocation: true,
+      fixedOn: api.frameName,
+      fixed: true
+  }, function(ret){
+      if(ret.status){
+          fnBMapShowUserLocation();
+          fnOpenFrameBottom();
+      }
+  });
+
+}
+
+
+function fnBMapShowUserLocation(){
+  bMap.showUserLocation({
+      isShow: true,
+      trackingMode: 'none'
+  });
+}
+
+function fnSetCurrentLocation(){
+
+    bMap.getCurrentLocation(
+    function(ret, err) {
+      if (ret.status){
+          bMap.getNameFromCoords({
+              lon: ret.lon,
+              lat: ret.lat
+          },function(ret,err){
+              if(ret.status){
+                api.execScript({
+                    frameName: 'bMap_bottom_frame',
+                    script: 'fnSetBoardPoint(\''+((ret.poiList.length===0)?ret.address:ret.poiList[0].name)+'\');'
+                });
+
+              }
+          });
+      }else {
+        console.log(JSON.stringify(ret));
+        console.log(JSON.stringify(err));
+      }
+    });
+}
+
+function fnOpenFrameBottom(){
+  api.openFrame({
+      name: 'bMap_bottom_frame',
+      url: './bMap_bottom_frame.html',
+      rect: {
+          x: 10,
+          y: api.winHeight-195,
+          w: api.winWidth-20,
+          h: 173
+      },
+      pageParam: api.pageParam,
+      bounces: false,
+      bgColor: 'rgba(255,255,255,0)',
+      vScrollBarEnabled: false,
+      hScrollBarEnabled: false
+  });
+
+}
+
+function fnOpenSearchListWin(value,type){
+
+  api.pageParam.value=value;
+  api.pageParam.type=type;
+
+  api.openWin({
+      name: 'bMap_searchList',
+      url: './bMap_searchList.html',
+      animation:{
+        type:"movein",
+        subType:"from_bottom",
+        duration:300
+      },
+      pageParam:api.pageParam,
+      bounces: false,
+      bgColor: 'rgba(255,255,255,0)',
+      vScrollBarEnabled: false,
+      hScrollBarEnabled: false
+  });
+
+}
+
+
+
+</script>
+
+</html>

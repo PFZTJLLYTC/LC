@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>bMapSearchListFrame</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    header{
+      background-color: rgb(255,255,255);
+    }
+    .wrap-row{
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-orient: horizontal;
+    }
+
+    .item{
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      margin:auto 0px;
+    }
+
+    .search{
+      width: 100%;
+      height: 50px;
+      padding-left:10px;
+      padding-right: 10px;
+      margin-top: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .search .vertical-line{
+      border-left: 1px solid #F0F0F0;
+      margin-left: 12px;
+      margin-right: 12px;
+      padding-top: 12px;
+      font-size: 0px;
+    }
+
+    .search .city{
+      flex-shrink: 0;
+      height：40px;
+      line-height: 40px;
+      margin-right: -3px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .search .input{
+      border: none;
+      outline: none;
+      padding-left: 5px;
+      height: 37px;
+      width: 80%;
+      font-size: 16px;
+    }
+
+    .search .cancel{
+      flex-shrink: 0;
+      height：40px;
+      line-height: 40px;
+      padding-left: 10px;
+      padding-right: 20px;
+      text-align: center;
+      font-size: 16px;
+      color: #AAA;
+    }
+
+    input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+      color: #b1babf;
+   }
+    input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color: #b1babf;
+    }
+    input::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color: #b1babf;
+    }
+    input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: #b1babf;
+    }
+    </style>
+</head>
+
+<body>
+
+  <header id="header" class="search wrap-row">
+    <div class="city"><span  id="city">城市</span><span class="vertical-line"></span></div>
+    <input id="search" class="input" type="text" placeholder="您在哪儿上车" oninput="fnSearchList();">
+    <div class="cancel" onclick="api.closeWin();"><span class="vertical-line"></span>取消</div>
+  </header>
+
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+
+<script type="text/javascript">
+
+var header;
+var headerH;
+var bMap;
+
+apiready=function(){
+
+  //初始化
+  $api.val($api.byId("search"),api.pageParam.value);
+  $api.text($api.byId("city"),api.pageParam.type==="board"?api.pageParam.sourceCity:api.pageParam.destinationCity);
+
+  fnOpenSearchListFrame();
+
+}
+
+function fnSearchList(){
+
+  bMap=api.require('bMap');
+  var value=$api.val($api.byId("search"));
+  var city=api.pageParam.type==="board"?api.pageParam.sourceCity:api.pageParam.destinationCity;
+
+  bMap.getCoordsFromName({
+      city: city,
+      address: value
+  },function(ret,err){
+      if(ret.status){
+
+         bMap.getNameFromCoords({
+             lon: ret.lon,
+             lat: ret.lat
+         },function(ret,err){
+            if(ret.status){
+              api.execScript({
+                  frameName: 'bMap_searchList_frame',
+                  script: 'fnUpdateSearchList('+JSON.stringify(ret.poiList)+');'
+              });
+
+            }
+         });
+
+      }
+  });
+
+
+
+}
+
+function fnOpenSearchListFrame(){
+  header=$api.byId("header");
+  $api.fixStatusBar(header);
+  headerH=$api.offset(header).h;
+
+
+  api.openFrame({
+      name: 'bMap_searchList_frame',
+      url: './bMap_searchList_frame.html',
+      rect: {
+          x: 0,
+          y: headerH,
+          w: api.winWidth,
+          h: api.winHeight
+      },
+      pageParam: api.pageParam,
+      bounces: false,
+      vScrollBarEnabled: false,
+      hScrollBarEnabled: false
+  });
+
+}
+</script>
+
+</html>

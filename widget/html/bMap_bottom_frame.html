@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>bMapBottomFrame</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    body{
+      background-color: rgb(255,255,255);
+    }
+    .wrap-row{
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-flex-flow: row;
+      flex-flow: row;
+    }
+
+    .item{
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      margin:auto 0px;
+    }
+    .travel{
+      border-top: 1px solid #eee;
+      border-right: 1px solid #eee;
+      border-left: 1px solid #eee;
+    }
+    .icon{
+      width: 25px;
+      height:25px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size:25px;
+    }
+    .option{
+      box-sizing: border-box;
+      width: 100%;
+      height: 61px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .option .input {
+        -webkit-box-flex: 10;
+        -webkit-flex: 10;
+        flex: 10;
+        border: none;
+        outline: none;
+        height: 20px;
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .option:active{
+      background-color: rgba(225, 225, 225, 0.5);
+    }
+    .icon-board-point{
+      background-image: url("../image/board-point-min.png");
+    }
+    .icon-getoff-point{
+      background-image: url("../image/getoff-point-min.png");
+    }
+    .title{
+      height:50px;
+      line-height: 60px;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+      color: #b1babf;
+   }
+    input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color: #b1babf;
+    }
+    input::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color: #b1babf;
+    }
+    input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: #b1babf;
+    }
+
+
+    </style>
+</head>
+
+<body>
+  <section class="travel">
+    <div class="title">预约行程</div>
+
+    <div class="option wrap-row">
+      <div class="item icon icon-board-point"></div>
+      <input id="board-point" class="item input" type="text" readonly="readonly" placeholder="您在哪儿上车" value="" onClick="fnOpenSearchList('board');">
+    </div>
+
+    <div class="option wrap-row">
+      <div class="item icon icon-getoff-point"></div>
+      <input id="getoff-point" class="item input" type="text" readonly="readonly" placeholder="您要去哪儿" value="" onClick="fnOpenSearchList('getoff');">
+    </div>
+  </section>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+var bMap;
+
+apiready = function() {
+  bMap=api.require("bMap");
+
+  api.execScript({
+      name: 'bMap',
+      script: 'fnSetCurrentLocation();'
+  });
+
+};
+
+function fnSetBoardPoint(value){
+    console.log(value);
+    if(value!==undefined&&value!==null){
+        $api.val($api.byId('board-point'),value);
+
+        api.execScript({
+            name: 'index',
+            frameName: 'frame1',
+            script: 'fnSetBoardPoint(\''+value+'\');'
+        });
+
+    }
+
+}
+
+function fnSetGetOffPoint(value){
+    console.log(value);
+    if(value!==undefined&&value!==null){
+         $api.val($api.byId('getoff-point'),value);
+
+         api.execScript({
+             name: 'index',
+             frameName: 'frame1',
+             script: 'fnSetGetOffPoint(\''+value+'\');'
+         });
+    }
+
+}
+
+function fnOpenSearchList(type){
+  var value;
+  if(type==="board")
+     value=$api.val($api.byId("board-point"));
+  else if(type==="getoff"){
+     value=$api.val($api.byId("getoff-point"));
+  }else{
+     console.log("error");
+     value=null;
+  }
+
+  console.log(value);
+
+  api.execScript({
+      name: 'bMap',
+      script: "fnOpenSearchListWin(\'"+value+'\',\''+type+"\');"
+  });
+
+}
+</script>
+
+</html>
