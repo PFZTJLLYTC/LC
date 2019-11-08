@@ -134,9 +134,14 @@ function fnSearchList(){
              lat: ret.lat
          },function(ret,err){
             if(ret.status){
+              var dataSource={
+                poiList:ret.poiList,
+                district:ret.district
+              };
+
               api.execScript({
                   frameName: 'bMap_searchList_frame',
-                  script: 'fnUpdateSearchList('+JSON.stringify(ret.poiList)+');'
+                  script: 'fnUpdateSearchList('+JSON.stringify(dataSource)+');'
               });
 
             }

@@ -135,6 +135,26 @@
       background-image: url("../image/wangfan.png");
       background-position: center center;
     }
+
+    .set-input-option{
+      box-sizing: border-box;
+      width: 100%;
+      height: 40px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .set-input-option .selected{
+      background-color: #ddd;
+    }
+
+    .set-input-button{
+      text-align: center;
+    }
+
+    .set-input-button:active{
+      background-color: rgb(235,235,235,0.5);
+    }
+
     .highlight {
         opacity: 0.7;
     }
@@ -177,6 +197,10 @@
              <option value="6">6</option>
              <option value="7">7</option>
         </select>
+      </div>
+      <div class="wrap-row set-input-option">
+          <div id="set-text-input-button" class="set-input-button item" onclick="fnHandleTextInput();">文字输入</div>
+          <div id="set-bMap-input-button" class="set-input-button item selected" onclick="fnHandleBMapInput()">地图检索</div>
       </div>
       <div class="option wrap-row item">
         <div class="item icon icon-boardPoint"></div>
@@ -455,6 +479,22 @@
          $api.val($api.byId('getoff-point'),value);
     }
 
+    function fnSetStartLonAndLat(lon,lat){
+
+      //  alert(JSON.stringify(lon));
+      //  alert(JSON.stringify(lat));
+       startLon=lon;
+       startLat=lat;
+    }
+
+    function fnSetEndLonAndLat(lon,lat){
+      // alert(JSON.stringify(lon));
+      // alert(JSON.stringify(lat));
+      endLon=lon;
+      endLat=lat;
+    }
+
+
     function fnOpenbMap(){
       //未选择线路不能打开地图
       if(source.innerHTML==="出发"||source.innerHTML==="到达"){
@@ -482,6 +522,55 @@
 
     }
 
+    function fnHandleTextInput(){
+
+      fnHandleSelectedButton("text");
+
+      var boardInput=$api.byId("board-point");
+      var getoffInput=$api.byId("getoff-point");
+
+      $api.removeAttr(boardInput, 'readonly');
+      $api.removeAttr(boardInput, 'onclick');
+
+      $api.removeAttr(getoffInput, 'readonly');
+      $api.removeAttr(getoffInput, 'onclick');
+
+      fnSetStartLonAndLat("","");
+      fnSetEndLonAndLat("","");
+
+    }
+
+    function fnHandleBMapInput(){
+
+      fnHandleSelectedButton("bMap");
+
+      var boardInput=$api.byId("board-point");
+      var getoffInput=$api.byId("getoff-point");
+
+      $api.attr(boardInput, 'readonly', 'readonly');
+      $api.attr(boardInput, 'onclick', 'fnOpenbMap();');
+
+      $api.attr(getoffInput, 'readonly', 'readonly');
+      $api.attr(getoffInput, 'onclick', 'fnOpenbMap();');
+
+    }
+
+    function fnHandleSelectedButton(type){
+
+      var setTextInputButton=$api.byId("set-text-input-button");
+      var setBMapInputButton=$api.byId("set-bMap-input-button");
+
+      if(type==="text"){
+        $api.removeCls(setBMapInputButton, 'selected');
+        $api.addCls(setTextInputButton, 'selected');
+      }
+
+      if(type==="bMap"){
+        $api.removeCls(setTextInputButton, 'selected');
+        $api.addCls(setBMapInputButton, 'selected');
+      }
+
+    }
 
   </script>
 </body>

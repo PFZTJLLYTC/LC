@@ -96,7 +96,7 @@
 
   <script id="point-list-template" type="text/html">
   {{each list}}
-    <li id="{{$value.uid}}" class="item wrap-row" onclick="fnSelectPoint('{{$value.city}}','{{$value.name}}');">
+    <li id="{{$value.uid}}" class="item wrap-row" onclick="fnSelectPoint('{{$value.city}}','{{district}}','{{$value.name}}',{{$value.coord}});">
       <div class="icon icon-point"></div>
       <div class="text">
         <div class="text-top">{{$value.name}}</div>
@@ -122,33 +122,61 @@ function fnInitSearch(){
   });
 }
 
-function fnUpdateSearchList(poiList){
+function fnUpdateSearchList(dataSource){
   var data={
-    list:poiList
+    list:dataSource.poiList,
+    district:dataSource.district
   }
   console.log(JSON.stringify(data));
   var html = template('point-list-template', data); //data为模板数据
   document.getElementById('content').innerHTML = html; //将生成的模板填充添加到对应的容器中
 }
 
-function fnSelectPoint(city,value){
+function fnSelectPoint(city,district,value,coord){
 
-  if(city.indexOf(api.pageParam.sourceCity)!==-1){
+  var lon=coord.lon.toString();
+  var lat=coord.lat.toString();
 
+  var sourceCity=api.pageParam.sourceCity;
+  var destinationCity=api.pageParam.destinationCity;
+
+  //先判断县区再判断城市
+  // alert(JSON.stringify(sourceCity));
+  // alert(JSON.stringify(city));
+  // alert(JSON.stringify(district));
+  // alert(district.indexOf(sourceCity)!==-1||city.indexOf(sourceCity)!==-1);
+  var isBoardPoint=district.indexOf(sourceCity)!==-1||city.indexOf(sourceCity)!==-1;
+  var isGetOffPoint=district.indexOf(destinationCity)!==-1||city.indexOf(destinationCity)!==-1;
+
+  if(isBoardPoint){
     api.execScript({
         name: 'bMap',
         frameName: 'bMap_bottom_frame',
         script: 'fnSetBoardPoint(\''+value+'\');'
     });
-  }else if(city.indexOf(api.pageParam.destinationCity)!==-1){
+
+    api.execScript({
+        name: 'index',
+        frameName: 'frame1',
+        script: 'fnSetStartLonAndLat(\''+lon+'\',\''+lat+'\');'
+    });
+
+  }else if(isGetOffPoint){
 
     api.execScript({
         name: 'bMap',
         frameName: 'bMap_bottom_frame',
         script: 'fnSetGetOffPoint(\''+value+'\');'
     });
-  }else{//TODO:县城 city为所在的市级城市
 
+    api.execScript({
+        name: 'index',
+        frameName: 'frame1',
+        script: 'fnSetEndLonAndLat(\''+lon+'\',\''+lat+'\');'
+    });
+  }else{//TODO:奇怪的地方
+      // alert("什么地方啊:"+JSON.stringify(city)+','+JSON.stringify(district));
+      alert("乘车点不在该线路内");
   }
 
   api.closeWin();
