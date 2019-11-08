@@ -457,7 +457,7 @@
 
     function fnOpenbMap(){
       //未选择线路不能打开地图
-      if(source.innerHTML==="出发"||destination.innerHTML==="到达"){
+      if(source.innerHTML==="出发"||source.innerHTML==="到达"){
         api.toast({
             msg: '未选择线路',
             duration: 2000,
@@ -465,6 +465,9 @@
         });
         return;
       }
+
+      boardPointValue=$api.val($api.byId('board-point'));
+      getOffPointValue=$api.val($api.byId('getoff-point'));
 
       api.openWin({
           name: 'bMap',

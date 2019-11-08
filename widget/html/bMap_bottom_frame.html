@@ -52,7 +52,8 @@
         border: none;
         outline: none;
         height: 20px;
-        font-size: 16px;
+        font-weight: 300;
+        color: #0a0303;
         line-height: 20px;
     }
 
@@ -69,6 +70,7 @@
       height:50px;
       line-height: 60px;
       font-size: 20px;
+      color: #0a0303;
       text-align: center;
     }
 
@@ -112,17 +114,33 @@ var bMap;
 
 apiready = function() {
   bMap=api.require("bMap");
-
-  api.execScript({
-      name: 'bMap',
-      script: 'fnSetCurrentLocation();'
-  });
-
+  fnInitBottomFrame();
 };
+
+function fnInitBottomFrame(){
+
+  var boardPoint=api.pageParam.boardPoint;
+  var getOffPoint=api.pageParam.getOffPoint;
+
+  alert(JSON.stringify(api.pageParam));
+
+  if(boardPoint!==""){
+    $api.val($api.byId('board-point'),boardPoint);
+  }else{
+    api.execScript({
+        name: 'bMap',
+        script: 'fnSetCurrentLocation();'
+    });
+  }
+
+  if(getOffPoint!==""){
+      $api.val($api.byId('getoff-point'),getOffPoint);
+  }
+}
 
 function fnSetBoardPoint(value){
     console.log(value);
-    if(value!==undefined&&value!==null){
+    if(value!==""){
         $api.val($api.byId('board-point'),value);
 
         api.execScript({
@@ -137,7 +155,7 @@ function fnSetBoardPoint(value){
 
 function fnSetGetOffPoint(value){
     console.log(value);
-    if(value!==undefined&&value!==null){
+    if(value!==""){
          $api.val($api.byId('getoff-point'),value);
 
          api.execScript({

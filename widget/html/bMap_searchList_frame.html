@@ -70,18 +70,13 @@
     }
 
     .point-list .item .text .text-top{
-       font-size: 16px;
-       font-weight: 200;
+       font-size: 15px;
+       font-weight: 300;
        color: #0a0303;
-
-       overflow: hidden;/*超出部分隐藏*/
-       text-overflow:ellipsis;/* 超出部分显示省略号 */
-       white-space: nowrap;/*规定段落中的文本不进行换行 */
-       width: 300px;/*配合宽度使用*/
     }
 
     .point-list .item .text .text-bottom{
-       font-size: 14px;
+       font-size: 13px;
        color: #aaa;
 
        overflow: hidden;/*超出部分隐藏*/
@@ -146,6 +141,7 @@ function fnSelectPoint(city,value){
         script: 'fnSetBoardPoint(\''+value+'\');'
     });
   }else if(city.indexOf(api.pageParam.destinationCity)!==-1){
+
     api.execScript({
         name: 'bMap',
         frameName: 'bMap_bottom_frame',
