@@ -148,7 +148,11 @@
     }
 
     .set-input-button{
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
       text-align: center;
+      line-height: 40px;
     }
 
     .set-input-button:active{
@@ -199,8 +203,8 @@
         </select>
       </div>
       <div class="wrap-row set-input-option">
-          <div id="set-text-input-button" class="set-input-button item" onclick="fnHandleTextInput();">文字输入</div>
-          <div id="set-bMap-input-button" class="set-input-button item selected" onclick="fnHandleBMapInput()">地图检索</div>
+          <div id="set-text-input-button" class="set-input-button" onclick="fnHandleTextInput();">文字输入</div>
+          <div id="set-bMap-input-button" class="set-input-button selected" onclick="fnHandleBMapInput()">地图检索</div>
       </div>
       <div class="option wrap-row item">
         <div class="item icon icon-boardPoint"></div>
@@ -219,6 +223,7 @@
       </div>
 
     <div class="btn" tapmode="highlight" onclick="fnSubmit()">提交订单</div>
+    <button onclick="fnOpenBaiduNavigationWin();">baidu</button>
 
   <script type="text/javascript" src="../script/api.js"></script>
   <script type="text/javascript" src="../script/common.js"></script>
@@ -246,6 +251,18 @@
   apiready = function() {
 
   }
+
+   function fnOpenBaiduNavigationWin(){
+     api.openWin({
+         name: 'baiduNavigation',
+         url: './baiduNavigation.html',
+         pageParam: {
+             name: 'test'
+         }
+     });
+
+   }
+
 
    function fnOpenLineSelectWin(){
 
