@@ -93,6 +93,12 @@ function fnSetCurrentLocation(){
                     script: 'fnSetBoardPoint(\''+((ret.poiList.length===0)?ret.address:ret.poiList[0].name)+'\');'
                 });
 
+                api.execScript({
+                    name: 'index',
+                    frameName: 'frame1',
+                    script: 'fnSetStartLonAndLat(\''+ret.lon+'\',\''+ret.lat+'\');'
+                });
+
               }
           });
       }else {

@@ -118,8 +118,14 @@
                 </div>
                 {{if $value.detailAddress}}
                 <div class="item wrap-row">
-                  <span class="tag item">详细地址:</span>
+                  <span class="tag item">上车地点:</span>
                   <span class="text item">{{$value.detailAddress}}</span>
+                </div>
+                {{/if}}
+                {{if $value.detailDestination}}
+                <div class="item wrap-row">
+                  <span class="tag item">下车地点:</span>
+                  <span class="text item">{{$value.detailDestination}}</span>
                 </div>
                 {{/if}}
                 {{if $value.remark}}

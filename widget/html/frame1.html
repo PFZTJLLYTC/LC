@@ -223,7 +223,6 @@
       </div>
 
     <div class="btn" tapmode="highlight" onclick="fnSubmit()">提交订单</div>
-    <button onclick="fnOpenBaiduNavigationWin();">baidu</button>
 
   <script type="text/javascript" src="../script/api.js"></script>
   <script type="text/javascript" src="../script/common.js"></script>
@@ -251,17 +250,6 @@
   apiready = function() {
 
   }
-
-   function fnOpenBaiduNavigationWin(){
-     api.openWin({
-         name: 'baiduNavigation',
-         url: './baiduNavigation.html',
-         pageParam: {
-             name: 'test'
-         }
-     });
-
-   }
 
 
    function fnOpenLineSelectWin(){
@@ -404,6 +392,23 @@
         dateValue=''+formatDate(new Date(),'yyyy-MM-dd');
         remarkValue=$api.val($api.byId('remark'));
 
+        var  body={
+          "lineName":lineNameValue,
+          "time":timeValue,           //预约日期和时间 x年x月x日xx时xx分
+          "userPhone":telValue,
+          "userCount":peopleValue,
+          "detailAddress":boardPointValue,
+          "startLon":startLon,
+          "startLat":startLat,
+          "detailDestination":getOffPointValue,
+          "endLon":endLon,
+          "endLat":endLat,
+          "date":dateValue,
+          "remark":remarkValue,
+        };
+
+        alert(JSON.stringify(body));
+
         api.confirm({
             title: '提醒',
             msg: '确定信息无误并提交订单吗？（待处理订单可自行取消，进行中订单需联系客服取消）',
@@ -426,7 +431,7 @@
                           "detailAddress":boardPointValue,
                           "startLon":startLon,
                           "startLat":startLat,
-                          "endDetailDestination":getOffPointValue,
+                          "detailDestination":getOffPointValue,
                           "endLon":endLon,
                           "endLat":endLat,
                           "date":dateValue,
